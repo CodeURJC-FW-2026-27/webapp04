@@ -24,13 +24,13 @@ Representa cada vehículo disponible en el concesionario.
 
 | Atributo | Tipo | Descripción |
 |---|---|---|
-| `marca` | String | Marca del vehículo. |
-| `modelo` | String | Modelo del vehículo. |
-| `precio` | Number | Precio de venta. |
-| `año` | Number | Año del vehículo. |
-| `kilometros` | Number | Kilometraje. |
-| `combustible` | String | Tipo de combustible. |
-| `imagen` | String | Imagen o imágenes del vehículo. |
+| `brand` | String | Marca del vehículo. |
+| `model` | String | Modelo del vehículo. |
+| `price` | Number | Precio de venta. |
+| `year` | Number | Año del vehículo. |
+| `kilometers` | Number | Kilometraje. |
+| `fuelType` | String | Tipo de combustible. |
+| `image` | String | Imagen o imágenes del vehículo. |
 
 ### Entidad secundaria: Reseña
 
@@ -38,10 +38,10 @@ Representa la valoración de un usuario sobre un vehículo.
 
 | Atributo | Tipo | Descripción |
 |---|---|---|
-| `autor` | String | Autor de la reseña. |
-| `texto` | String | Contenido de la reseña. |
-| `puntuacion` | Number | Valoración del vehículo. |
-| `fecha` | Date | Fecha de la reseña. |
+| `author` | String | Autor de la reseña. |
+| `text` | String | Contenido de la reseña. |
+| `rating` | Number | Valoración del vehículo. |
+| `date` | Date | Fecha de la reseña. |
 
 Cada vehículo podrá tener varias reseñas y cada reseña pertenecerá a un único vehículo.
 
