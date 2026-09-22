@@ -13,11 +13,6 @@
 | Iñigo Álvaro Sabaté | i.alvaro.2024@alumnos.urjc.es | IniAlv22 |
 | Izan Calle Feijoo | i.calle.2024@alumnos.urjc.es | IzanCalle |
 
-## Herramientas de coordinación
-
-**Herramienta:** Pendiente de indicar.
-
-**Enlace:** Pendiente de indicar.
 
 # Funcionalidad
 
