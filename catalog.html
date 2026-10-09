@@ -14,13 +14,13 @@
     </head>
     <body class="d-flex flex-column h-100">
         <main class="flex-shrink-0">
-            <!-- Navigation--> 
-            <nav class="navbar navbar-expand-lg navbar-dark bg-dark"> <!--Navbar y colores-->
-                <div class="container px-5"> <!--Centra el contenido de la navbar-->
-                    <a class="navbar-brand" href="index.html">IJAM Motors</a> <!--Marca de la navbar y te redirije al index si lo pulsas-->
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button> <!--Botón de toggling para dispositivos móviles-->
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent"> <!--Dispositivo móviles-->
-                        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">  <!--Lista de elementos de la navbar-->
+            <!-- Navigation-->
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark"> <!--Navbar and its colors-->
+                <div class="container px-5"> <!--Centers the navbar content-->
+                    <a class="navbar-brand" href="index.html">IJAM Motors</a> <!--Navbar brand, links to the home page when clicked-->
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button> <!--Toggle button for mobile devices-->
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent"> <!--Collapsible menu on mobile devices-->
+                        <ul class="navbar-nav ms-auto mb-2 mb-lg-0"> <!--List of navbar items-->
                             <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
                             <li class="nav-item"><a class="nav-link active" aria-current="page" href="catalog.html">Catalogo</a></li>
                             <li class="nav-item"><a class="nav-link" href="new-vehicle.html">Añadir vehículo</a></li>
@@ -35,7 +35,7 @@
                         <h1 class="fw-bolder">Catálogo de vehículos</h1>
                         <p class="lead fw-normal text-muted mb-0">Vehículos de segunda mano recopilados de distintas páginas de compraventa. Compara sus ofertas y encuentra el mejor precio.</p>
                     </div>
-                    <!-- Buscador por marca o modelo (envía el texto a esta misma página con el parámetro "search")-->
+                    <!-- Search by brand or model (sends the text to this same page in the "search" parameter)-->
                     <form class="row justify-content-center mb-4" action="catalog.html" method="get" role="search">
                         <div class="col-lg-8 col-xl-6">
                             <div class="input-group input-group-lg">
@@ -45,7 +45,7 @@
                             </div>
                         </div>
                     </form>
-                    <!-- Categorías por tipo de carrocería (cada una abre esta misma página con el parámetro "bodyType")-->
+                    <!-- Body type categories (each one opens this same page with the "bodyType" parameter)-->
                     <nav class="mb-5" aria-label="Categorías por tipo de carrocería">
                         <ul class="nav nav-pills justify-content-center gap-2">
                             <li class="nav-item"><a class="nav-link active" aria-current="page" href="catalog.html">Todos</a></li>
@@ -56,12 +56,12 @@
                         </ul>
                     </nav>
                     <div class="row gx-5">
-                        <!-- Panel lateral de filtros (en pantallas pequeñas se coloca encima del listado)-->
+                        <!-- Filters sidebar (placed above the listing on small screens)-->
                         <aside class="col-lg-3 mb-5 mb-lg-0">
                             <form class="card shadow border-0" action="catalog.html" method="get">
                                 <div class="card-body p-4">
                                     <h2 class="h5 fw-bolder mb-4"><i class="bi bi-funnel me-2" aria-hidden="true"></i>Filtros</h2>
-                                    <!-- Filtros por características del vehículo-->
+                                    <!-- Filters on vehicle attributes-->
                                     <h3 class="small fw-bolder text-uppercase text-muted mb-3">Vehículo</h3>
                                     <div class="mb-3">
                                         <label class="form-label" for="brand">Marca</label>
@@ -105,7 +105,7 @@
                                         </div>
                                     </fieldset>
                                     <hr class="mt-0 mb-4" />
-                                    <!-- Filtros por características de las ofertas (se muestran los vehículos con al menos una oferta que cumpla el filtro)-->
+                                    <!-- Filters on offer attributes (shows the vehicles with at least one offer matching the filter)-->
                                     <h3 class="small fw-bolder text-uppercase text-muted mb-3">Ofertas</h3>
                                     <fieldset class="mb-3">
                                         <legend class="form-label fs-6">Precio (€)</legend>
@@ -156,9 +156,9 @@
                             <div class="d-flex justify-content-end mb-4">
                                 <a class="btn btn-primary" href="new-vehicle.html"><i class="bi bi-plus-lg me-2" aria-hidden="true"></i>Crear nuevo vehículo</a>
                             </div>
-                            <!-- Listado de vehículos (1 columna en móvil, 2 en tablet, 3 en pantallas grandes)-->
+                            <!-- Vehicle grid (1 column on mobile, 2 on tablets, 3 on large screens)-->
                             <div class="row g-4 row-cols-1 row-cols-md-2 row-cols-xl-3">
-                                <!-- Tarjeta de vehículo: toda la tarjeta enlaza a la ficha gracias a stretched-link-->
+                                <!-- Vehicle card: stretched-link makes the whole card link to the detail page-->
                                 <div class="col">
                                     <div class="card h-100 shadow border-0">
                                         <img class="card-img-top" src="https://dummyimage.com/600x400/343a40/6c757d&text=Volkswagen+Golf" alt="Volkswagen Golf" />
