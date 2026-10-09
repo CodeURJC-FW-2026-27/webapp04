@@ -2,7 +2,7 @@
 
 ## Descripción
 
-**IJAM Motors** es una aplicación web de un concesionario de vehículos de segunda mano. Permitirá consultar los vehículos disponibles, visualizar sus características e imágenes y consultar las reseñas asociadas.
+**IJAM Motors** es una aplicación web que recopila en un mismo sitio vehículos de segunda mano publicados en otras páginas de compraventa. Permite consultar los vehículos, ver sus características e imágenes y comparar las ofertas de un mismo vehículo en distintas webs. La aplicación no mantiene ninguna comisión ni acuerdo con las páginas de origen. Los datos mostrados no se extraen de dichas webs, sino que son datos de ejemplo ficticios.
 
 ## Integrantes
 
@@ -20,46 +20,54 @@
 
 ### Entidad principal: Vehículo
 
-Representa cada vehículo disponible en el concesionario.
+Representa un modelo de vehículo recopilado en la aplicación, del que pueden existir varias unidades anunciadas en páginas externas.
 
 | Atributo | Tipo | Descripción |
 |---|---|---|
 | `brand` | String | Marca del vehículo. |
 | `model` | String | Modelo del vehículo. |
-| `price` | Number | Precio de venta. |
-| `year` | Number | Año del vehículo. |
-| `kilometers` | Number | Kilometraje. |
+| `year` | Number | Año del modelo. |
 | `fuelType` | String | Tipo de combustible. |
+| `bodyType` | String | Tipo de carrocería (SUV, berlina, compacto, coupé...). |
+| `lowestPrice` | Number | Precio más bajo entre todas sus ofertas. |
 | `image` | String | Imagen o imágenes del vehículo. |
 
-### Entidad secundaria: Reseña
+### Entidad secundaria: Oferta
 
-Representa la valoración de un usuario sobre un vehículo.
+Representa un anuncio de una unidad concreta del vehículo en una página externa.
 
 | Atributo | Tipo | Descripción |
 |---|---|---|
-| `author` | String | Autor de la reseña. |
-| `text` | String | Contenido de la reseña. |
-| `rating` | Number | Valoración del vehículo. |
-| `date` | Date | Fecha de la reseña. |
+| `site` | String | Página donde está publicado el anuncio. |
+| `price` | Number | Precio del anuncio. |
+| `kilometers` | Number | Kilometraje de esa unidad. |
+| `seller` | String | Vendedor (particular o profesional). |
+| `url` | String | Enlace al anuncio original. |
+| `date` | Date | Fecha de publicación del anuncio. |
+| `image` | String | Imagen o imágenes de la unidad anunciada (opcional). |
 
-Cada vehículo podrá tener varias reseñas y cada reseña pertenecerá a un único vehículo.
+Cada vehículo podrá tener varias ofertas y cada oferta pertenecerá a un único vehículo.
 
 ## Imágenes
 
-Cada vehículo tendrá asociadas una o varias imágenes que podrán ser subidas desde el navegador. Estas imágenes mostrarán el exterior y el interior del vehículo.
+- **Vehículo:** cada vehículo tendrá asociadas una o varias imágenes de referencia del modelo, que podrán ser subidas desde el navegador.
+- **Oferta:** cada oferta podrá tener opcionalmente una o varias imágenes de la unidad concreta anunciada (exterior e interior), también subidas desde el navegador.
 
 ## Buscador, filtrado y categorización
 
 La aplicación permitirá buscar vehículos por **marca o modelo**.
 
-También se podrán aplicar filtros según diferentes características:
+También se podrán aplicar filtros según diferentes características del vehículo:
 
 - Marca.
-- Precio.
 - Año.
-- Kilometraje.
 - Combustible.
+
+Y filtros según las características de sus ofertas (se mostrarán los vehículos que tengan al menos una oferta que cumpla el filtro):
+
+- Precio.
+- Kilometraje.
+- Página de origen (sitio donde está anunciado el vehículo).
 
 Los vehículos podrán categorizarse según su **tipo de carrocería**, por ejemplo:
 

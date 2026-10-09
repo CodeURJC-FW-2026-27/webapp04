@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="Catálogo de vehículos de segunda mano recopilados de distintas páginas de compraventa" />
+        <meta name="author" content="IJAM Motors" />
+        <title>Catálogo - IJAM Motors</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" /> <!-- Bootstrap icons-->
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="css/styles.css" rel="stylesheet" />
+    </head>
+    <body class="d-flex flex-column h-100">
+        <main class="flex-shrink-0">
+            <!-- Navigation-->
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark"> <!--Navbar and its colors-->
+                <div class="container px-5"> <!--Centers the navbar content-->
+                    <a class="navbar-brand" href="index.html">IJAM Motors</a> <!--Navbar brand, links to the home page when clicked-->
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button> <!--Toggle button for mobile devices-->
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent"> <!--Collapsible menu on mobile devices-->
+                        <ul class="navbar-nav ms-auto mb-2 mb-lg-0"> <!--List of navbar items-->
+                            <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+                            <li class="nav-item"><a class="nav-link active" aria-current="page" href="catalog.html">Catalogo</a></li>
+                            <li class="nav-item"><a class="nav-link" href="new-vehicle.html">Añadir vehículo</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <!-- Page Content-->
+            <section class="py-5">
+                <div class="container px-5 my-5">
+                    <!-- Page header: title and description of the catalog-->
+                    <div class="text-center mb-5">
+                        <h1 class="fw-bolder">Catálogo de vehículos</h1>
+                        <p class="lead fw-normal text-muted mb-0">Vehículos de segunda mano recopilados de distintas páginas de compraventa. Compara sus ofertas y encuentra el mejor precio.</p>
+                    </div>
+                    <!-- Search by brand or model (sends the text to this same page in the "search" parameter)-->
+                    <form class="row justify-content-center mb-4" action="catalog.html" method="get" role="search">
+                        <div class="col-lg-8 col-xl-6">
+                            <div class="input-group input-group-lg">
+                                <span class="input-group-text"><i class="bi bi-search" aria-hidden="true"></i></span>
+                                <input class="form-control" type="search" name="search" placeholder="Busca por marca o modelo, p. ej. Volkswagen Golf" aria-label="Buscar por marca o modelo" />
+                                <button class="btn btn-primary" type="submit">Buscar</button>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- Body type categories (each one opens this same page with the "bodyType" parameter)-->
+                    <nav class="mb-5" aria-label="Categorías por tipo de carrocería">
+                        <ul class="nav nav-pills justify-content-center gap-2">
+                            <li class="nav-item"><a class="nav-link active" aria-current="page" href="catalog.html">Todos</a></li>
+                            <li class="nav-item"><a class="nav-link" href="catalog.html?bodyType=suv">SUV</a></li>
+                            <li class="nav-item"><a class="nav-link" href="catalog.html?bodyType=sedan">Berlina</a></li>
+                            <li class="nav-item"><a class="nav-link" href="catalog.html?bodyType=compact">Compacto</a></li>
+                            <li class="nav-item"><a class="nav-link" href="catalog.html?bodyType=coupe">Coupé</a></li>
+                        </ul>
+                    </nav>
+                    <!-- Main layout: filters sidebar on the left, vehicle grid on the right-->
+                    <div class="row gx-5">
+                        <!-- Filters sidebar (placed above the listing on small screens)-->
+                        <aside class="col-lg-3 mb-5 mb-lg-0">
+                            <form class="card shadow border-0" action="catalog.html" method="get">
+                                <div class="card-body p-4">
+                                    <h2 class="h5 fw-bolder mb-4"><i class="bi bi-funnel me-2" aria-hidden="true"></i>Filtros</h2>
+                                    <!-- Filters on vehicle attributes-->
+                                    <h3 class="small fw-bolder text-uppercase text-muted mb-3">Vehículo</h3>
+                                    <!-- Brand filter-->
+                                    <div class="mb-3">
+                                        <label class="form-label" for="brand">Marca</label>
+                                        <select class="form-select" id="brand" name="brand">
+                                            <option value="" selected>Todas las marcas</option>
+                                            <option value="audi">Audi</option>
+                                            <option value="bmw">BMW</option>
+                                            <option value="ford">Ford</option>
+                                            <option value="hyundai">Hyundai</option>
+                                            <option value="peugeot">Peugeot</option>
+                                            <option value="seat">Seat</option>
+                                            <option value="tesla">Tesla</option>
+                                            <option value="toyota">Toyota</option>
+                                            <option value="volkswagen">Volkswagen</option>
+                                        </select>
+                                    </div>
+                                    <!-- Year range filter-->
+                                    <fieldset class="mb-3">
+                                        <legend class="form-label fs-6">Año</legend>
+                                        <div class="row g-2">
+                                            <div class="col"><input class="form-control" type="number" name="yearFrom" min="1990" max="2026" placeholder="Desde" aria-label="Año desde" /></div>
+                                            <div class="col"><input class="form-control" type="number" name="yearTo" min="1990" max="2026" placeholder="Hasta" aria-label="Año hasta" /></div>
+                                        </div>
+                                    </fieldset>
+                                    <!-- Fuel type filter (several options can be checked)-->
+                                    <fieldset class="mb-4">
+                                        <legend class="form-label fs-6">Combustible</legend>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="fuelGasoline" name="fuelType" value="gasoline" />
+                                            <label class="form-check-label" for="fuelGasoline">Gasolina</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="fuelDiesel" name="fuelType" value="diesel" />
+                                            <label class="form-check-label" for="fuelDiesel">Diésel</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="fuelHybrid" name="fuelType" value="hybrid" />
+                                            <label class="form-check-label" for="fuelHybrid">Híbrido</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="fuelElectric" name="fuelType" value="electric" />
+                                            <label class="form-check-label" for="fuelElectric">Eléctrico</label>
+                                        </div>
+                                    </fieldset>
+                                    <hr class="mt-0 mb-4" />
+                                    <!-- Filters on offer attributes (shows the vehicles with at least one offer matching the filter)-->
+                                    <h3 class="small fw-bolder text-uppercase text-muted mb-3">Ofertas</h3>
+                                    <!-- Price range filter-->
+                                    <fieldset class="mb-3">
+                                        <legend class="form-label fs-6">Precio (€)</legend>
+                                        <div class="row g-2">
+                                            <div class="col"><input class="form-control" type="number" name="priceMin" min="0" placeholder="Mín." aria-label="Precio mínimo" /></div>
+                                            <div class="col"><input class="form-control" type="number" name="priceMax" min="0" placeholder="Máx." aria-label="Precio máximo" /></div>
+                                        </div>
+                                    </fieldset>
+                                    <!-- Maximum mileage filter-->
+                                    <div class="mb-3">
+                                        <label class="form-label" for="maxKilometers">Kilometraje</label>
+                                        <select class="form-select" id="maxKilometers" name="maxKilometers">
+                                            <option value="" selected>Sin límite</option>
+                                            <option value="25000">Hasta 25.000 km</option>
+                                            <option value="50000">Hasta 50.000 km</option>
+                                            <option value="100000">Hasta 100.000 km</option>
+                                            <option value="150000">Hasta 150.000 km</option>
+                                            <option value="200000">Hasta 200.000 km</option>
+                                        </select>
+                                    </div>
+                                    <!-- Source website filter (several options can be checked)-->
+                                    <fieldset class="mb-4">
+                                        <legend class="form-label fs-6">Página de origen</legend>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="siteCochesNet" name="site" value="cochesnet" />
+                                            <label class="form-check-label" for="siteCochesNet">coches.net</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="siteWallapop" name="site" value="wallapop" />
+                                            <label class="form-check-label" for="siteWallapop">Wallapop</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="siteMilanuncios" name="site" value="milanuncios" />
+                                            <label class="form-check-label" for="siteMilanuncios">Milanuncios</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="siteAutoScout24" name="site" value="autoscout24" />
+                                            <label class="form-check-label" for="siteAutoScout24">AutoScout24</label>
+                                        </div>
+                                    </fieldset>
+                                    <!-- Filter buttons: apply the filters or reset them-->
+                                    <div class="d-grid gap-2">
+                                        <button class="btn btn-primary" type="submit">Aplicar filtros</button>
+                                        <a class="btn btn-outline-secondary" href="catalog.html">Limpiar filtros</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </aside>
+                        <!-- Listing column: create button and vehicle grid-->
+                        <div class="col-lg-9">
+                            <!-- Button to create a new vehicle, right-aligned above the grid-->
+                            <div class="d-flex justify-content-end mb-4">
+                                <a class="btn btn-primary" href="new-vehicle.html"><i class="bi bi-plus-lg me-2" aria-hidden="true"></i>Crear nuevo vehículo</a>
+                            </div>
+                            <!-- Vehicle grid (1 column on mobile, 2 on tablets, 3 on large screens)-->
+                            <div class="row g-4 row-cols-1 row-cols-md-2 row-cols-xl-3">
+                                <!-- Each vehicle card shows: photo, body type, brand and model, year and fuel, lowest price and number of offers.
+                                     stretched-link makes the whole card link to the detail page-->
+                                <!-- Volkswagen Golf card-->
+                                <div class="col">
+                                    <div class="card h-100 shadow border-0">
+                                        <img class="card-img-top" src="assets/img/golf.jpg" alt="Volkswagen Golf" />
+                                        <div class="card-body p-4">
+                                            <div class="badge bg-primary bg-gradient rounded-pill mb-2">Compacto</div>
+                                            <a class="text-decoration-none link-dark stretched-link" href="portfolio-item.html"><h2 class="h5 card-title fw-bolder mb-1">Volkswagen Golf</h2></a>
+                                            <p class="card-text text-muted mb-0">2019 · Gasolina</p>
+                                        </div>
+                                        <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
+                                            <div class="d-flex justify-content-between align-items-end">
+                                                <div>
+                                                    <div class="small text-muted">Desde</div>
+                                                    <div class="h5 fw-bolder mb-0">15.400 €</div>
+                                                </div>
+                                                <div class="small text-muted">3 ofertas</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Toyota C-HR card-->
+                                <div class="col">
+                                    <div class="card h-100 shadow border-0">
+                                        <img class="card-img-top" src="assets/img/toyotac-hr.jpg" alt="Toyota C-HR" />
+                                        <div class="card-body p-4">
+                                            <div class="badge bg-primary bg-gradient rounded-pill mb-2">SUV</div>
+                                            <a class="text-decoration-none link-dark stretched-link" href="portfolio-item.html"><h2 class="h5 card-title fw-bolder mb-1">Toyota C-HR</h2></a>
+                                            <p class="card-text text-muted mb-0">2020 · Híbrido</p>
+                                        </div>
+                                        <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
+                                            <div class="d-flex justify-content-between align-items-end">
+                                                <div>
+                                                    <div class="small text-muted">Desde</div>
+                                                    <div class="h5 fw-bolder mb-0">19.990 €</div>
+                                                </div>
+                                                <div class="small text-muted">2 ofertas</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- BMW Serie 3 card-->
+                                <div class="col">
+                                    <div class="card h-100 shadow border-0">
+                                        <img class="card-img-top" src="assets/img/serie3.jpg" alt="BMW Serie 3" />
+                                        <div class="card-body p-4">
+                                            <div class="badge bg-primary bg-gradient rounded-pill mb-2">Berlina</div>
+                                            <a class="text-decoration-none link-dark stretched-link" href="portfolio-item.html"><h2 class="h5 card-title fw-bolder mb-1">BMW Serie 3</h2></a>
+                                            <p class="card-text text-muted mb-0">2018 · Diésel</p>
+                                        </div>
+                                        <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
+                                            <div class="d-flex justify-content-between align-items-end">
+                                                <div>
+                                                    <div class="small text-muted">Desde</div>
+                                                    <div class="h5 fw-bolder mb-0">18.750 €</div>
+                                                </div>
+                                                <div class="small text-muted">4 ofertas</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Audi A3 card-->
+                                <div class="col">
+                                    <div class="card h-100 shadow border-0">
+                                        <img class="card-img-top" src="assets/img/audia3.jpg" alt="Audi A3" />
+                                        <div class="card-body p-4">
+                                            <div class="badge bg-primary bg-gradient rounded-pill mb-2">Compacto</div>
+                                            <a class="text-decoration-none link-dark stretched-link" href="portfolio-item.html"><h2 class="h5 card-title fw-bolder mb-1">Audi A3</h2></a>
+                                            <p class="card-text text-muted mb-0">2018 · Gasolina</p>
+                                        </div>
+                                        <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
+                                            <div class="d-flex justify-content-between align-items-end">
+                                                <div>
+                                                    <div class="small text-muted">Desde</div>
+                                                    <div class="h5 fw-bolder mb-0">19.500 €</div>
+                                                </div>
+                                                <div class="small text-muted">2 ofertas</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Peugeot 3008 card-->
+                                <div class="col">
+                                    <div class="card h-100 shadow border-0">
+                                        <img class="card-img-top" src="assets/img/peugeot3008.jpg" alt="Peugeot 3008" />
+                                        <div class="card-body p-4">
+                                            <div class="badge bg-primary bg-gradient rounded-pill mb-2">SUV</div>
+                                            <a class="text-decoration-none link-dark stretched-link" href="portfolio-item.html"><h2 class="h5 card-title fw-bolder mb-1">Peugeot 3008</h2></a>
+                                            <p class="card-text text-muted mb-0">2021 · Diésel</p>
+                                        </div>
+                                        <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
+                                            <div class="d-flex justify-content-between align-items-end">
+                                                <div>
+                                                    <div class="small text-muted">Desde</div>
+                                                    <div class="h5 fw-bolder mb-0">21.300 €</div>
+                                                </div>
+                                                <div class="small text-muted">3 ofertas</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Tesla Model 3 card-->
+                                <div class="col">
+                                    <div class="card h-100 shadow border-0">
+                                        <img class="card-img-top" src="assets/img/teslamodel3.jpg" alt="Tesla Model 3" />
+                                        <div class="card-body p-4">
+                                            <div class="badge bg-primary bg-gradient rounded-pill mb-2">Berlina</div>
+                                            <a class="text-decoration-none link-dark stretched-link" href="portfolio-item.html"><h2 class="h5 card-title fw-bolder mb-1">Tesla Model 3</h2></a>
+                                            <p class="card-text text-muted mb-0">2021 · Eléctrico</p>
+                                        </div>
+                                        <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
+                                            <div class="d-flex justify-content-between align-items-end">
+                                                <div>
+                                                    <div class="small text-muted">Desde</div>
+                                                    <div class="h5 fw-bolder mb-0">27.500 €</div>
+                                                </div>
+                                                <div class="small text-muted">5 ofertas</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Seat Ibiza card-->
+                                <div class="col">
+                                    <div class="card h-100 shadow border-0">
+                                        <img class="card-img-top" src="assets/img/seatibiza.jpg" alt="Seat Ibiza" />
+                                        <div class="card-body p-4">
+                                            <div class="badge bg-primary bg-gradient rounded-pill mb-2">Compacto</div>
+                                            <a class="text-decoration-none link-dark stretched-link" href="portfolio-item.html"><h2 class="h5 card-title fw-bolder mb-1">Seat Ibiza</h2></a>
+                                            <p class="card-text text-muted mb-0">2019 · Gasolina</p>
+                                        </div>
+                                        <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
+                                            <div class="d-flex justify-content-between align-items-end">
+                                                <div>
+                                                    <div class="small text-muted">Desde</div>
+                                                    <div class="h5 fw-bolder mb-0">12.900 €</div>
+                                                </div>
+                                                <div class="small text-muted">4 ofertas</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Ford Mustang card-->
+                                <div class="col">
+                                    <div class="card h-100 shadow border-0">
+                                        <img class="card-img-top" src="assets/img/mustang.jpg" alt="Ford Mustang" />
+                                        <div class="card-body p-4">
+                                            <div class="badge bg-primary bg-gradient rounded-pill mb-2">Coupé</div>
+                                            <a class="text-decoration-none link-dark stretched-link" href="portfolio-item.html"><h2 class="h5 card-title fw-bolder mb-1">Ford Mustang</h2></a>
+                                            <p class="card-text text-muted mb-0">2018 · Gasolina</p>
+                                        </div>
+                                        <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
+                                            <div class="d-flex justify-content-between align-items-end">
+                                                <div>
+                                                    <div class="small text-muted">Desde</div>
+                                                    <div class="h5 fw-bolder mb-0">31.900 €</div>
+                                                </div>
+                                                <div class="small text-muted">2 ofertas</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Hyundai Tucson card-->
+                                <div class="col">
+                                    <div class="card h-100 shadow border-0">
+                                        <img class="card-img-top" src="assets/img/tucson.jpg" alt="Hyundai Tucson" />
+                                        <div class="card-body p-4">
+                                            <div class="badge bg-primary bg-gradient rounded-pill mb-2">SUV</div>
+                                            <a class="text-decoration-none link-dark stretched-link" href="portfolio-item.html"><h2 class="h5 card-title fw-bolder mb-1">Hyundai Tucson</h2></a>
+                                            <p class="card-text text-muted mb-0">2022 · Híbrido</p>
+                                        </div>
+                                        <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
+                                            <div class="d-flex justify-content-between align-items-end">
+                                                <div>
+                                                    <div class="small text-muted">Desde</div>
+                                                    <div class="h5 fw-bolder mb-0">26.400 €</div>
+                                                </div>
+                                                <div class="small text-muted">3 ofertas</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <!-- Footer-->
+        <footer class="bg-dark py-4 mt-auto">
+            <div class="container px-5">
+                <div class="row align-items-center justify-content-between flex-column flex-sm-row">
+                    <div class="col-auto"><div class="small m-0 text-white">Copyright &copy; IJAM MOTORS 2026</div></div>
+                    <div class="col-auto">
+                        <a class="link-light small" href="#!">Privacy</a>
+                        <span class="text-white mx-1">&middot;</span>
+                        <a class="link-light small" href="#!">Terms</a>
+                        <span class="text-white mx-1">&middot;</span>
+                        <a class="link-light small" href="#!">Contact</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+</html>
