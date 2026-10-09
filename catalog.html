@@ -35,6 +35,16 @@
                         <h1 class="fw-bolder">Catálogo de vehículos</h1>
                         <p class="lead fw-normal text-muted mb-0">Vehículos de segunda mano recopilados de distintas páginas de compraventa. Compara sus ofertas y encuentra el mejor precio.</p>
                     </div>
+                    <!-- Buscador por marca o modelo (envía el texto a esta misma página con el parámetro "search")-->
+                    <form class="row justify-content-center mb-5" action="catalog.html" method="get" role="search">
+                        <div class="col-lg-8 col-xl-6">
+                            <div class="input-group input-group-lg">
+                                <span class="input-group-text"><i class="bi bi-search" aria-hidden="true"></i></span>
+                                <input class="form-control" type="search" name="search" placeholder="Busca por marca o modelo, p. ej. Volkswagen Golf" aria-label="Buscar por marca o modelo" />
+                                <button class="btn btn-primary" type="submit">Buscar</button>
+                            </div>
+                        </div>
+                    </form>
                     <!-- Listado de vehículos (1 columna en móvil, 2 en tablet, 3 en pantallas grandes)-->
                     <div class="row g-4 row-cols-1 row-cols-md-2 row-cols-xl-3">
                         <!-- Tarjeta de vehículo: toda la tarjeta enlaza a la ficha gracias a stretched-link-->
