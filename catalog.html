@@ -102,6 +102,46 @@
                                             <label class="form-check-label" for="fuelElectric">Eléctrico</label>
                                         </div>
                                     </fieldset>
+                                    <hr class="mt-0 mb-4" />
+                                    <!-- Filtros por características de las ofertas (se muestran los vehículos con al menos una oferta que cumpla el filtro)-->
+                                    <h3 class="small fw-bolder text-uppercase text-muted mb-3">Ofertas</h3>
+                                    <fieldset class="mb-3">
+                                        <legend class="form-label fs-6">Precio (€)</legend>
+                                        <div class="row g-2">
+                                            <div class="col"><input class="form-control" type="number" name="priceMin" min="0" placeholder="Mín." aria-label="Precio mínimo" /></div>
+                                            <div class="col"><input class="form-control" type="number" name="priceMax" min="0" placeholder="Máx." aria-label="Precio máximo" /></div>
+                                        </div>
+                                    </fieldset>
+                                    <div class="mb-3">
+                                        <label class="form-label" for="maxKilometers">Kilometraje</label>
+                                        <select class="form-select" id="maxKilometers" name="maxKilometers">
+                                            <option value="" selected>Sin límite</option>
+                                            <option value="25000">Hasta 25.000 km</option>
+                                            <option value="50000">Hasta 50.000 km</option>
+                                            <option value="100000">Hasta 100.000 km</option>
+                                            <option value="150000">Hasta 150.000 km</option>
+                                            <option value="200000">Hasta 200.000 km</option>
+                                        </select>
+                                    </div>
+                                    <fieldset class="mb-4">
+                                        <legend class="form-label fs-6">Página de origen</legend>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="siteCochesNet" name="site" value="cochesnet" />
+                                            <label class="form-check-label" for="siteCochesNet">coches.net</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="siteWallapop" name="site" value="wallapop" />
+                                            <label class="form-check-label" for="siteWallapop">Wallapop</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="siteMilanuncios" name="site" value="milanuncios" />
+                                            <label class="form-check-label" for="siteMilanuncios">Milanuncios</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="siteAutoScout24" name="site" value="autoscout24" />
+                                            <label class="form-check-label" for="siteAutoScout24">AutoScout24</label>
+                                        </div>
+                                    </fieldset>
                                     <div class="d-grid gap-2">
                                         <button class="btn btn-primary" type="submit">Aplicar filtros</button>
                                         <a class="btn btn-outline-secondary" href="catalog.html">Limpiar filtros</a>
