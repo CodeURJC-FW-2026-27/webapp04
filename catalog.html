@@ -55,119 +55,176 @@
                             <li class="nav-item"><a class="nav-link" href="catalog.html?bodyType=coupe">Coupé</a></li>
                         </ul>
                     </nav>
-                    <!-- Listado de vehículos (1 columna en móvil, 2 en tablet, 3 en pantallas grandes)-->
-                    <div class="row g-4 row-cols-1 row-cols-md-2 row-cols-xl-3">
-                        <!-- Tarjeta de vehículo: toda la tarjeta enlaza a la ficha gracias a stretched-link-->
-                        <div class="col">
-                            <div class="card h-100 shadow border-0">
-                                <img class="card-img-top" src="https://dummyimage.com/600x400/343a40/6c757d&text=Volkswagen+Golf" alt="Volkswagen Golf" />
+                    <div class="row gx-5">
+                        <!-- Panel lateral de filtros (en pantallas pequeñas se coloca encima del listado)-->
+                        <aside class="col-lg-3 mb-5 mb-lg-0">
+                            <form class="card shadow border-0" action="catalog.html" method="get">
                                 <div class="card-body p-4">
-                                    <div class="badge bg-primary bg-gradient rounded-pill mb-2">Compacto</div>
-                                    <a class="text-decoration-none link-dark stretched-link" href="portfolio-item.html"><h2 class="h5 card-title fw-bolder mb-1">Volkswagen Golf</h2></a>
-                                    <p class="card-text text-muted mb-0">2019 · Gasolina</p>
-                                </div>
-                                <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
-                                    <div class="d-flex justify-content-between align-items-end">
-                                        <div>
-                                            <div class="small text-muted">Desde</div>
-                                            <div class="h5 fw-bolder mb-0">15.400 €</div>
+                                    <h2 class="h5 fw-bolder mb-4"><i class="bi bi-funnel me-2" aria-hidden="true"></i>Filtros</h2>
+                                    <!-- Filtros por características del vehículo-->
+                                    <h3 class="small fw-bolder text-uppercase text-muted mb-3">Vehículo</h3>
+                                    <div class="mb-3">
+                                        <label class="form-label" for="brand">Marca</label>
+                                        <select class="form-select" id="brand" name="brand">
+                                            <option value="" selected>Todas las marcas</option>
+                                            <option value="audi">Audi</option>
+                                            <option value="bmw">BMW</option>
+                                            <option value="peugeot">Peugeot</option>
+                                            <option value="seat">Seat</option>
+                                            <option value="tesla">Tesla</option>
+                                            <option value="toyota">Toyota</option>
+                                            <option value="volkswagen">Volkswagen</option>
+                                        </select>
+                                    </div>
+                                    <fieldset class="mb-3">
+                                        <legend class="form-label fs-6">Año</legend>
+                                        <div class="row g-2">
+                                            <div class="col"><input class="form-control" type="number" name="yearFrom" min="1990" max="2026" placeholder="Desde" aria-label="Año desde" /></div>
+                                            <div class="col"><input class="form-control" type="number" name="yearTo" min="1990" max="2026" placeholder="Hasta" aria-label="Año hasta" /></div>
                                         </div>
-                                        <div class="small text-muted">3 ofertas</div>
+                                    </fieldset>
+                                    <fieldset class="mb-4">
+                                        <legend class="form-label fs-6">Combustible</legend>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="fuelGasoline" name="fuelType" value="gasolina" />
+                                            <label class="form-check-label" for="fuelGasoline">Gasolina</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="fuelDiesel" name="fuelType" value="diesel" />
+                                            <label class="form-check-label" for="fuelDiesel">Diésel</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="fuelHybrid" name="fuelType" value="hibrido" />
+                                            <label class="form-check-label" for="fuelHybrid">Híbrido</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="fuelElectric" name="fuelType" value="electrico" />
+                                            <label class="form-check-label" for="fuelElectric">Eléctrico</label>
+                                        </div>
+                                    </fieldset>
+                                    <div class="d-grid gap-2">
+                                        <button class="btn btn-primary" type="submit">Aplicar filtros</button>
+                                        <a class="btn btn-outline-secondary" href="catalog.html">Limpiar filtros</a>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="card h-100 shadow border-0">
-                                <img class="card-img-top" src="https://dummyimage.com/600x400/343a40/6c757d&text=Toyota+C-HR" alt="Toyota C-HR" />
-                                <div class="card-body p-4">
-                                    <div class="badge bg-primary bg-gradient rounded-pill mb-2">SUV</div>
-                                    <a class="text-decoration-none link-dark stretched-link" href="portfolio-item.html"><h2 class="h5 card-title fw-bolder mb-1">Toyota C-HR</h2></a>
-                                    <p class="card-text text-muted mb-0">2020 · Híbrido</p>
-                                </div>
-                                <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
-                                    <div class="d-flex justify-content-between align-items-end">
-                                        <div>
-                                            <div class="small text-muted">Desde</div>
-                                            <div class="h5 fw-bolder mb-0">19.990 €</div>
+                            </form>
+                        </aside>
+                        <div class="col-lg-9">
+                            <!-- Listado de vehículos (1 columna en móvil, 2 en tablet, 3 en pantallas grandes)-->
+                            <div class="row g-4 row-cols-1 row-cols-md-2 row-cols-xl-3">
+                                <!-- Tarjeta de vehículo: toda la tarjeta enlaza a la ficha gracias a stretched-link-->
+                                <div class="col">
+                                    <div class="card h-100 shadow border-0">
+                                        <img class="card-img-top" src="https://dummyimage.com/600x400/343a40/6c757d&text=Volkswagen+Golf" alt="Volkswagen Golf" />
+                                        <div class="card-body p-4">
+                                            <div class="badge bg-primary bg-gradient rounded-pill mb-2">Compacto</div>
+                                            <a class="text-decoration-none link-dark stretched-link" href="portfolio-item.html"><h2 class="h5 card-title fw-bolder mb-1">Volkswagen Golf</h2></a>
+                                            <p class="card-text text-muted mb-0">2019 · Gasolina</p>
                                         </div>
-                                        <div class="small text-muted">2 ofertas</div>
+                                        <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
+                                            <div class="d-flex justify-content-between align-items-end">
+                                                <div>
+                                                    <div class="small text-muted">Desde</div>
+                                                    <div class="h5 fw-bolder mb-0">15.400 €</div>
+                                                </div>
+                                                <div class="small text-muted">3 ofertas</div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="card h-100 shadow border-0">
-                                <img class="card-img-top" src="https://dummyimage.com/600x400/343a40/6c757d&text=BMW+Serie+3" alt="BMW Serie 3" />
-                                <div class="card-body p-4">
-                                    <div class="badge bg-primary bg-gradient rounded-pill mb-2">Berlina</div>
-                                    <a class="text-decoration-none link-dark stretched-link" href="portfolio-item.html"><h2 class="h5 card-title fw-bolder mb-1">BMW Serie 3</h2></a>
-                                    <p class="card-text text-muted mb-0">2018 · Diésel</p>
-                                </div>
-                                <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
-                                    <div class="d-flex justify-content-between align-items-end">
-                                        <div>
-                                            <div class="small text-muted">Desde</div>
-                                            <div class="h5 fw-bolder mb-0">18.750 €</div>
+                                <div class="col">
+                                    <div class="card h-100 shadow border-0">
+                                        <img class="card-img-top" src="https://dummyimage.com/600x400/343a40/6c757d&text=Toyota+C-HR" alt="Toyota C-HR" />
+                                        <div class="card-body p-4">
+                                            <div class="badge bg-primary bg-gradient rounded-pill mb-2">SUV</div>
+                                            <a class="text-decoration-none link-dark stretched-link" href="portfolio-item.html"><h2 class="h5 card-title fw-bolder mb-1">Toyota C-HR</h2></a>
+                                            <p class="card-text text-muted mb-0">2020 · Híbrido</p>
                                         </div>
-                                        <div class="small text-muted">4 ofertas</div>
+                                        <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
+                                            <div class="d-flex justify-content-between align-items-end">
+                                                <div>
+                                                    <div class="small text-muted">Desde</div>
+                                                    <div class="h5 fw-bolder mb-0">19.990 €</div>
+                                                </div>
+                                                <div class="small text-muted">2 ofertas</div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="card h-100 shadow border-0">
-                                <img class="card-img-top" src="https://dummyimage.com/600x400/343a40/6c757d&text=Audi+A5" alt="Audi A5" />
-                                <div class="card-body p-4">
-                                    <div class="badge bg-primary bg-gradient rounded-pill mb-2">Coupé</div>
-                                    <a class="text-decoration-none link-dark stretched-link" href="portfolio-item.html"><h2 class="h5 card-title fw-bolder mb-1">Audi A5</h2></a>
-                                    <p class="card-text text-muted mb-0">2017 · Gasolina</p>
-                                </div>
-                                <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
-                                    <div class="d-flex justify-content-between align-items-end">
-                                        <div>
-                                            <div class="small text-muted">Desde</div>
-                                            <div class="h5 fw-bolder mb-0">22.900 €</div>
+                                <div class="col">
+                                    <div class="card h-100 shadow border-0">
+                                        <img class="card-img-top" src="https://dummyimage.com/600x400/343a40/6c757d&text=BMW+Serie+3" alt="BMW Serie 3" />
+                                        <div class="card-body p-4">
+                                            <div class="badge bg-primary bg-gradient rounded-pill mb-2">Berlina</div>
+                                            <a class="text-decoration-none link-dark stretched-link" href="portfolio-item.html"><h2 class="h5 card-title fw-bolder mb-1">BMW Serie 3</h2></a>
+                                            <p class="card-text text-muted mb-0">2018 · Diésel</p>
                                         </div>
-                                        <div class="small text-muted">2 ofertas</div>
+                                        <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
+                                            <div class="d-flex justify-content-between align-items-end">
+                                                <div>
+                                                    <div class="small text-muted">Desde</div>
+                                                    <div class="h5 fw-bolder mb-0">18.750 €</div>
+                                                </div>
+                                                <div class="small text-muted">4 ofertas</div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="card h-100 shadow border-0">
-                                <img class="card-img-top" src="https://dummyimage.com/600x400/343a40/6c757d&text=Peugeot+3008" alt="Peugeot 3008" />
-                                <div class="card-body p-4">
-                                    <div class="badge bg-primary bg-gradient rounded-pill mb-2">SUV</div>
-                                    <a class="text-decoration-none link-dark stretched-link" href="portfolio-item.html"><h2 class="h5 card-title fw-bolder mb-1">Peugeot 3008</h2></a>
-                                    <p class="card-text text-muted mb-0">2021 · Diésel</p>
-                                </div>
-                                <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
-                                    <div class="d-flex justify-content-between align-items-end">
-                                        <div>
-                                            <div class="small text-muted">Desde</div>
-                                            <div class="h5 fw-bolder mb-0">21.300 €</div>
+                                <div class="col">
+                                    <div class="card h-100 shadow border-0">
+                                        <img class="card-img-top" src="https://dummyimage.com/600x400/343a40/6c757d&text=Audi+A5" alt="Audi A5" />
+                                        <div class="card-body p-4">
+                                            <div class="badge bg-primary bg-gradient rounded-pill mb-2">Coupé</div>
+                                            <a class="text-decoration-none link-dark stretched-link" href="portfolio-item.html"><h2 class="h5 card-title fw-bolder mb-1">Audi A5</h2></a>
+                                            <p class="card-text text-muted mb-0">2017 · Gasolina</p>
                                         </div>
-                                        <div class="small text-muted">3 ofertas</div>
+                                        <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
+                                            <div class="d-flex justify-content-between align-items-end">
+                                                <div>
+                                                    <div class="small text-muted">Desde</div>
+                                                    <div class="h5 fw-bolder mb-0">22.900 €</div>
+                                                </div>
+                                                <div class="small text-muted">2 ofertas</div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="card h-100 shadow border-0">
-                                <img class="card-img-top" src="https://dummyimage.com/600x400/343a40/6c757d&text=Tesla+Model+3" alt="Tesla Model 3" />
-                                <div class="card-body p-4">
-                                    <div class="badge bg-primary bg-gradient rounded-pill mb-2">Berlina</div>
-                                    <a class="text-decoration-none link-dark stretched-link" href="portfolio-item.html"><h2 class="h5 card-title fw-bolder mb-1">Tesla Model 3</h2></a>
-                                    <p class="card-text text-muted mb-0">2021 · Eléctrico</p>
-                                </div>
-                                <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
-                                    <div class="d-flex justify-content-between align-items-end">
-                                        <div>
-                                            <div class="small text-muted">Desde</div>
-                                            <div class="h5 fw-bolder mb-0">27.500 €</div>
+                                <div class="col">
+                                    <div class="card h-100 shadow border-0">
+                                        <img class="card-img-top" src="https://dummyimage.com/600x400/343a40/6c757d&text=Peugeot+3008" alt="Peugeot 3008" />
+                                        <div class="card-body p-4">
+                                            <div class="badge bg-primary bg-gradient rounded-pill mb-2">SUV</div>
+                                            <a class="text-decoration-none link-dark stretched-link" href="portfolio-item.html"><h2 class="h5 card-title fw-bolder mb-1">Peugeot 3008</h2></a>
+                                            <p class="card-text text-muted mb-0">2021 · Diésel</p>
                                         </div>
-                                        <div class="small text-muted">5 ofertas</div>
+                                        <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
+                                            <div class="d-flex justify-content-between align-items-end">
+                                                <div>
+                                                    <div class="small text-muted">Desde</div>
+                                                    <div class="h5 fw-bolder mb-0">21.300 €</div>
+                                                </div>
+                                                <div class="small text-muted">3 ofertas</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="card h-100 shadow border-0">
+                                        <img class="card-img-top" src="https://dummyimage.com/600x400/343a40/6c757d&text=Tesla+Model+3" alt="Tesla Model 3" />
+                                        <div class="card-body p-4">
+                                            <div class="badge bg-primary bg-gradient rounded-pill mb-2">Berlina</div>
+                                            <a class="text-decoration-none link-dark stretched-link" href="portfolio-item.html"><h2 class="h5 card-title fw-bolder mb-1">Tesla Model 3</h2></a>
+                                            <p class="card-text text-muted mb-0">2021 · Eléctrico</p>
+                                        </div>
+                                        <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
+                                            <div class="d-flex justify-content-between align-items-end">
+                                                <div>
+                                                    <div class="small text-muted">Desde</div>
+                                                    <div class="h5 fw-bolder mb-0">27.500 €</div>
+                                                </div>
+                                                <div class="small text-muted">5 ofertas</div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
