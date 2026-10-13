@@ -88,11 +88,13 @@
                                         <label for="bodyType">Tipo de Carrocería</label>
                                         <div class="invalid-feedback" data-sb-feedback="bodyType:required">El tipo de carrocería es requerido.</div>
                                     </div>
-                                    <!-- Lowest price among its offers-->
-                                    <div class="form-floating mb-3 position-relative">
-                                        <input class="form-control pe-5" id="lowestPrice" type="number" placeholder="Ej: 20000" data-sb-validations="required"/>
-                                        <label for="lowestPrice">Precio más Bajo</label>
-                                        <span class="position-absolute top-50 end-0 translate-middle-y pe-3 text-muted fw-bold">€</span>
+                                   <!-- Lowest price among its offers -->
+                                    <div class="input-group has-validation mb-3">
+                                        <div class="form-floating flex-grow-1">
+                                             <input class="form-control" id="lowestPrice" type="number" placeholder="Ej: 20000" data-sb-validations="required" />
+                                             <label for="lowestPrice">Precio más Bajo</label>
+                                        </div>
+                                        <span class="input-group-text">€</span>
                                         <div class="invalid-feedback" data-sb-feedback="lowestPrice:required">El precio es requerido.</div>
                                     </div>
                                     <!--Image or images of the vehicle-->
