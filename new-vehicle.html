@@ -1,29 +1,29 @@
 <!DOCTYPE html>
 <html lang="es">
     <head>
-        <meta charset="utf-8" /> <!--Caracteres especiales-->
+        <meta charset="utf-8" /> <!--Special characters-->
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" /> <!--Responsive-->
-        <meta name="description" content="Panel de administración de IJAM Motors para dar de alta nuevos vehículos en el catálogo de stock." /> <!--Descripción de la página-->
-        <meta name="author" content="Alejandro" /> <!--Autor--> 
+        <meta name="description" content="Panel de administración de IJAM Motors para dar de alta nuevos vehículos en el catálogo de stock." /> <!--Page description-->
+        <meta name="author" content="Alejandro" /> <!--Author--> 
 
-        <title>IJAM Motors</title> <!--Título de la pestalla--> 
+        <title>IJAM Motors</title> <!--Tab title--> 
 
-        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" /> <!--Logo Pestaña-->
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" /> <!--Tab logo-->
         
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" /> <!-- Bootstrap icons-->
         <link href="css/styles.css" rel="stylesheet" /> <!-- Core theme CSS (includes Bootstrap)-->
     </head>
 
-    <body class="d-flex flex-column">  <!--Para que se mantenga el footer al final y la página se vea ordenada-->
-        <main class="flex-shrink-0">  <!--Para que la página no se desplace-->
+    <body class="d-flex flex-column">  <!--So that the footer stays at the end and the page looks organized-->
+        <main class="flex-shrink-0">  <!--So that the page does not shift-->
             
             <!-- Navigation--> 
-            <nav class="navbar navbar-expand-lg navbar-dark bg-dark"> <!--Navbar y colores-->
-                <div class="container px-5"> <!--Centra el contenido de la navbar-->
-                    <a class="navbar-brand" href="index.html">IJAM Motors</a> <!--Marca de la navbar y te redirije al index si lo pulsas-->
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button> <!--Botón de toggling para dispositivos móviles-->
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent"> <!--Dispositivo móviles-->
-                        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">  <!--Lista de elementos de la navbar-->
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark"> <!--Navbar and colors-->
+                <div class="container px-5"> <!--Centers the navbar content-->
+                    <a class="navbar-brand" href="index.html">IJAM Motors</a> <!--Navbar brand and it redirects you to the index if you click it-->
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button> <!--Toggling button for mobile devices-->
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent"> <!--Mobile devices-->
+                        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">  <!--List of navbar items-->
                             <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
                             <li class="nav-item"><a class="nav-link" href="new-vehicle.html">Añadir vehículo</a></li>
                         </ul>
@@ -32,10 +32,10 @@
             </nav>
             
             <!-- Page content-->
-            <section class="py-5"> <!--Sección de la página-->
-               <div class = "container py-5"> <!--Centra la página-->
+            <section class="py-5"> <!--Section of the page-->
+               <div class = "container py-5"> <!--Centers the page-->
 
-                    <!--Formulario-->
+                    <!--Form-->
                     <div class="bg-light rounded-3 py-5 px-4 px-md-5 mb-5">
                         <div class="text-center mb-5">
                             <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-car-front-fill"></i></div>
@@ -45,53 +45,53 @@
                         
                         <div class="row gx-5 justify-content-center">
                             <div class="col-lg-8 col-xl-6">
-                                    <!-- Marca del Vehículo-->
+                                    <!-- Vehicle Brand-->
                                     <div class="form-floating mb-3">
                                         <input class="form-control" id="brand" type="text" placeholder="Ej: Audi, BMW, Toyota..." data-sb-validations="required" />
                                         <label for="brand">Marca del vehículo</label>
                                         <div class="invalid-feedback" data-sb-feedback="brand:required">La marca es requerida.</div>
                                     </div>
-                                    <!-- Modelo del Vehículo-->
+                                    <!-- Vehicle Model-->
                                     <div class="form-floating mb-3">
                                         <input class="form-control" id="model" type="text" placeholder="Ej: A4, X3, Camry..." data-sb-validations="required" />
                                         <label for="model">Modelo del Vehículo</label>
                                         <div class="invalid-feedback" data-sb-feedback="model:required">El modelo es requerido.</div>
                                     </div>
-                                    <!-- Año del Modelo-->
+                                    <!-- Model Year-->
                                     <div class="form-floating mb-3">
                                         <input class="form-control" id="year" type="number" placeholder="Ej: 2020, 2021, 2022..." data-sb-validations="required" />
                                         <label for="year">Año del Modelo</label>
                                         <div class="invalid-feedback" data-sb-feedback="year:required">El año es requerido.</div>
                                     </div>
-                                    <!-- Tipo de Combustible-->
+                                    <!-- Fuel Type-->
                                     <div class="form-floating mb-3">
                                         <input class="form-control" id="fuelType" type="text" placeholder="Ej: Gasolina, Diésel, Eléctrico..." data-sb-validations="required" />
                                         <label for="fuelType">Tipo de Combustible</label>
                                         <div class="invalid-feedback" data-sb-feedback="fuelType:required">El tipo de combustible es requerido.</div>
                                     </div>
-                                    <!-- Tipo de carrocería-->
+                                    <!-- Body type-->
                                     <div class="form-floating mb-3">
                                         <input class="form-control" id="bodyType" type="text" placeholder="Ej: Sedán, SUV, Camioneta..." data-sb-validations="required" />
                                         <label for="bodyType">Tipo de Carrocería</label>
                                         <div class="invalid-feedback" data-sb-feedback="bodyType:required">El tipo de carrocería es requerido.</div>
                                     </div>
-                                    <!-- Precio más bajo entre sus ofertas-->
+                                    <!-- Lowest price among its offers-->
                                     <div class="form-floating mb-3 position-relative">
                                         <input class="form-control pe-5" id="lowestPrice" type="number" placeholder="Ej: 20000" data-sb-validations="required"/>
                                         <label for="lowestPrice">Precio más Bajo</label>
                                         <span class="position-absolute top-50 end-0 translate-middle-y pe-3 text-muted fw-bold">€</span>
                                         <div class="invalid-feedback" data-sb-feedback="lowestPrice:required">El precio es requerido.</div>
                                     </div>
-                                    <!--Imagen o imágenes del vehículo-->
+                                    <!--Image or images of the vehicle-->
                                    <div class="mb-3 text-start">
                                         <label for="vehicleImages" class="form-label fw-bold">Imágenes del Vehículo</label>
                                         <input class="form-control" id="vehicleImages" type="file" accept="image/*" multiple dir="rtl"/>
                                     </div>
 
                                     
-                                    <!-- Botón de Guardar del formulario-->
+                                    <!-- Save button of the form-->
                                      <div class = "d-grid"><button class="btn btn-primary btn-lg" id="submitButton" type="submit">Guardar</button></div>
-                                    <!-- Botón de Cancelar el formulario-->
+                                    <!-- Cancel button of the form-->
                                      <div class = "d-grid"><a href="index.html" class="btn btn-danger btn-lg">Cancelar</a></div>
                             </div>
                         </div>
