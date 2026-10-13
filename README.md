@@ -9,9 +9,11 @@
 | Nombre | Correo URJC | GitHub |
 |---|---|---|
 | Julián García Panadero | j.garciap.2024@alumnos.urjc.es | julianjgp23 |
-| Alejandro Sánchez Aparisi | a.sancheza.2024@alumnos.urjc.es | aleskyy7 |
+| Alejandro Sánchez Aparisi* | a.sancheza.2024@alumnos.urjc.es | aleskyy7 |
 | Iñigo Álvaro Sabaté | i.alvaro.2024@alumnos.urjc.es | IniAlv22 |
 | Izan Calle Feijoo | i.calle.2024@alumnos.urjc.es | IzanCalle |
+
+*\*Commits de Alejandro registrados también como `Alejandro` (`tu-correo@example.com`).*
 
 
 # Funcionalidad
