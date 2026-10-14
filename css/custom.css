@@ -1,0 +1,53 @@
+/* Custom IJAM Motors styles.
+
+/* Brand variables */
+:root {
+    --ijam-dark: #1b1d21;
+    --ijam-dark-hover: #34373d;
+    --ijam-accent: #d62828;
+
+    /* Bootstrap overrides: primary and dark use the brand dark color */
+    --bs-primary: #1b1d21;
+    --bs-primary-rgb: 27, 29, 33;
+    --bs-dark-rgb: 27, 29, 33;
+    --bs-link-color: #1b1d21;
+    --bs-link-hover-color: #d62828;
+}
+
+/* Buttons: same radius and weight for every button, primary buttons use the brand dark color */
+.btn,
+.btn-sm,
+.btn-lg {
+    --bs-btn-border-radius: 0.5rem;
+    --bs-btn-font-weight: 600;
+}
+
+.btn-primary {
+    --bs-btn-bg: var(--ijam-dark);
+    --bs-btn-border-color: var(--ijam-dark);
+    --bs-btn-hover-bg: var(--ijam-dark-hover);
+    --bs-btn-hover-border-color: var(--ijam-dark-hover);
+    --bs-btn-active-bg: var(--ijam-dark-hover);
+    --bs-btn-active-border-color: var(--ijam-dark-hover);
+    --bs-btn-disabled-bg: var(--ijam-dark);
+    --bs-btn-disabled-border-color: var(--ijam-dark);
+}
+
+.btn-outline-primary {
+    --bs-btn-color: var(--ijam-dark);
+    --bs-btn-border-color: var(--ijam-dark);
+    --bs-btn-hover-bg: var(--ijam-dark);
+    --bs-btn-hover-border-color: var(--ijam-dark);
+    --bs-btn-active-bg: var(--ijam-dark);
+    --bs-btn-active-border-color: var(--ijam-dark);
+}
+
+/* Navbar: bold brand underlined with the accent color and active link highlighted */
+.navbar-brand {
+    font-weight: 700;
+    border-bottom: 3px solid var(--ijam-accent);
+}
+
+.navbar-dark {
+    --bs-navbar-active-color: var(--ijam-accent);
+}
