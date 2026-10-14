@@ -1,4 +1,4 @@
-/* Custom IJAM Motors styles.
+/* Custom IJAM Motors styles */
 
 /* Brand variables */
 :root {
@@ -42,7 +42,7 @@
     --bs-btn-active-border-color: var(--ijam-dark);
 }
 
-/* Navbar: bold brand underlined with the accent color and active link highlighted */
+/* Navbar */
 .navbar-brand {
     font-weight: 700;
     border-bottom: 3px solid var(--ijam-accent);
@@ -68,4 +68,27 @@
 .form-check-input:checked {
     background-color: var(--ijam-dark);
     border-color: var(--ijam-dark);
+}
+
+/* Vehicle cards (main page) */
+.vehicle-card,
+.offer-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.vehicle-card:hover,
+.offer-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 1rem 2rem rgba(27, 29, 33, 0.15);
+}
+
+/* Uploaded images can have any size, so they are cropped to the same ratio to keep the grid aligned */
+.vehicle-card .card-img-top {
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+}
+
+/* Prices */
+.price {
+    color: var(--ijam-accent);
 }
