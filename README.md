@@ -15,7 +15,6 @@
 
 *\*Commits de Alejandro registrados también como `Alejandro` (`tu-correo@example.com`).*
 
-
 # Funcionalidad
 
 ## Entidades
