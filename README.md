@@ -156,23 +156,23 @@ Se ha encargado de la página de nuevo elemento. Maquetó el formulario para cre
 
 **Tareas realizadas**
 
-Incorporó al repositorio la plantilla *Modern Business*, sobre la que se ha construido el sitio, y la limpió eliminando las páginas y secciones que no se iban a usar. De esa limpieza procede la estructura común de las páginas. Maquetó la primera versión de la página de inicio, que después se sustituyó por el catálogo como página principal. También actualizó la descripción del proyecto en el README.
+Incorporó al repositorio la plantilla *Modern Business*, sobre la que se ha construido el sitio, y la limpió eliminando las páginas y secciones que no se iban a usar. De esa limpieza procede la estructura común de las páginas. Unificó el estilo de los formularios de creación de vehículo y de oferta (etiqueta encima de cada campo, mismo contenedor y botones alineados a la derecha) y ajustó sus campos para que coincidieran con los atributos de las entidades definidas en el README. Creó la hoja de estilos propia [`css/custom.css`](css/custom.css), que da a la web su identidad visual sin modificar la plantilla: colores de marca en la barra de navegación, el pie y los botones, mismo redondeo para todos los botones, estilo de las categorías y de los campos de los formularios, efecto al pasar el ratón por las tarjetas de vehículos y ofertas, imágenes del catálogo con la misma proporción y precios destacados. También integró la documentación de la Práctica 1 en el README (Antes era un archivo a parte).
 
 **Commits más significativos**
 
-1. [Incorporación de la plantilla *Modern Business*](https://github.com/CodeURJC-FW-2026-27/webapp04/commit/22695e920a9d592d51379f96d7ed957afd165e3e)
-2. [Limpieza de la plantilla (primera parte)](https://github.com/CodeURJC-FW-2026-27/webapp04/commit/1bec154070bbf9aae5db53519bb99cd3b9116e1b)
-3. [Limpieza de la plantilla (segunda parte)](https://github.com/CodeURJC-FW-2026-27/webapp04/commit/043efb0ae6ba8928285675eaaeab9ef8d415fa9b)
-4. [Primera versión de la página de inicio](https://github.com/CodeURJC-FW-2026-27/webapp04/commit/8d53e72e943ecc347f75d62310d41403dfa2b371)
-5. [Actualización del README con la descripción del proyecto](https://github.com/CodeURJC-FW-2026-27/webapp04/commit/f0b7e875692b7a2411d068e8f561cf3a665ecea3)
+1. [Hoja de estilos propia con los colores de IJAM Motors](https://github.com/CodeURJC-FW-2026-27/webapp04/commit/c9f39454d08a6569db39161938eee110c3cc2342)
+2. [Unificación del estilo de los formularios y campos alineados con las entidades](https://github.com/CodeURJC-FW-2026-27/webapp04/commit/2f6e5a51bb5511dc4592f8e0f671e3ecbb477dfc)
+3. [Estilo de las tarjetas de vehículos y ofertas](https://github.com/CodeURJC-FW-2026-27/webapp04/commit/c1feb14caf5b4892a29cfb94e2c187a97ab84eec)
+4. [Estilo de las categorías y de los campos de los formularios](https://github.com/CodeURJC-FW-2026-27/webapp04/commit/9766b123a15502a7cead0da44afd56d659414038)
+5. [Incorporación de la plantilla *Modern Business*](https://github.com/CodeURJC-FW-2026-27/webapp04/commit/22695e920a9d592d51379f96d7ed957afd165e3e)
 
 **Ficheros con mayor participación**
 
-1. [`css/styles.css`](css/styles.css)
-2. [`index.html`](index.html)
-3. [`new-vehicle.html`](new-vehicle.html)
-4. [`README.md`](README.md)
-5. [`assets/favicon.ico`](assets/favicon.ico)
+1. [`css/custom.css`](css/custom.css)
+2. [`new-vehicle.html`](new-vehicle.html)
+3. [`vehicle.html`](vehicle.html)
+4. [`index.html`](index.html)
+5. [`README.md`](README.md)
 
 ### Izan Calle Feijoo ([IzanCalle](https://github.com/IzanCalle))
 
