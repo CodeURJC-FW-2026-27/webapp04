@@ -1,0 +1,94 @@
+/* Custom IJAM Motors styles */
+
+/* Brand variables */
+:root {
+    --ijam-dark: #1b1d21;
+    --ijam-dark-hover: #34373d;
+    --ijam-accent: #d62828;
+
+    /* Bootstrap overrides: primary and dark use the brand dark color */
+    --bs-primary: #1b1d21;
+    --bs-primary-rgb: 27, 29, 33;
+    --bs-dark-rgb: 27, 29, 33;
+    --bs-link-color: #1b1d21;
+    --bs-link-hover-color: #d62828;
+}
+
+/* Buttons: same radius and weight for every button, primary buttons use the brand dark color */
+.btn,
+.btn-sm,
+.btn-lg {
+    --bs-btn-border-radius: 0.5rem;
+    --bs-btn-font-weight: 600;
+}
+
+.btn-primary {
+    --bs-btn-bg: var(--ijam-dark);
+    --bs-btn-border-color: var(--ijam-dark);
+    --bs-btn-hover-bg: var(--ijam-dark-hover);
+    --bs-btn-hover-border-color: var(--ijam-dark-hover);
+    --bs-btn-active-bg: var(--ijam-dark-hover);
+    --bs-btn-active-border-color: var(--ijam-dark-hover);
+    --bs-btn-disabled-bg: var(--ijam-dark);
+    --bs-btn-disabled-border-color: var(--ijam-dark);
+}
+
+.btn-outline-primary {
+    --bs-btn-color: var(--ijam-dark);
+    --bs-btn-border-color: var(--ijam-dark);
+    --bs-btn-hover-bg: var(--ijam-dark);
+    --bs-btn-hover-border-color: var(--ijam-dark);
+    --bs-btn-active-bg: var(--ijam-dark);
+    --bs-btn-active-border-color: var(--ijam-dark);
+}
+
+/* Navbar */
+.navbar-brand {
+    font-weight: 700;
+    border-bottom: 3px solid var(--ijam-accent);
+}
+
+.navbar-dark {
+    --bs-navbar-active-color: var(--ijam-accent);
+}
+
+/* Category pills: active category uses the accent color */
+.nav-pills {
+    --bs-nav-pills-link-active-bg: var(--ijam-accent);
+}
+
+/* Form controls */
+.form-control:focus,
+.form-select:focus,
+.form-check-input:focus {
+    border-color: var(--ijam-dark-hover);
+    box-shadow: 0 0 0 0.25rem rgba(27, 29, 33, 0.15);
+}
+
+.form-check-input:checked {
+    background-color: var(--ijam-dark);
+    border-color: var(--ijam-dark);
+}
+
+/* Vehicle cards (main page) */
+.vehicle-card,
+.offer-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.vehicle-card:hover,
+.offer-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 1rem 2rem rgba(27, 29, 33, 0.15);
+}
+
+/* Uploaded images can have any size, so they are cropped to the same ratio to keep the grid aligned */
+.vehicle-card .card-img-top {
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+}
+
+/* Prices */
+.price {
+    color: var(--ijam-accent);
+}
