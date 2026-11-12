@@ -7,22 +7,22 @@
         <meta name="author" content="IJAM Motors" />
         <title>Catálogo - IJAM Motors</title>
         <!-- Favicon-->
-        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" /> <!-- Bootstrap icons-->
-        <link href="css/styles.css" rel="stylesheet" /> <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="css/custom.css" rel="stylesheet" /> <!-- Custom IJAM Motors styles-->
+        <link href="/css/styles.css" rel="stylesheet" /> <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="/css/custom.css" rel="stylesheet" /> <!-- Custom IJAM Motors styles-->
     </head>
     <body class="d-flex flex-column h-100">
         <main class="flex-shrink-0">
             <!-- Navigation-->
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark"> <!--Navbar and its colors-->
                 <div class="container px-5"> <!--Centers the navbar content-->
-                    <a class="navbar-brand" href="index.html">IJAM Motors</a> <!--Navbar brand, links to the home page when clicked-->
+                    <a class="navbar-brand" href="/">IJAM Motors</a> <!--Navbar brand, links to the home page when clicked-->
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button> <!--Toggle button for mobile devices-->
                     <div class="collapse navbar-collapse" id="navbarSupportedContent"> <!--Collapsible menu on mobile devices-->
                         <ul class="navbar-nav ms-auto mb-2 mb-lg-0"> <!--List of navbar items-->
-                            <li class="nav-item"><a class="nav-link active" aria-current="page" href="index.html">Inicio</a></li>
-                            <li class="nav-item"><a class="nav-link" href="new-vehicle.html">Añadir vehículo</a></li>
+                            <li class="nav-item"><a class="nav-link active" aria-current="page" href="/">Inicio</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/vehicle/new">Añadir vehículo</a></li>
                         </ul>
                     </div>
                 </div>
@@ -36,7 +36,7 @@
                         <p class="lead fw-normal text-muted mb-0">Vehículos de segunda mano recopilados de distintas páginas de compraventa. Compara sus ofertas y encuentra el mejor precio.</p>
                     </div>
                     <!-- Search by brand or model (sends the text to this same page in the "search" parameter)-->
-                    <form class="row justify-content-center mb-4" action="index.html" method="get" role="search">
+                    <form class="row justify-content-center mb-4" action="/" method="get" role="search">
                         <div class="col-lg-8 col-xl-6">
                             <div class="input-group input-group-lg">
                                 <span class="input-group-text"><i class="bi bi-search" aria-hidden="true"></i></span>
@@ -48,18 +48,18 @@
                     <!-- Body type categories (each one opens this same page with the "bodyType" parameter)-->
                     <nav class="mb-5" aria-label="Categorías por tipo de carrocería">
                         <ul class="nav nav-pills justify-content-center gap-2">
-                            <li class="nav-item"><a class="nav-link active" aria-current="page" href="index.html">Todos</a></li>
-                            <li class="nav-item"><a class="nav-link" href="index.html?bodyType=suv">SUV</a></li>
-                            <li class="nav-item"><a class="nav-link" href="index.html?bodyType=sedan">Berlina</a></li>
-                            <li class="nav-item"><a class="nav-link" href="index.html?bodyType=compact">Compacto</a></li>
-                            <li class="nav-item"><a class="nav-link" href="index.html?bodyType=coupe">Coupé</a></li>
+                            <li class="nav-item"><a class="nav-link active" aria-current="page" href="/">Todos</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/?bodyType=suv">SUV</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/?bodyType=sedan">Berlina</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/?bodyType=compact">Compacto</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/?bodyType=coupe">Coupé</a></li>
                         </ul>
                     </nav>
                     <!-- Main layout: filters sidebar on the left, vehicle grid on the right-->
                     <div class="row gx-5">
                         <!-- Filters sidebar (placed above the listing on small screens)-->
                         <aside class="col-lg-3 mb-5 mb-lg-0">
-                            <form class="card shadow border-0" action="index.html" method="get">
+                            <form class="card shadow border-0" action="/" method="get">
                                 <div class="card-body p-4">
                                     <h2 class="h5 fw-bolder mb-4"><i class="bi bi-funnel me-2" aria-hidden="true"></i>Filtros</h2>
                                     <!-- Filters on vehicle attributes-->
@@ -154,7 +154,7 @@
                                     <!-- Filter buttons: apply the filters or reset them-->
                                     <div class="d-grid gap-2">
                                         <button class="btn btn-primary" type="submit">Aplicar filtros</button>
-                                        <a class="btn btn-outline-secondary" href="index.html">Limpiar filtros</a>
+                                        <a class="btn btn-outline-secondary" href="/">Limpiar filtros</a>
                                     </div>
                                 </div>
                             </form>
@@ -163,7 +163,7 @@
                         <div class="col-lg-9">
                             <!-- Button to create a new vehicle, right-aligned above the grid-->
                             <div class="d-flex justify-content-end mb-4">
-                                <a class="btn btn-primary" href="new-vehicle.html"><i class="bi bi-plus-lg me-2" aria-hidden="true"></i>Crear nuevo vehículo</a>
+                                <a class="btn btn-primary" href="/vehicle/new"><i class="bi bi-plus-lg me-2" aria-hidden="true"></i>Crear nuevo vehículo</a>
                             </div>
                             <!-- Vehicle grid (1 column on mobile, 2 on tablets, 3 on large screens)-->
                             <div class="row g-4 row-cols-1 row-cols-md-2 row-cols-xl-3">
@@ -172,10 +172,10 @@
                                 <!-- Volkswagen Golf card-->
                                 <div class="col">
                                     <div class="card vehicle-card h-100 shadow border-0">
-                                        <img class="card-img-top" src="assets/img/golf.jpg" alt="Volkswagen Golf" />
+                                        <img class="card-img-top" src="/assets/img/golf.jpg" alt="Volkswagen Golf" />
                                         <div class="card-body p-4">
                                             <div class="badge bg-primary bg-gradient rounded-pill mb-2">Compacto</div>
-                                            <a class="text-decoration-none link-dark stretched-link" href="vehicle.html"><h2 class="h5 card-title fw-bolder mb-1">Volkswagen Golf</h2></a>
+                                            <a class="text-decoration-none link-dark stretched-link" href="/vehicle/1"><h2 class="h5 card-title fw-bolder mb-1">Volkswagen Golf</h2></a>
                                             <p class="card-text text-muted mb-0">2019 · Gasolina</p>
                                         </div>
                                         <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
@@ -192,10 +192,10 @@
                                 <!-- Toyota C-HR card-->
                                 <div class="col">
                                     <div class="card vehicle-card h-100 shadow border-0">
-                                        <img class="card-img-top" src="assets/img/toyotac-hr.jpg" alt="Toyota C-HR" />
+                                        <img class="card-img-top" src="/assets/img/toyotac-hr.jpg" alt="Toyota C-HR" />
                                         <div class="card-body p-4">
                                             <div class="badge bg-primary bg-gradient rounded-pill mb-2">SUV</div>
-                                            <a class="text-decoration-none link-dark stretched-link" href="vehicle.html"><h2 class="h5 card-title fw-bolder mb-1">Toyota C-HR</h2></a>
+                                            <a class="text-decoration-none link-dark stretched-link" href="/vehicle/2"><h2 class="h5 card-title fw-bolder mb-1">Toyota C-HR</h2></a>
                                             <p class="card-text text-muted mb-0">2020 · Híbrido</p>
                                         </div>
                                         <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
@@ -212,10 +212,10 @@
                                 <!-- BMW Serie 3 card-->
                                 <div class="col">
                                     <div class="card vehicle-card h-100 shadow border-0">
-                                        <img class="card-img-top" src="assets/img/serie3.jpg" alt="BMW Serie 3" />
+                                        <img class="card-img-top" src="/assets/img/serie3.jpg" alt="BMW Serie 3" />
                                         <div class="card-body p-4">
                                             <div class="badge bg-primary bg-gradient rounded-pill mb-2">Berlina</div>
-                                            <a class="text-decoration-none link-dark stretched-link" href="vehicle.html"><h2 class="h5 card-title fw-bolder mb-1">BMW Serie 3</h2></a>
+                                            <a class="text-decoration-none link-dark stretched-link" href="/vehicle/3"><h2 class="h5 card-title fw-bolder mb-1">BMW Serie 3</h2></a>
                                             <p class="card-text text-muted mb-0">2018 · Diésel</p>
                                         </div>
                                         <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
@@ -232,10 +232,10 @@
                                 <!-- Audi A3 card-->
                                 <div class="col">
                                     <div class="card vehicle-card h-100 shadow border-0">
-                                        <img class="card-img-top" src="assets/img/audia3.jpg" alt="Audi A3" />
+                                        <img class="card-img-top" src="/assets/img/audia3.jpg" alt="Audi A3" />
                                         <div class="card-body p-4">
                                             <div class="badge bg-primary bg-gradient rounded-pill mb-2">Compacto</div>
-                                            <a class="text-decoration-none link-dark stretched-link" href="vehicle.html"><h2 class="h5 card-title fw-bolder mb-1">Audi A3</h2></a>
+                                            <a class="text-decoration-none link-dark stretched-link" href="/vehicle/4"><h2 class="h5 card-title fw-bolder mb-1">Audi A3</h2></a>
                                             <p class="card-text text-muted mb-0">2018 · Gasolina</p>
                                         </div>
                                         <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
@@ -252,10 +252,10 @@
                                 <!-- Peugeot 3008 card-->
                                 <div class="col">
                                     <div class="card vehicle-card h-100 shadow border-0">
-                                        <img class="card-img-top" src="assets/img/peugeot3008.jpg" alt="Peugeot 3008" />
+                                        <img class="card-img-top" src="/assets/img/peugeot3008.jpg" alt="Peugeot 3008" />
                                         <div class="card-body p-4">
                                             <div class="badge bg-primary bg-gradient rounded-pill mb-2">SUV</div>
-                                            <a class="text-decoration-none link-dark stretched-link" href="vehicle.html"><h2 class="h5 card-title fw-bolder mb-1">Peugeot 3008</h2></a>
+                                            <a class="text-decoration-none link-dark stretched-link" href="/vehicle/5"><h2 class="h5 card-title fw-bolder mb-1">Peugeot 3008</h2></a>
                                             <p class="card-text text-muted mb-0">2021 · Diésel</p>
                                         </div>
                                         <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
@@ -272,10 +272,10 @@
                                 <!-- Tesla Model 3 card-->
                                 <div class="col">
                                     <div class="card vehicle-card h-100 shadow border-0">
-                                        <img class="card-img-top" src="assets/img/teslamodel3.jpg" alt="Tesla Model 3" />
+                                        <img class="card-img-top" src="/assets/img/teslamodel3.jpg" alt="Tesla Model 3" />
                                         <div class="card-body p-4">
                                             <div class="badge bg-primary bg-gradient rounded-pill mb-2">Berlina</div>
-                                            <a class="text-decoration-none link-dark stretched-link" href="vehicle.html"><h2 class="h5 card-title fw-bolder mb-1">Tesla Model 3</h2></a>
+                                            <a class="text-decoration-none link-dark stretched-link" href="/vehicle/6"><h2 class="h5 card-title fw-bolder mb-1">Tesla Model 3</h2></a>
                                             <p class="card-text text-muted mb-0">2021 · Eléctrico</p>
                                         </div>
                                         <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
@@ -292,10 +292,10 @@
                                 <!-- Seat Ibiza card-->
                                 <div class="col">
                                     <div class="card vehicle-card h-100 shadow border-0">
-                                        <img class="card-img-top" src="assets/img/seatibiza.jpg" alt="Seat Ibiza" />
+                                        <img class="card-img-top" src="/assets/img/seatibiza.jpg" alt="Seat Ibiza" />
                                         <div class="card-body p-4">
                                             <div class="badge bg-primary bg-gradient rounded-pill mb-2">Compacto</div>
-                                            <a class="text-decoration-none link-dark stretched-link" href="vehicle.html"><h2 class="h5 card-title fw-bolder mb-1">Seat Ibiza</h2></a>
+                                            <a class="text-decoration-none link-dark stretched-link" href="/vehicle/7"><h2 class="h5 card-title fw-bolder mb-1">Seat Ibiza</h2></a>
                                             <p class="card-text text-muted mb-0">2019 · Gasolina</p>
                                         </div>
                                         <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
@@ -312,10 +312,10 @@
                                 <!-- Ford Mustang card-->
                                 <div class="col">
                                     <div class="card vehicle-card h-100 shadow border-0">
-                                        <img class="card-img-top" src="assets/img/mustang.jpg" alt="Ford Mustang" />
+                                        <img class="card-img-top" src="/assets/img/mustang.jpg" alt="Ford Mustang" />
                                         <div class="card-body p-4">
                                             <div class="badge bg-primary bg-gradient rounded-pill mb-2">Coupé</div>
-                                            <a class="text-decoration-none link-dark stretched-link" href="vehicle.html"><h2 class="h5 card-title fw-bolder mb-1">Ford Mustang</h2></a>
+                                            <a class="text-decoration-none link-dark stretched-link" href="/vehicle/8"><h2 class="h5 card-title fw-bolder mb-1">Ford Mustang</h2></a>
                                             <p class="card-text text-muted mb-0">2018 · Gasolina</p>
                                         </div>
                                         <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
@@ -332,10 +332,10 @@
                                 <!-- Hyundai Tucson card-->
                                 <div class="col">
                                     <div class="card vehicle-card h-100 shadow border-0">
-                                        <img class="card-img-top" src="assets/img/tucson.jpg" alt="Hyundai Tucson" />
+                                        <img class="card-img-top" src="/assets/img/tucson.jpg" alt="Hyundai Tucson" />
                                         <div class="card-body p-4">
                                             <div class="badge bg-primary bg-gradient rounded-pill mb-2">SUV</div>
-                                            <a class="text-decoration-none link-dark stretched-link" href="vehicle.html"><h2 class="h5 card-title fw-bolder mb-1">Hyundai Tucson</h2></a>
+                                            <a class="text-decoration-none link-dark stretched-link" href="/vehicle/9"><h2 class="h5 card-title fw-bolder mb-1">Hyundai Tucson</h2></a>
                                             <p class="card-text text-muted mb-0">2022 · Híbrido</p>
                                         </div>
                                         <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
