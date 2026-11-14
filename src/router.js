@@ -1,7 +1,8 @@
 import express from 'express';
 import multer from 'multer';
-const upload = multer({ dest: 'public/assets/img/'});
+import {findDuplicateVehicles, addVehicle } from './board.js';
 
+const upload = multer({ dest: 'public/assets/img/'});
 
 const router = express.Router();
 export default router;
@@ -17,7 +18,7 @@ router.get('/vehicle/new', (req, res) => {
     res.render('new-vehicle');
 });
 
-router.post('/vehicle/new', upload.array('image'), (req, res) => {
+router.post('/vehicle/new', upload.array('image'), async (req, res) => {
     const {brand, model, year, lowestPrice, fuelType, bodyType, description} = req.body; //Save the form data to a database
 
     let images = ['/assets/img/golf.jpg']; // Default image if no images are uploaded
@@ -49,8 +50,32 @@ router.post('/vehicle/new', upload.array('image'), (req, res) => {
         errors.push('El precio debe ser mayor que 0'); //The price has to be a number and greater than 0
     }
 
+    if (brand && model) {  
+        const duplicado = await findDuplicateVehicles(brand.trim(), model.trim());  //Check if the vehicles are not duplicate
+        if (duplicado){
+            errors.push('Ya existe este vehículo');  
+        }
+    }
 
-})
+    if (errors > 0){
+        return res.render('new-vehicle', {errors, brand, model, year, lowestPrice, fuelType, bodyType, description}); //If there is an error, then repeat the form
+    }
+
+    const newVehicle = {
+        brand: brand.trim(),
+        model: model.trim(),
+        year: numYear,
+        lowestPrice: numPrice,
+        fuelType,
+        bodyType,
+        description: description.trim(),
+        image: imagePath
+    };
+
+    const result = await addVehicle(newVehicle);
+
+    res.render('views', {id: result.insertedId});
+});
 
 // Vehicle detail page
 router.get('/vehicle/:id', (req, res) => {
