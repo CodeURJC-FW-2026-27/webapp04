@@ -49,16 +49,6 @@ router.post('/vehicle/new', upload.array('image'), (req, res) => {
         errors.push('El precio debe ser mayor que 0'); //The price has to be a number and greater than 0
     }
 
-    
-
-    
-
-
-
-
-
-
-
 
 })
 
