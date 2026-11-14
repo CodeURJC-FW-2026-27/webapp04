@@ -31,8 +31,25 @@ router.post('/vehicle/new', upload.array('image'), (req, res) => {
     }
 
     if (brand && !/^[A-ZÁÉÍÓÚÑ]/.test(brand)) {
-        errors.push('La marca debe comenzar con una letra mayúscula.');
+        errors.push('La marca debe comenzar con una letra mayúscula.'); //The brand must begin with capital letters
     } 
+
+    if (description && (description.length < 10 || description.length > 300)) {
+        errors.push('La descripción debe tener un mínimo de 10 caracteres y un máximo de 300.'); //The description must be between 10-300 chars
+    }
+
+    const numYear = Number(year);
+    const numPrice = Number(lowestPrice);
+
+    if (isNaN(numYear) || numYear < 1900 || numYear > 2026) {
+        errors.push('El año debe ser un número válido entre 1900 y 2026.'); //The year has to be between 1900-2026 and has to be a number
+    }
+
+    if (isNaN(numPrice) || numPrice <= 0) {
+        errors.push('El precio debe ser mayor que 0'); //The price has to be a number and greater than 0
+    }
+
+    
 
     
 
