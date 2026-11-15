@@ -16,6 +16,10 @@ export async function addVehicle(vehicle) {
     return await vehicles.insertOne(vehicle); //Async function to add new vehicle
 }
 
+export async function getVehicles() {
+    return await vehicles.find().toArray(); // Async function to get all the vehicles
+}
+
 export async function countVehicles() {
     return await vehicles.countDocuments(); // Async function to count the stored vehicles
 }

@@ -1,15 +1,32 @@
 import express from 'express';
 import multer from 'multer';
-import {findDuplicateVehicles, addVehicle, getVehicle, UPLOADS_FOLDER } from './board.js';
+import {findDuplicateVehicles, addVehicle, getVehicle, getVehicles, UPLOADS_FOLDER } from './board.js';
 
 const upload = multer({ dest: 'public/assets/img/'});
 
 const router = express.Router();
 export default router;
 
+// Texts shown to the user for the fuel and body type values stored in the database
+const FUEL_LABELS = { gasoline: 'Gasolina', diesel: 'Diésel', hybrid: 'Híbrido', electric: 'Eléctrico' };
+const BODY_LABELS = { suv: 'SUV', sedan: 'Berlina', compact: 'Compacto', coupe: 'Coupé' };
+
+// Adds to a vehicle the formatted texts that the views display
+function toVehicleView(vehicle) {
+    const offersCount = vehicle.offers ? vehicle.offers.length : 0;
+    return {
+        ...vehicle,
+        fuelLabel: FUEL_LABELS[vehicle.fuelType],
+        bodyLabel: BODY_LABELS[vehicle.bodyType],
+        priceText: vehicle.lowestPrice.toLocaleString('es-ES'),
+        offersText: offersCount + (offersCount === 1 ? ' oferta' : ' ofertas')
+    };
+}
+
 // Main page: vehicle catalog
-router.get('/', (req, res) => {
-    res.render('index');
+router.get('/', async (req, res) => {
+    const vehicles = await getVehicles();
+    res.render('index', { vehicles: vehicles.map(toVehicleView) });
 });
 
 // New vehicle form
