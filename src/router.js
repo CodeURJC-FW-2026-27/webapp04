@@ -1,6 +1,6 @@
 import express from 'express';
 import multer from 'multer';
-import { findDuplicateVehicles, addVehicle, getVehicle, getVehicles, countVehicles, deleteVehicle, UPLOADS_FOLDER, PAGE_SIZE } from './board.js';
+import { findDuplicateVehicles, addVehicle, getVehicle, getVehicles, countVehicles, deleteVehicle, addOfferToVehicle, updateOfferInVehicle, deleteOfferFromVehicle, UPLOADS_FOLDER, PAGE_SIZE } from './board.js';
 
 const upload = multer({ dest: 'public/assets/img/'});
 const offerUpload = multer({ dest: UPLOADS_FOLDER });
@@ -279,6 +279,89 @@ router.post('/vehicle/:id/offers/:offerId/delete', async (req, res) => {
         buttonText: 'Volver al detalle del vehículo'
     });
 });
+
+// Show edit form for a specific offer
+router.get('/vehicle/:id/offers/:offerId/edit', async (req, res) => {
+    const vehicle = await getVehicle(req.params.id);
+    if (!vehicle) {
+        return res.status(404).render('error', {
+            errorMessage: 'El vehículo solicitado no existe.',
+            redirectUrl: '/',
+            buttonText: 'Volver al catálogo'
+        });
+    }
+
+    const offer = (vehicle.offers || []).find(o => o._id.toString() === req.params.offerId);
+    if (!offer) {
+        return res.status(404).render('error', {
+            errorMessage: 'La oferta que intentas editar no existe.',
+            redirectUrl: `/vehicle/${req.params.id}`,
+            buttonText: 'Volver al vehículo'
+        });
+    }
+
+    res.render('edit-offer', {
+        vehicleId: vehicle._id,
+        vehicleName: `${vehicle.brand} ${vehicle.model}`,
+        offer,
+        isCochesnet: offer.site === 'cochesnet',
+        isWallapop: offer.site === 'wallapop',
+        isMilanuncios: offer.site === 'milanuncios',
+        isAutoscout24: offer.site === 'autoscout24'
+    });
+});
+
+// Process edit form for a specific offer
+router.post('/vehicle/:id/offers/:offerId/edit', offerUpload.single('image'), async (req, res) => {
+    const vehicle = await getVehicle(req.params.id);
+    if (!vehicle) {
+        return res.status(404).render('error', {
+            errorMessage: 'El vehículo solicitado no existe.',
+            redirectUrl: '/',
+            buttonText: 'Volver al catálogo'
+        });
+    }
+
+    const existingOffer = (vehicle.offers || []).find(o => o._id.toString() === req.params.offerId);
+    if (!existingOffer) {
+        return res.status(404).render('error', {
+            errorMessage: 'La oferta que intentas modificar no existe.',
+            redirectUrl: `/vehicle/${req.params.id}`,
+            buttonText: 'Volver al vehículo'
+        });
+    }
+
+    const errors = validateOfferData(req.body, vehicle.offers || [], req.params.offerId);
+    if (errors.length > 0) {
+        return res.status(400).render('error', {
+            errorMessage: errors.join(' '),
+            redirectUrl: `/vehicle/${req.params.id}/offers/${req.params.offerId}/edit`,
+            buttonText: 'Volver al formulario de edición'
+        });
+    }
+
+    const { site, price, kilometers, seller, url, date } = req.body;
+    const updatedFields = {
+        site,
+        price: Number(price),
+        kilometers: Number(kilometers),
+        seller: seller.trim(),
+        url: url.trim(),
+        date,
+        // Keep previous image if no new file is uploaded
+        imageFilename: req.file ? req.file.filename : (existingOffer.imageFilename || null)
+    };
+
+    await updateOfferInVehicle(req.params.id, req.params.offerId, updatedFields);
+
+    res.render('confirmation', {
+        title: '¡Oferta actualizada!',
+        message: 'Los cambios en la oferta se han guardado correctamente.',
+        redirectUrl: `/vehicle/${req.params.id}`,
+        buttonText: 'Volver al detalle del vehículo'
+    });
+});
+
 
 // Vehicle image, sent from the uploads folder
 router.get('/vehicle/:id/image', async (req, res) => {
