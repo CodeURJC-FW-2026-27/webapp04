@@ -3,6 +3,7 @@ import multer from 'multer';
 import { findDuplicateVehicles, addVehicle, getVehicle, getVehicles, countVehicles, deleteVehicle, UPLOADS_FOLDER, PAGE_SIZE } from './board.js';
 
 const upload = multer({ dest: 'public/assets/img/'});
+const offerUpload = multer({ dest: UPLOADS_FOLDER });
 
 const router = express.Router();
 export default router;
