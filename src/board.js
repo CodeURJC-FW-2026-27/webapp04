@@ -35,3 +35,71 @@ export async function getVehicle(id) {
     }
     return await vehicles.findOne({ _id: new ObjectId(id) }); // Async function to get a vehicle by its id
 }
+
+
+// Vehicle deletion & Secondary Entity (Offers)
+
+
+export async function deleteVehicle(id) { // Delete a main vehicle by its MongoDB id
+    if (!ObjectId.isValid(id)) {
+        return null;
+    }
+    return await vehicles.deleteOne({ _id: new ObjectId(id) });
+}
+
+// Recalculate and update the lowestPrice field based on current offers
+async function updateVehicleLowestPrice(vehicleId) {
+    const vehicle = await getVehicle(vehicleId);
+    if (!vehicle) return;
+
+    if (vehicle.offers && vehicle.offers.length > 0) {
+        const minPrice = Math.min(...vehicle.offers.map(o => Number(o.price)));
+        await vehicles.updateOne(
+            { _id: new ObjectId(vehicleId) },
+            { $set: { lowestPrice: minPrice } }
+        );
+    }
+}
+
+// Add a new embedded offer to a vehicle
+export async function addOfferToVehicle(vehicleId, offerData) {
+    const newOffer = {
+        _id: new ObjectId(),
+        ...offerData
+    };
+
+    const result = await vehicles.updateOne(
+        { _id: new ObjectId(vehicleId) },
+        { $push: { offers: newOffer } }
+    );
+
+    await updateVehicleLowestPrice(vehicleId);
+    return result;
+}
+
+// Update an existing embedded offer inside a vehicle
+export async function updateOfferInVehicle(vehicleId, offerId, updatedFields) {
+    const setFields = {};
+    for (const [key, value] of Object.entries(updatedFields)) {
+        setFields[`offers.$.${key}`] = value;
+    }
+
+    const result = await vehicles.updateOne(
+        { _id: new ObjectId(vehicleId), 'offers._id': new ObjectId(offerId) },
+        { $set: setFields }
+    );
+
+    await updateVehicleLowestPrice(vehicleId);
+    return result;
+}
+
+// Remove an embedded offer from a vehicle
+export async function deleteOfferFromVehicle(vehicleId, offerId) {
+    const result = await vehicles.updateOne(
+        { _id: new ObjectId(vehicleId) },
+        { $pull: { offers: { _id: new ObjectId(offerId) } } }
+    );
+
+    await updateVehicleLowestPrice(vehicleId);
+    return result;
+}
