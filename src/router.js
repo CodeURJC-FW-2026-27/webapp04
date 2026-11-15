@@ -1,6 +1,6 @@
 import express from 'express';
 import multer from 'multer';
-import {findDuplicateVehicles, addVehicle, getVehicle, getVehicles, countVehicles, UPLOADS_FOLDER, PAGE_SIZE } from './board.js';
+import { findDuplicateVehicles, addVehicle, getVehicle, getVehicles, countVehicles, deleteVehicle, UPLOADS_FOLDER, PAGE_SIZE } from './board.js';
 
 const upload = multer({ dest: 'public/assets/img/'});
 
@@ -10,6 +10,7 @@ export default router;
 // Texts shown to the user for the fuel and body type values stored in the database
 const FUEL_LABELS = { gasoline: 'Gasolina', diesel: 'Diésel', hybrid: 'Híbrido', electric: 'Eléctrico' };
 const BODY_LABELS = { suv: 'SUV', sedan: 'Berlina', compact: 'Compacto', coupe: 'Coupé' };
+const SITE_LABELS = { cochesnet: 'Coches.net', wallapop: 'Wallapop', milanuncios: 'Milanuncios', autoscout24: 'AutoScout24' };
 
 // Adds to a vehicle the formatted texts that the views display
 function toVehicleView(vehicle) {
@@ -115,8 +116,48 @@ router.post('/vehicle/new', upload.array('image'), async (req, res) => {
 });
 
 // Vehicle detail page
-router.get('/vehicle/:id', (req, res) => {
-    res.render('vehicle');
+router.get('/vehicle/:id', async (req, res) => {
+    const vehicle = await getVehicle(req.params.id);
+    if (!vehicle) {
+        return res.status(404).render('error', {
+            errorMessage: 'El vehículo solicitado no existe o ha sido eliminado.',
+            redirectUrl: '/',
+            buttonText: 'Volver al catálogo'
+        });
+    }
+
+    const formattedOffers = (vehicle.offers || []).map(offer => ({
+        ...offer,
+        siteLabel: SITE_LABELS[offer.site] || offer.site,
+        priceText: Number(offer.price).toLocaleString('es-ES'),
+        kmText: Number(offer.kilometers).toLocaleString('es-ES')
+    }));
+
+    res.render('vehicle', {
+        ...toVehicleView(vehicle),
+        offers: formattedOffers
+    });
+});
+
+// Delete main vehicle
+router.post('/vehicle/:id/delete', async (req, res) => {
+    const vehicle = await getVehicle(req.params.id);
+    if (!vehicle) {
+        return res.status(404).render('error', {
+            errorMessage: 'No se pudo encontrar el vehículo que intentas borrar.',
+            redirectUrl: '/',
+            buttonText: 'Volver al catálogo'
+        });
+    }
+
+    await deleteVehicle(req.params.id);
+
+    res.render('confirmation', {
+        title: '¡Vehículo eliminado!',
+        message: `El vehículo ${vehicle.brand} ${vehicle.model} ha sido eliminado correctamente.`,
+        redirectUrl: '/',
+        buttonText: 'Volver a la página principal'
+    });
 });
 
 // Vehicle image, sent from the uploads folder
