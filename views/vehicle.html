@@ -126,10 +126,10 @@
                                 <div class="card-footer bg-white border-0 pb-3 d-flex justify-content-between align-items-center">
                                     <a href="{{url}}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-primary">Ver anuncio</a>
                                     <div class="d-flex gap-1">
-                                        <a href="/vehicle/{{../_id}}/offers/{{_id}}/edit" class="btn btn-sm btn-outline-secondary" title="Editar oferta">
+                                        <a href="/vehicle/{{vehicleId}}/offers/{{_id}}/edit" class="btn btn-sm btn-outline-secondary" title="Editar oferta">
                                             <i class="bi bi-pencil"></i>
                                         </a>
-                                        <form action="/vehicle/{{../_id}}/offers/{{_id}}/delete" method="post" class="m-0">
+                                        <form action="/vehicle/{{vehicleId}}/offers/{{_id}}/delete" method="post" class="m-0">
                                             <button type="submit" class="btn btn-sm btn-outline-danger" title="Borrar oferta">
                                                 <i class="bi bi-trash"></i>
                                             </button>

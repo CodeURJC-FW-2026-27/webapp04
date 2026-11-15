@@ -117,6 +117,7 @@ router.post('/vehicle/new', upload.array('image'), async (req, res) => {
 });
 
 // Vehicle detail page
+// Vehicle detail page
 router.get('/vehicle/:id', async (req, res) => {
     const vehicle = await getVehicle(req.params.id);
     if (!vehicle) {
@@ -129,6 +130,7 @@ router.get('/vehicle/:id', async (req, res) => {
 
     const formattedOffers = (vehicle.offers || []).map(offer => ({
         ...offer,
+        vehicleId: vehicle._id,
         siteLabel: SITE_LABELS[offer.site] || offer.site,
         priceText: Number(offer.price).toLocaleString('es-ES'),
         kmText: Number(offer.kilometers).toLocaleString('es-ES')
