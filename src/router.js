@@ -161,6 +161,125 @@ router.post('/vehicle/:id/delete', async (req, res) => {
     });
 });
 
+// Server-side validation helper for secondary entity (offers)
+function validateOfferData(body, existingOffers = [], currentOfferId = null) {
+    const { site, price, kilometers, seller, url, date } = body;
+    const errors = [];
+    const allowedSites = ['cochesnet', 'wallapop', 'milanuncios', 'autoscout24'];
+
+    if (!site || !price || !kilometers || !seller || !url || !date) {
+        errors.push('Todos los campos obligatorios deben estar rellenos.');
+    }
+
+    if (site && !allowedSites.includes(site)) {
+        errors.push('La página de origen seleccionada no es válida.');
+    }
+
+    const numPrice = Number(price);
+    if (isNaN(numPrice) || numPrice <= 0 || numPrice > 1000000) {
+        errors.push('El precio debe ser un número válido mayor que 0.');
+    }
+
+    const numKm = Number(kilometers);
+    if (isNaN(numKm) || numKm < 0 || numKm > 2000000) {
+        errors.push('El kilometraje debe ser un número válido igual o mayor que 0.');
+    }
+
+    if (seller && (seller.trim().length < 2 || seller.trim().length > 80)) {
+        errors.push('El nombre del vendedor debe tener entre 2 y 80 caracteres.');
+    }
+
+    if (url) {
+        try {
+            new URL(url);
+        } catch {
+            errors.push('El enlace al anuncio original no tiene un formato de URL válido.');
+        }
+    }
+
+    if (date && isNaN(Date.parse(date))) {
+        errors.push('La fecha de publicación no es válida.');
+    }
+
+    // Check duplicate offer (same site, seller and price on the same vehicle)
+    const isDuplicate = existingOffers.some(offer => {
+        if (currentOfferId && offer._id.toString() === currentOfferId) return false;
+        return (
+            offer.site === site &&
+            offer.seller.trim().toLowerCase() === (seller || '').trim().toLowerCase() &&
+            Number(offer.price) === numPrice
+        );
+    });
+
+    if (isDuplicate) {
+        errors.push('Ya existe una oferta idéntica (mismo portal, vendedor y precio) para este vehículo.');
+    }
+
+    return errors;
+}
+
+// Create secondary entity (Offer)
+router.post('/vehicle/:id/offers', offerUpload.single('image'), async (req, res) => {
+    const vehicle = await getVehicle(req.params.id);
+    if (!vehicle) {
+        return res.status(404).render('error', {
+            errorMessage: 'El vehículo al que intentas añadir la oferta no existe.',
+            redirectUrl: '/',
+            buttonText: 'Volver al catálogo'
+        });
+    }
+
+    const errors = validateOfferData(req.body, vehicle.offers || []);
+    if (errors.length > 0) {
+        return res.status(400).render('error', {
+            errorMessage: errors.join(' '),
+            redirectUrl: `/vehicle/${req.params.id}`,
+            buttonText: 'Volver al vehículo'
+        });
+    }
+
+    const { site, price, kilometers, seller, url, date } = req.body;
+    const offerData = {
+        site,
+        price: Number(price),
+        kilometers: Number(kilometers),
+        seller: seller.trim(),
+        url: url.trim(),
+        date,
+        imageFilename: req.file ? req.file.filename : null
+    };
+
+    await addOfferToVehicle(req.params.id, offerData);
+
+    res.render('confirmation', {
+        title: '¡Oferta añadida!',
+        message: 'La nueva oferta se ha vinculado correctamente al vehículo.',
+        redirectUrl: `/vehicle/${req.params.id}`,
+        buttonText: 'Volver al detalle del vehículo'
+    });
+});
+
+// Delete secondary entity (Offer)
+router.post('/vehicle/:id/offers/:offerId/delete', async (req, res) => {
+    const vehicle = await getVehicle(req.params.id);
+    if (!vehicle) {
+        return res.status(404).render('error', {
+            errorMessage: 'El vehículo solicitado no existe.',
+            redirectUrl: '/',
+            buttonText: 'Volver al catálogo'
+        });
+    }
+
+    await deleteOfferFromVehicle(req.params.id, req.params.offerId);
+
+    res.render('confirmation', {
+        title: '¡Oferta eliminada!',
+        message: 'La oferta ha sido eliminada de este vehículo.',
+        redirectUrl: `/vehicle/${req.params.id}`,
+        buttonText: 'Volver al detalle del vehículo'
+    });
+});
+
 // Vehicle image, sent from the uploads folder
 router.get('/vehicle/:id/image', async (req, res) => {
     const vehicle = await getVehicle(req.params.id);
