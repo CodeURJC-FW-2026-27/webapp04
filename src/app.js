@@ -5,6 +5,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 import router from './router.js';
+import './load_data.js';
 
 // Get the path of the current directory (src/)
 const __filename = fileURLToPath(import.meta.url);

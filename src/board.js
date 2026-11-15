@@ -10,6 +10,10 @@ export async function findDuplicateVehicles(brand, model) {
     return await vehicles.findOne({brand: brand, model: model}); //Async function to find duplicate vehicles
 }
 
-export async function addVehicle(vehicle) { 
+export async function addVehicle(vehicle) {
     return await vehicles.insertOne(vehicle); //Async function to add new vehicle
+}
+
+export async function countVehicles() {
+    return await vehicles.countDocuments(); // Async function to count the stored vehicles
 }
