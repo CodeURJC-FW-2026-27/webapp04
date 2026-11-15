@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="Editar oferta de vehículo en IJAM Motors" />
+        <meta name="author" content="IJAM Motors" />
+        <title>Editar oferta - IJAM Motors</title>
+        <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+        <link href="/css/styles.css" rel="stylesheet" />
+        <link href="/css/custom.css" rel="stylesheet" />
+    </head>
+    <body class="d-flex flex-column h-100">
+        <main class="flex-shrink-0">
+            <!-- Navigation -->
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <div class="container px-5">
+                    <a class="navbar-brand" href="/">IJAM Motors</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                            <li class="nav-item"><a class="nav-link" href="/">Inicio</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/vehicle/new">Añadir vehículo</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Edit Offer Section -->
+            <section class="py-5">
+                <div class="container px-5 my-5">
+                    <div class="text-center mb-5">
+                        <h1 class="fw-bolder">Editar oferta</h1>
+                        <p class="lead fw-normal text-muted mb-0">Modificando oferta para <strong>{{vehicleName}}</strong></p>
+                    </div>
+
+                    <div class="row gx-5 justify-content-center">
+                        <div class="col-lg-8">
+                            <div class="bg-light rounded-3 p-4 p-md-5">
+                                <form action="/vehicle/{{vehicleId}}/offers/{{offer._id}}/edit" method="post" enctype="multipart/form-data">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="site">Página de origen</label>
+                                            <select class="form-select" id="site" name="site" required>
+                                                <option value="cochesnet" {{#isCochesnet}}selected{{/isCochesnet}}>Coches.net</option>
+                                                <option value="wallapop" {{#isWallapop}}selected{{/isWallapop}}>Wallapop</option>
+                                                <option value="milanuncios" {{#isMilanuncios}}selected{{/isMilanuncios}}>Milanuncios</option>
+                                                <option value="autoscout24" {{#isAutoscout24}}selected{{/isAutoscout24}}>AutoScout24</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="price">Precio (€)</label>
+                                            <input class="form-control" id="price" name="price" type="number" min="1" max="1000000" step="1" value="{{offer.price}}" required />
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="kilometers">Kilometraje (km)</label>
+                                            <input class="form-control" id="kilometers" name="kilometers" type="number" min="0" max="2000000" step="1" value="{{offer.kilometers}}" required />
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="seller">Vendedor</label>
+                                            <input class="form-control" id="seller" name="seller" type="text" minlength="2" maxlength="80" value="{{offer.seller}}" required />
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="url">Enlace al anuncio original</label>
+                                            <input class="form-control" id="url" name="url" type="url" value="{{offer.url}}" required />
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="date">Fecha de publicación</label>
+                                            <input class="form-control" id="date" name="date" type="date" value="{{offer.date}}" required />
+                                        </div>
+
+                                        <div class="col-12">
+                                            <label class="form-label" for="image">Nueva imagen (opcional, deja vacío para mantener la actual)</label>
+                                            <input class="form-control" id="image" name="image" type="file" accept="image/*" />
+                                            {{#offer.imageFilename}}
+                                            <div class="mt-2">
+                                                <small class="text-muted d-block mb-1">Imagen actual:</small>
+                                                <img src="/uploads/{{offer.imageFilename}}" alt="Imagen actual" class="rounded" style="height: 90px;" />
+                                            </div>
+                                            {{/offer.imageFilename}}
+                                        </div>
+
+                                        <div class="col-12 d-flex justify-content-end gap-2 mt-4">
+                                            <a class="btn btn-outline-secondary px-4" href="/vehicle/{{vehicleId}}">Cancelar</a>
+                                            <button class="btn btn-primary px-4" type="submit">Guardar</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-dark py-4 mt-auto">
+            <div class="container px-5">
+                <div class="row align-items-center justify-content-between flex-column flex-sm-row">
+                    <div class="col-auto"><div class="small m-0 text-white">Copyright © IJAM MOTORS 2026</div></div>
+                    <div class="col-auto">
+                        <a class="link-light small" href="#!">Privacidad</a>
+                        <span class="text-white mx-1">·</span>
+                        <a class="link-light small" href="#!">Términos</a>
+                        <span class="text-white mx-1">·</span>
+                        <a class="link-light small" href="#!">Contacto</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+</html>
