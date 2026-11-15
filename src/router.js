@@ -1,6 +1,6 @@
 import express from 'express';
 import multer from 'multer';
-import {findDuplicateVehicles, addVehicle } from './board.js';
+import {findDuplicateVehicles, addVehicle, getVehicle, UPLOADS_FOLDER } from './board.js';
 
 const upload = multer({ dest: 'public/assets/img/'});
 
@@ -80,4 +80,16 @@ router.post('/vehicle/new', upload.array('image'), async (req, res) => {
 // Vehicle detail page
 router.get('/vehicle/:id', (req, res) => {
     res.render('vehicle');
+});
+
+// Vehicle image, sent from the uploads folder
+router.get('/vehicle/:id/image', async (req, res) => {
+    const vehicle = await getVehicle(req.params.id);
+
+    // The file name cannot contain folder separators, so only files inside uploads can be sent
+    if (!vehicle || !vehicle.imageFilename || /[\\/]/.test(vehicle.imageFilename)) {
+        return res.status(404).send('Image not found');
+    }
+
+    res.download(UPLOADS_FOLDER + '/' + vehicle.imageFilename);
 });

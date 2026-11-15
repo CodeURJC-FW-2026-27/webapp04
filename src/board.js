@@ -1,4 +1,6 @@
-import { MongoClient } from 'mongodb'; // Import the MongoClient class from the mongodb package
+import { MongoClient, ObjectId } from 'mongodb'; // Import the MongoClient and ObjectId classes from the mongodb package
+
+export const UPLOADS_FOLDER = './uploads'; // Folder where the vehicle images are stored
 
 const client = new MongoClient('mongodb://localhost:27017'); // Create a new MongoClient instance with the connection string to the local MongoDB server
 await client.connect();  // Connect to the MongoDB server
@@ -16,4 +18,11 @@ export async function addVehicle(vehicle) {
 
 export async function countVehicles() {
     return await vehicles.countDocuments(); // Async function to count the stored vehicles
+}
+
+export async function getVehicle(id) {
+    if (!ObjectId.isValid(id)) {
+        return null; // The id does not have the format of a MongoDB id, so no vehicle can have it
+    }
+    return await vehicles.findOne({ _id: new ObjectId(id) }); // Async function to get a vehicle by its id
 }

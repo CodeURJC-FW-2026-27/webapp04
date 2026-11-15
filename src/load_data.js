@@ -1,8 +1,7 @@
 import fs from 'node:fs/promises';
 import { ObjectId } from 'mongodb';
-import { addVehicle, countVehicles } from './board.js';
+import { addVehicle, countVehicles, UPLOADS_FOLDER } from './board.js';
 
-const UPLOADS_FOLDER = './uploads';
 const DATA_FOLDER = './data';
 
 // Sample data is only loaded when the database is empty,
