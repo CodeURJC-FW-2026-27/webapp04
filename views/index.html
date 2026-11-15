@@ -197,6 +197,31 @@
                                 </div>
                                 {{/vehicles}}
                             </div>
+                            <!-- Pagination: previous page, one link per page (current one highlighted) and next page-->
+                            <nav class="mt-5" aria-label="Páginas del catálogo">
+                                <ul class="pagination justify-content-center">
+                                    {{#hasPrevious}}
+                                    <li class="page-item"><a class="page-link" href="/?page={{previousPage}}">Anterior</a></li>
+                                    {{/hasPrevious}}
+                                    {{^hasPrevious}}
+                                    <li class="page-item disabled"><span class="page-link">Anterior</span></li>
+                                    {{/hasPrevious}}
+                                    {{#pages}}
+                                    {{#current}}
+                                    <li class="page-item active" aria-current="page"><span class="page-link">{{number}}</span></li>
+                                    {{/current}}
+                                    {{^current}}
+                                    <li class="page-item"><a class="page-link" href="/?page={{number}}">{{number}}</a></li>
+                                    {{/current}}
+                                    {{/pages}}
+                                    {{#hasNext}}
+                                    <li class="page-item"><a class="page-link" href="/?page={{nextPage}}">Siguiente</a></li>
+                                    {{/hasNext}}
+                                    {{^hasNext}}
+                                    <li class="page-item disabled"><span class="page-link">Siguiente</span></li>
+                                    {{/hasNext}}
+                                </ul>
+                            </nav>
                         </div>
                     </div>
                 </div>

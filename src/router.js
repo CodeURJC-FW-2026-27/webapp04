@@ -1,6 +1,6 @@
 import express from 'express';
 import multer from 'multer';
-import {findDuplicateVehicles, addVehicle, getVehicle, getVehicles, UPLOADS_FOLDER } from './board.js';
+import {findDuplicateVehicles, addVehicle, getVehicle, getVehicles, countVehicles, UPLOADS_FOLDER, PAGE_SIZE } from './board.js';
 
 const upload = multer({ dest: 'public/assets/img/'});
 
@@ -23,10 +23,30 @@ function toVehicleView(vehicle) {
     };
 }
 
-// Main page: vehicle catalog
+// Main page: vehicle catalog, paginated
 router.get('/', async (req, res) => {
-    const vehicles = await getVehicles();
-    res.render('index', { vehicles: vehicles.map(toVehicleView) });
+    const totalPages = Math.max(1, Math.ceil(await countVehicles() / PAGE_SIZE));
+
+    // Page requested in the URL (?page=2). Missing or wrong values go to the nearest valid page
+    let page = Number.parseInt(req.query.page, 10) || 1;
+    page = Math.min(Math.max(page, 1), totalPages);
+
+    const vehicles = await getVehicles(page);
+
+    // One link per page, marking the current one so the view can highlight it
+    const pages = [];
+    for (let number = 1; number <= totalPages; number++) {
+        pages.push({ number, current: number === page });
+    }
+
+    res.render('index', {
+        vehicles: vehicles.map(toVehicleView),
+        pages,
+        hasPrevious: page > 1,
+        previousPage: page - 1,
+        hasNext: page < totalPages,
+        nextPage: page + 1
+    });
 });
 
 // New vehicle form

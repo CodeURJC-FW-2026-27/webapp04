@@ -1,6 +1,7 @@
 import { MongoClient, ObjectId } from 'mongodb'; // Import the MongoClient and ObjectId classes from the mongodb package
 
 export const UPLOADS_FOLDER = './uploads'; // Folder where the vehicle images are stored
+export const PAGE_SIZE = 6; // Number of vehicles shown on each page of the main page
 
 const client = new MongoClient('mongodb://localhost:27017'); // Create a new MongoClient instance with the connection string to the local MongoDB server
 await client.connect();  // Connect to the MongoDB server
@@ -16,8 +17,12 @@ export async function addVehicle(vehicle) {
     return await vehicles.insertOne(vehicle); //Async function to add new vehicle
 }
 
-export async function getVehicles() {
-    return await vehicles.find().toArray(); // Async function to get all the vehicles
+export async function getVehicles(page) {
+    return await vehicles.find()
+        .sort({ _id: 1 }) // Always the same order, so a vehicle never appears on two pages
+        .skip((page - 1) * PAGE_SIZE)
+        .limit(PAGE_SIZE)
+        .toArray(); // Async function to get only the vehicles of one page
 }
 
 export async function countVehicles() {
