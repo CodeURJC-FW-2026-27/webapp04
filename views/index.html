@@ -99,20 +99,18 @@
                                     <fieldset class="mb-3">
                                         <legend class="form-label fs-6">Precio (€)</legend>
                                         <div class="row g-2">
-                                            <div class="col"><input class="form-control" type="number" name="priceMin" min="0" placeholder="Mín." aria-label="Precio mínimo" /></div>
-                                            <div class="col"><input class="form-control" type="number" name="priceMax" min="0" placeholder="Máx." aria-label="Precio máximo" /></div>
+                                            <div class="col"><input class="form-control" type="number" name="priceMin" value="{{priceMin}}" min="0" placeholder="Mín." aria-label="Precio mínimo" /></div>
+                                            <div class="col"><input class="form-control" type="number" name="priceMax" value="{{priceMax}}" min="0" placeholder="Máx." aria-label="Precio máximo" /></div>
                                         </div>
                                     </fieldset>
-                                    <!-- Maximum mileage filter-->
+                                    <!-- Maximum mileage filter (the chosen limit stays selected after filtering)-->
                                     <div class="mb-3">
                                         <label class="form-label" for="maxKilometers">Kilometraje</label>
                                         <select class="form-select" id="maxKilometers" name="maxKilometers">
-                                            <option value="" selected>Sin límite</option>
-                                            <option value="25000">Hasta 25.000 km</option>
-                                            <option value="50000">Hasta 50.000 km</option>
-                                            <option value="100000">Hasta 100.000 km</option>
-                                            <option value="150000">Hasta 150.000 km</option>
-                                            <option value="200000">Hasta 200.000 km</option>
+                                            <option value="">Sin límite</option>
+                                            {{#kilometerOptions}}
+                                            <option value="{{value}}" {{#selected}}selected{{/selected}}>{{label}}</option>
+                                            {{/kilometerOptions}}
                                         </select>
                                     </div>
                                     <!-- Source website filter (several options can be checked)-->

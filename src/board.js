@@ -20,10 +20,30 @@ export async function addVehicle(vehicle) {
 // Builds the MongoDB filter for the main page search, category and sidebar filters:
 // every word typed by the user must appear in the brand or in the model (case insensitive),
 // if a category is chosen, only the vehicles with that body type are included,
-// the year must be inside the chosen range (each limit is optional)
-// and the fuel type must be one of the checked ones
-function buildVehiclesFilter({ search, bodyType, yearFrom, yearTo, fuelType } = {}) {
+// the year must be inside the chosen range (each limit is optional),
+// the fuel type must be one of the checked ones
+// and the vehicle must have at least one offer that meets all the offer filters (price and mileage) at the same time
+function buildVehiclesFilter({ search, bodyType, yearFrom, yearTo, fuelType, priceMin, priceMax, maxKilometers } = {}) {
     const filter = {};
+
+    const offerFilter = {};
+    if (priceMin || priceMax) {
+        offerFilter.price = {};
+        if (priceMin) {
+            offerFilter.price.$gte = priceMin;
+        }
+        if (priceMax) {
+            offerFilter.price.$lte = priceMax;
+        }
+    }
+    if (maxKilometers) {
+        offerFilter.kilometers = { $lte: maxKilometers };
+    }
+    if (Object.keys(offerFilter).length > 0) {
+        // $elemMatch makes one same offer meet every condition, instead of one offer the price and another one the mileage
+        filter.offers = { $elemMatch: offerFilter };
+    }
+
     if (bodyType) {
         filter.bodyType = bodyType;
     }

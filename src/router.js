@@ -13,6 +13,9 @@ const FUEL_LABELS = { gasoline: 'Gasolina', diesel: 'Diésel', hybrid: 'Híbrido
 const BODY_LABELS = { suv: 'SUV', sedan: 'Berlina', compact: 'Compacto', coupe: 'Coupé' };
 const SITE_LABELS = { cochesnet: 'Coches.net', wallapop: 'Wallapop', milanuncios: 'Milanuncios', autoscout24: 'AutoScout24' };
 
+// Mileage limits offered in the main page filter
+const KILOMETER_LIMITS = [25000, 50000, 100000, 150000, 200000];
+
 // Adds to a vehicle the formatted texts that the views display
 function toVehicleView(vehicle) {
     const offersCount = vehicle.offers ? vehicle.offers.length : 0;
@@ -61,7 +64,11 @@ router.get('/', async (req, res) => {
     const yearFrom = readNumber(req.query.yearFrom);
     const yearTo = readNumber(req.query.yearTo);
     const fuelType = readList(req.query.fuelType, Object.keys(FUEL_LABELS));
-    const criteria = { search, bodyType, yearFrom, yearTo, fuelType };
+    const priceMin = readNumber(req.query.priceMin);
+    const priceMax = readNumber(req.query.priceMax);
+    const kilometers = readNumber(req.query.maxKilometers);
+    const maxKilometers = KILOMETER_LIMITS.includes(kilometers) ? kilometers : null; // Only the limits of the list
+    const criteria = { search, bodyType, yearFrom, yearTo, fuelType, priceMin, priceMax, maxKilometers };
 
     const totalPages = Math.max(1, Math.ceil(await countVehicles(criteria) / PAGE_SIZE));
 
@@ -87,6 +94,13 @@ router.get('/', async (req, res) => {
     // Fuel type checkboxes, marking the ones that are checked
     const fuelOptions = Object.entries(FUEL_LABELS).map(([value, label]) => ({ value, label, checked: fuelType.includes(value) }));
 
+    // Mileage options, marking the chosen one
+    const kilometerOptions = KILOMETER_LIMITS.map(limit => ({
+        value: limit,
+        label: 'Hasta ' + limit.toLocaleString('es-ES') + ' km',
+        selected: limit === maxKilometers
+    }));
+
     // One link per page, marking the current one so the view can highlight it
     const pages = [];
     for (let number = 1; number <= totalPages; number++) {
@@ -100,6 +114,9 @@ router.get('/', async (req, res) => {
         yearFrom,
         yearTo,
         fuelOptions,
+        priceMin,
+        priceMax,
+        kilometerOptions,
         isFiltered: currentUrl !== '/',
         categories,
         clearFiltersUrl,
