@@ -17,16 +17,31 @@ export async function addVehicle(vehicle) {
     return await vehicles.insertOne(vehicle); //Async function to add new vehicle
 }
 
-export async function getVehicles(page) {
-    return await vehicles.find()
+// Builds the MongoDB filter for the main page search:
+// every word typed by the user must appear in the brand or in the model (case insensitive)
+function buildVehiclesFilter({ search } = {}) {
+    const filter = {};
+    const words = (search || '').split(/\s+/).filter(word => word !== '');
+    if (words.length > 0) {
+        filter.$and = words.map(word => {
+            // Special characters (like "." or "*") are escaped so they are searched as normal text
+            const regex = new RegExp(word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
+            return { $or: [{ brand: regex }, { model: regex }] };
+        });
+    }
+    return filter;
+}
+
+export async function getVehicles(criteria, page) {
+    return await vehicles.find(buildVehiclesFilter(criteria))
         .sort({ _id: 1 }) // Always the same order, so a vehicle never appears on two pages
         .skip((page - 1) * PAGE_SIZE)
         .limit(PAGE_SIZE)
-        .toArray(); // Async function to get only the vehicles of one page
+        .toArray(); // Async function to get only the vehicles of one page that match the search
 }
 
-export async function countVehicles() {
-    return await vehicles.countDocuments(); // Async function to count the stored vehicles
+export async function countVehicles(criteria) {
+    return await vehicles.countDocuments(buildVehiclesFilter(criteria)); // Async function to count the vehicles that match the search (all of them if there is none)
 }
 
 export async function getVehicle(id) {

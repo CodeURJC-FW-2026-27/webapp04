@@ -40,7 +40,7 @@
                         <div class="col-lg-8 col-xl-6">
                             <div class="input-group input-group-lg">
                                 <span class="input-group-text"><i class="bi bi-search" aria-hidden="true"></i></span>
-                                <input class="form-control" type="search" name="search" placeholder="Busca por marca o modelo, p. ej. Volkswagen Golf" aria-label="Buscar por marca o modelo" />
+                                <input class="form-control" type="search" name="search" value="{{search}}" placeholder="Busca por marca o modelo, p. ej. Volkswagen Golf" aria-label="Buscar por marca o modelo" />
                                 <button class="btn btn-primary" type="submit">Buscar</button>
                             </div>
                         </div>
@@ -193,7 +193,12 @@
                                 <!-- Message shown when there are no vehicles to list-->
                                 {{^vehicles}}
                                 <div class="w-100">
+                                    {{#search}}
+                                    <p class="text-muted text-center my-5">No hay vehículos que coincidan con «{{search}}». <a href="/">Ver todos los vehículos</a></p>
+                                    {{/search}}
+                                    {{^search}}
                                     <p class="text-muted text-center my-5">No hay vehículos que mostrar.</p>
+                                    {{/search}}
                                 </div>
                                 {{/vehicles}}
                             </div>
@@ -201,7 +206,7 @@
                             <nav class="mt-5" aria-label="Páginas del catálogo">
                                 <ul class="pagination justify-content-center">
                                     {{#hasPrevious}}
-                                    <li class="page-item"><a class="page-link" href="/?page={{previousPage}}">Anterior</a></li>
+                                    <li class="page-item"><a class="page-link" href="/?{{filterQuery}}page={{previousPage}}">Anterior</a></li>
                                     {{/hasPrevious}}
                                     {{^hasPrevious}}
                                     <li class="page-item disabled"><span class="page-link">Anterior</span></li>
@@ -211,11 +216,11 @@
                                     <li class="page-item active" aria-current="page"><span class="page-link">{{number}}</span></li>
                                     {{/current}}
                                     {{^current}}
-                                    <li class="page-item"><a class="page-link" href="/?page={{number}}">{{number}}</a></li>
+                                    <li class="page-item"><a class="page-link" href="/?{{filterQuery}}page={{number}}">{{number}}</a></li>
                                     {{/current}}
                                     {{/pages}}
                                     {{#hasNext}}
-                                    <li class="page-item"><a class="page-link" href="/?page={{nextPage}}">Siguiente</a></li>
+                                    <li class="page-item"><a class="page-link" href="/?{{filterQuery}}page={{nextPage}}">Siguiente</a></li>
                                     {{/hasNext}}
                                     {{^hasNext}}
                                     <li class="page-item disabled"><span class="page-link">Siguiente</span></li>

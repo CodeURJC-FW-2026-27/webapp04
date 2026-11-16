@@ -25,15 +25,26 @@ function toVehicleView(vehicle) {
     };
 }
 
-// Main page: vehicle catalog, paginated
+// Main page: vehicle catalog, paginated and searchable by brand or model
 router.get('/', async (req, res) => {
-    const totalPages = Math.max(1, Math.ceil(await countVehicles() / PAGE_SIZE));
+    // Text typed in the search box (?search=golf). Anything that is not a single text is ignored
+    const search = typeof req.query.search === 'string' ? req.query.search.trim() : '';
+    const criteria = { search };
+
+    const totalPages = Math.max(1, Math.ceil(await countVehicles(criteria) / PAGE_SIZE));
 
     // Page requested in the URL (?page=2). Missing or wrong values go to the nearest valid page
     let page = Number.parseInt(req.query.page, 10) || 1;
     page = Math.min(Math.max(page, 1), totalPages);
 
-    const vehicles = await getVehicles(page);
+    const vehicles = await getVehicles(criteria, page);
+
+    // Start of the pagination links, so that changing page keeps the search (e.g. "search=golf&")
+    const params = new URLSearchParams();
+    if (search) {
+        params.set('search', search);
+    }
+    const filterQuery = params.size > 0 ? params.toString() + '&' : '';
 
     // One link per page, marking the current one so the view can highlight it
     const pages = [];
@@ -43,6 +54,8 @@ router.get('/', async (req, res) => {
 
     res.render('index', {
         vehicles: vehicles.map(toVehicleView),
+        search,
+        filterQuery,
         pages,
         hasPrevious: page > 1,
         previousPage: page - 1,
