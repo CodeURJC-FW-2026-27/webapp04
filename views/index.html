@@ -41,18 +41,25 @@
                             <div class="input-group input-group-lg">
                                 <span class="input-group-text"><i class="bi bi-search" aria-hidden="true"></i></span>
                                 <input class="form-control" type="search" name="search" value="{{search}}" placeholder="Busca por marca o modelo, p. ej. Volkswagen Golf" aria-label="Buscar por marca o modelo" />
+                                <!-- Keeps the chosen category when searching-->
+                                {{#bodyType}}
+                                <input type="hidden" name="bodyType" value="{{bodyType}}" />
+                                {{/bodyType}}
                                 <button class="btn btn-primary" type="submit">Buscar</button>
                             </div>
                         </div>
                     </form>
-                    <!-- Body type categories (each one opens this same page with the "bodyType" parameter)-->
+                    <!-- Body type categories (each one opens this same page with the "bodyType" parameter, the active one is highlighted)-->
                     <nav class="mb-5" aria-label="Categorías por tipo de carrocería">
                         <ul class="nav nav-pills justify-content-center gap-2">
-                            <li class="nav-item"><a class="nav-link active" aria-current="page" href="/">Todos</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/?bodyType=suv">SUV</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/?bodyType=sedan">Berlina</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/?bodyType=compact">Compacto</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/?bodyType=coupe">Coupé</a></li>
+                            {{#categories}}
+                            {{#active}}
+                            <li class="nav-item"><a class="nav-link active" aria-current="page" href="{{url}}">{{label}}</a></li>
+                            {{/active}}
+                            {{^active}}
+                            <li class="nav-item"><a class="nav-link" href="{{url}}">{{label}}</a></li>
+                            {{/active}}
+                            {{/categories}}
                         </ul>
                     </nav>
                     <!-- Main layout: filters sidebar on the left, vehicle grid on the right-->

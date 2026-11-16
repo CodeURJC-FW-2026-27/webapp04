@@ -25,11 +25,25 @@ function toVehicleView(vehicle) {
     };
 }
 
-// Main page: vehicle catalog, paginated and searchable by brand or model
+// Builds a main page URL that keeps the given search and category (e.g. "/?search=golf&bodyType=compact")
+function catalogUrl(search, bodyType) {
+    const params = new URLSearchParams();
+    if (search) {
+        params.set('search', search);
+    }
+    if (bodyType) {
+        params.set('bodyType', bodyType);
+    }
+    return params.size > 0 ? '/?' + params.toString() : '/';
+}
+
+// Main page: vehicle catalog, paginated, searchable by brand or model and filtered by category
 router.get('/', async (req, res) => {
     // Text typed in the search box (?search=golf). Anything that is not a single text is ignored
     const search = typeof req.query.search === 'string' ? req.query.search.trim() : '';
-    const criteria = { search };
+    // Category chosen with the buttons (?bodyType=suv). Unknown body types are ignored
+    const bodyType = typeof req.query.bodyType === 'string' && Object.hasOwn(BODY_LABELS, req.query.bodyType) ? req.query.bodyType : '';
+    const criteria = { search, bodyType };
 
     const totalPages = Math.max(1, Math.ceil(await countVehicles(criteria) / PAGE_SIZE));
 
@@ -39,12 +53,15 @@ router.get('/', async (req, res) => {
 
     const vehicles = await getVehicles(criteria, page);
 
-    // Start of the pagination links, so that changing page keeps the search (e.g. "search=golf&")
-    const params = new URLSearchParams();
-    if (search) {
-        params.set('search', search);
+    // Start of the pagination links, so that changing page keeps the search and category (e.g. "search=golf&")
+    const currentUrl = catalogUrl(search, bodyType);
+    const filterQuery = currentUrl === '/' ? '' : currentUrl.slice(2) + '&';
+
+    // Category buttons: "Todos" plus one per body type. They keep the search and mark the active category
+    const categories = [{ label: 'Todos', url: catalogUrl(search, ''), active: bodyType === '' }];
+    for (const [value, label] of Object.entries(BODY_LABELS)) {
+        categories.push({ label, url: catalogUrl(search, value), active: value === bodyType });
     }
-    const filterQuery = params.size > 0 ? params.toString() + '&' : '';
 
     // One link per page, marking the current one so the view can highlight it
     const pages = [];
@@ -55,6 +72,8 @@ router.get('/', async (req, res) => {
     res.render('index', {
         vehicles: vehicles.map(toVehicleView),
         search,
+        bodyType,
+        categories,
         filterQuery,
         pages,
         hasPrevious: page > 1,
