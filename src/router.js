@@ -39,13 +39,22 @@ function catalogUrl(criteria) {
     return params.size > 0 ? '/?' + params.toString() : '/';
 }
 
+// Reads a whole number from the URL (e.g. "?yearFrom=2018"). Missing, negative or wrong values are ignored (null)
+function readNumber(value) {
+    const number = Number(value);
+    return typeof value === 'string' && value.trim() !== '' && Number.isInteger(number) && number >= 0 ? number : null;
+}
+
 // Main page: vehicle catalog, paginated, searchable by brand or model and filtered by category
 router.get('/', async (req, res) => {
     // Text typed in the search box (?search=golf). Anything that is not a single text is ignored
     const search = typeof req.query.search === 'string' ? req.query.search.trim() : '';
     // Category chosen with the buttons (?bodyType=suv). Unknown body types are ignored
     const bodyType = typeof req.query.bodyType === 'string' && Object.hasOwn(BODY_LABELS, req.query.bodyType) ? req.query.bodyType : '';
-    const criteria = { search, bodyType };
+    // Sidebar filters
+    const yearFrom = readNumber(req.query.yearFrom);
+    const yearTo = readNumber(req.query.yearTo);
+    const criteria = { search, bodyType, yearFrom, yearTo };
 
     const totalPages = Math.max(1, Math.ceil(await countVehicles(criteria) / PAGE_SIZE));
 
@@ -78,6 +87,9 @@ router.get('/', async (req, res) => {
         vehicles: vehicles.map(toVehicleView),
         search,
         bodyType,
+        yearFrom,
+        yearTo,
+        isFiltered: currentUrl !== '/',
         categories,
         clearFiltersUrl,
         filterQuery,

@@ -78,8 +78,8 @@
                                     <fieldset class="mb-3">
                                         <legend class="form-label fs-6">Año</legend>
                                         <div class="row g-2">
-                                            <div class="col"><input class="form-control" type="number" name="yearFrom" min="1990" max="2026" placeholder="Desde" aria-label="Año desde" /></div>
-                                            <div class="col"><input class="form-control" type="number" name="yearTo" min="1990" max="2026" placeholder="Hasta" aria-label="Año hasta" /></div>
+                                            <div class="col"><input class="form-control" type="number" name="yearFrom" value="{{yearFrom}}" min="1900" max="2026" placeholder="Desde" aria-label="Año desde" /></div>
+                                            <div class="col"><input class="form-control" type="number" name="yearTo" value="{{yearTo}}" min="1900" max="2026" placeholder="Hasta" aria-label="Año hasta" /></div>
                                         </div>
                                     </fieldset>
                                     <!-- Fuel type filter (several options can be checked)-->
@@ -187,12 +187,12 @@
                                 <!-- Message shown when there are no vehicles to list-->
                                 {{^vehicles}}
                                 <div class="w-100">
-                                    {{#search}}
-                                    <p class="text-muted text-center my-5">No hay vehículos que coincidan con «{{search}}». <a href="/">Ver todos los vehículos</a></p>
-                                    {{/search}}
-                                    {{^search}}
+                                    {{#isFiltered}}
+                                    <p class="text-muted text-center my-5">No hay vehículos que coincidan con la búsqueda o los filtros elegidos. <a href="/">Ver todos los vehículos</a></p>
+                                    {{/isFiltered}}
+                                    {{^isFiltered}}
                                     <p class="text-muted text-center my-5">No hay vehículos que mostrar.</p>
-                                    {{/search}}
+                                    {{/isFiltered}}
                                 </div>
                                 {{/vehicles}}
                             </div>

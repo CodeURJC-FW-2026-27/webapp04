@@ -17,13 +17,23 @@ export async function addVehicle(vehicle) {
     return await vehicles.insertOne(vehicle); //Async function to add new vehicle
 }
 
-// Builds the MongoDB filter for the main page search and category:
+// Builds the MongoDB filter for the main page search, category and sidebar filters:
 // every word typed by the user must appear in the brand or in the model (case insensitive),
-// and if a category is chosen, only the vehicles with that body type are included
-function buildVehiclesFilter({ search, bodyType } = {}) {
+// if a category is chosen, only the vehicles with that body type are included,
+// and the year must be inside the chosen range (each limit is optional)
+function buildVehiclesFilter({ search, bodyType, yearFrom, yearTo } = {}) {
     const filter = {};
     if (bodyType) {
         filter.bodyType = bodyType;
+    }
+    if (yearFrom || yearTo) {
+        filter.year = {};
+        if (yearFrom) {
+            filter.year.$gte = yearFrom;
+        }
+        if (yearTo) {
+            filter.year.$lte = yearTo;
+        }
     }
     const words = (search || '').split(/\s+/).filter(word => word !== '');
     if (words.length > 0) {
