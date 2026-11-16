@@ -45,6 +45,12 @@ function readNumber(value) {
     return typeof value === 'string' && value.trim() !== '' && Number.isInteger(number) && number >= 0 ? number : null;
 }
 
+// Reads a group of checkboxes from the URL (none, one or several values) and keeps only the allowed values
+function readList(value, allowedValues) {
+    const values = [].concat(value ?? []).filter(item => allowedValues.includes(item));
+    return [...new Set(values)]; // Without repeated values
+}
+
 // Main page: vehicle catalog, paginated, searchable by brand or model and filtered by category
 router.get('/', async (req, res) => {
     // Text typed in the search box (?search=golf). Anything that is not a single text is ignored
@@ -54,7 +60,8 @@ router.get('/', async (req, res) => {
     // Sidebar filters
     const yearFrom = readNumber(req.query.yearFrom);
     const yearTo = readNumber(req.query.yearTo);
-    const criteria = { search, bodyType, yearFrom, yearTo };
+    const fuelType = readList(req.query.fuelType, Object.keys(FUEL_LABELS));
+    const criteria = { search, bodyType, yearFrom, yearTo, fuelType };
 
     const totalPages = Math.max(1, Math.ceil(await countVehicles(criteria) / PAGE_SIZE));
 
@@ -77,6 +84,9 @@ router.get('/', async (req, res) => {
     // "Limpiar filtros" removes the sidebar filters but keeps the search and the category
     const clearFiltersUrl = catalogUrl({ search, bodyType });
 
+    // Fuel type checkboxes, marking the ones that are checked
+    const fuelOptions = Object.entries(FUEL_LABELS).map(([value, label]) => ({ value, label, checked: fuelType.includes(value) }));
+
     // One link per page, marking the current one so the view can highlight it
     const pages = [];
     for (let number = 1; number <= totalPages; number++) {
@@ -89,6 +99,7 @@ router.get('/', async (req, res) => {
         bodyType,
         yearFrom,
         yearTo,
+        fuelOptions,
         isFiltered: currentUrl !== '/',
         categories,
         clearFiltersUrl,

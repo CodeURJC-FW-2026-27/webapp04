@@ -82,25 +82,15 @@
                                             <div class="col"><input class="form-control" type="number" name="yearTo" value="{{yearTo}}" min="1900" max="2026" placeholder="Hasta" aria-label="Año hasta" /></div>
                                         </div>
                                     </fieldset>
-                                    <!-- Fuel type filter (several options can be checked)-->
+                                    <!-- Fuel type filter (several options can be checked, the checked ones stay checked after filtering)-->
                                     <fieldset class="mb-4">
                                         <legend class="form-label fs-6">Combustible</legend>
+                                        {{#fuelOptions}}
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="fuelGasoline" name="fuelType" value="gasoline" />
-                                            <label class="form-check-label" for="fuelGasoline">Gasolina</label>
+                                            <input class="form-check-input" type="checkbox" id="fuel-{{value}}" name="fuelType" value="{{value}}" {{#checked}}checked{{/checked}} />
+                                            <label class="form-check-label" for="fuel-{{value}}">{{label}}</label>
                                         </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="fuelDiesel" name="fuelType" value="diesel" />
-                                            <label class="form-check-label" for="fuelDiesel">Diésel</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="fuelHybrid" name="fuelType" value="hybrid" />
-                                            <label class="form-check-label" for="fuelHybrid">Híbrido</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="fuelElectric" name="fuelType" value="electric" />
-                                            <label class="form-check-label" for="fuelElectric">Eléctrico</label>
-                                        </div>
+                                        {{/fuelOptions}}
                                     </fieldset>
                                     <hr class="mt-0 mb-4" />
                                     <!-- Filters on offer attributes (shows the vehicles with at least one offer matching the filter)-->

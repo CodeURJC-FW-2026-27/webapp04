@@ -20,11 +20,15 @@ export async function addVehicle(vehicle) {
 // Builds the MongoDB filter for the main page search, category and sidebar filters:
 // every word typed by the user must appear in the brand or in the model (case insensitive),
 // if a category is chosen, only the vehicles with that body type are included,
-// and the year must be inside the chosen range (each limit is optional)
-function buildVehiclesFilter({ search, bodyType, yearFrom, yearTo } = {}) {
+// the year must be inside the chosen range (each limit is optional)
+// and the fuel type must be one of the checked ones
+function buildVehiclesFilter({ search, bodyType, yearFrom, yearTo, fuelType } = {}) {
     const filter = {};
     if (bodyType) {
         filter.bodyType = bodyType;
+    }
+    if (fuelType && fuelType.length > 0) {
+        filter.fuelType = { $in: fuelType };
     }
     if (yearFrom || yearTo) {
         filter.year = {};
