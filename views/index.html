@@ -113,25 +113,15 @@
                                             {{/kilometerOptions}}
                                         </select>
                                     </div>
-                                    <!-- Source website filter (several options can be checked)-->
+                                    <!-- Source website filter (several options can be checked, the checked ones stay checked after filtering)-->
                                     <fieldset class="mb-4">
                                         <legend class="form-label fs-6">Página de origen</legend>
+                                        {{#siteOptions}}
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="siteCochesNet" name="site" value="cochesnet" />
-                                            <label class="form-check-label" for="siteCochesNet">coches.net</label>
+                                            <input class="form-check-input" type="checkbox" id="site-{{value}}" name="site" value="{{value}}" {{#checked}}checked{{/checked}} />
+                                            <label class="form-check-label" for="site-{{value}}">{{label}}</label>
                                         </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="siteWallapop" name="site" value="wallapop" />
-                                            <label class="form-check-label" for="siteWallapop">Wallapop</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="siteMilanuncios" name="site" value="milanuncios" />
-                                            <label class="form-check-label" for="siteMilanuncios">Milanuncios</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="siteAutoScout24" name="site" value="autoscout24" />
-                                            <label class="form-check-label" for="siteAutoScout24">AutoScout24</label>
-                                        </div>
+                                        {{/siteOptions}}
                                     </fieldset>
                                     <!-- Filter buttons: apply the filters or reset them-->
                                     <div class="d-grid gap-2">

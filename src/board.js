@@ -22,8 +22,8 @@ export async function addVehicle(vehicle) {
 // if a category is chosen, only the vehicles with that body type are included,
 // the year must be inside the chosen range (each limit is optional),
 // the fuel type must be one of the checked ones
-// and the vehicle must have at least one offer that meets all the offer filters (price and mileage) at the same time
-function buildVehiclesFilter({ search, bodyType, yearFrom, yearTo, fuelType, priceMin, priceMax, maxKilometers } = {}) {
+// and the vehicle must have at least one offer that meets all the offer filters (price, mileage and site) at the same time
+function buildVehiclesFilter({ search, bodyType, yearFrom, yearTo, fuelType, priceMin, priceMax, maxKilometers, site } = {}) {
     const filter = {};
 
     const offerFilter = {};
@@ -38,6 +38,9 @@ function buildVehiclesFilter({ search, bodyType, yearFrom, yearTo, fuelType, pri
     }
     if (maxKilometers) {
         offerFilter.kilometers = { $lte: maxKilometers };
+    }
+    if (site && site.length > 0) {
+        offerFilter.site = { $in: site };
     }
     if (Object.keys(offerFilter).length > 0) {
         // $elemMatch makes one same offer meet every condition, instead of one offer the price and another one the mileage

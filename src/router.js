@@ -68,7 +68,8 @@ router.get('/', async (req, res) => {
     const priceMax = readNumber(req.query.priceMax);
     const kilometers = readNumber(req.query.maxKilometers);
     const maxKilometers = KILOMETER_LIMITS.includes(kilometers) ? kilometers : null; // Only the limits of the list
-    const criteria = { search, bodyType, yearFrom, yearTo, fuelType, priceMin, priceMax, maxKilometers };
+    const site = readList(req.query.site, Object.keys(SITE_LABELS));
+    const criteria = { search, bodyType, yearFrom, yearTo, fuelType, priceMin, priceMax, maxKilometers, site };
 
     const totalPages = Math.max(1, Math.ceil(await countVehicles(criteria) / PAGE_SIZE));
 
@@ -101,6 +102,9 @@ router.get('/', async (req, res) => {
         selected: limit === maxKilometers
     }));
 
+    // Source website checkboxes, marking the ones that are checked
+    const siteOptions = Object.entries(SITE_LABELS).map(([value, label]) => ({ value, label, checked: site.includes(value) }));
+
     // One link per page, marking the current one so the view can highlight it
     const pages = [];
     for (let number = 1; number <= totalPages; number++) {
@@ -117,6 +121,7 @@ router.get('/', async (req, res) => {
         priceMin,
         priceMax,
         kilometerOptions,
+        siteOptions,
         isFiltered: currentUrl !== '/',
         categories,
         clearFiltersUrl,
