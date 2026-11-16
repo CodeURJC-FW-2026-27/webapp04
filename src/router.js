@@ -202,7 +202,7 @@ router.post('/vehicle/new', upload.single('image'), async (req, res) => {
 
     const result = await addVehicle(newVehicle);
 
-    res.render('confirmation', {id: result.insertedId});
+    res.render('confirmation', {id: result.insertedId.toString()});
 });
 
 // Vehicle detail page
