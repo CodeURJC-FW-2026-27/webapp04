@@ -43,22 +43,22 @@
                                         <!-- Brand-->
                                         <div class="col-md-6">
                                             <label class="form-label" for="brand">Marca</label>
-                                            <input class="form-control" id="brand" name="brand" type="text" placeholder="Ej. Audi" required />
+                                            <input class="form-control" id="brand" name="brand" type="text" placeholder="Ej. Audi" required pattern="[A-ZÁÉÍÓÚÑ].*" title="Debe comenzar por letra mayúscula"/>
                                         </div>
                                         <!-- Model-->
                                         <div class="col-md-6">
                                             <label class="form-label" for="model">Modelo</label>
-                                            <input class="form-control" id="model" name="model" type="text" placeholder="Ej. A3" required />
+                                            <input class="form-control" id="model" name="model" type="text" placeholder="Ej. A3" required pattern="[A-ZÁÉÍÓÚÑ].*" title="Debe comenzar por letra mayúscula"/>
                                         </div>
                                         <!-- Model year-->
                                         <div class="col-md-6">
                                             <label class="form-label" for="year">Año</label>
-                                            <input class="form-control" id="year" name="year" type="number" placeholder="Ej. 2020" required />
+                                            <input class="form-control" id="year" name="year" type="number" placeholder="Ej. 2020" required min="1900" max="2026" />
                                         </div>
                                         <!-- Lowest price among its offers-->
                                         <div class="col-md-6">
                                             <label class="form-label" for="lowestPrice">Precio más bajo (€)</label>
-                                            <input class="form-control" id="lowestPrice" name="lowestPrice" type="number" placeholder="Ej. 20000" required />
+                                            <input class="form-control" id="lowestPrice" name="lowestPrice" type="number" placeholder="Ej. 20000" required  min="1"/>
                                         </div>
                                         <!-- Fuel type (same values as the catalog filters)-->
                                         <div class="col-md-6">
@@ -85,7 +85,7 @@
                                         <!-- Description-->
                                         <div class="col-md-6">
                                             <label class="form-label" for="description">Descripción</label>
-                                            <input class="form-control" id="description" name="description" type="text" placeholder="Ej. Vehículo deportivo" required />
+                                            <input class="form-control" id="description" name="description" type="text" placeholder="Ej. Vehículo deportivo" required minlength="10" maxlength="300"/>
                                         </div>
                                         <!-- Image or images of the vehicle-->
                                         <div class="col-12">

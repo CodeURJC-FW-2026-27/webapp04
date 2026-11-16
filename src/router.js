@@ -153,11 +153,15 @@ router.post('/vehicle/new', upload.array('image'), async (req, res) => {
         errors.push('Todos los campos son obligatorios.'); // All fields are required
     }
 
-    if (brand && !/^[A-ZÁÉÍÓÚÑ]/.test(brand)) {
+    if (brand && !/^[A-ZÁÉÍÓÚÑ]/.test(brand.trim())) {
         errors.push('La marca debe comenzar con una letra mayúscula.'); //The brand must begin with capital letters
     } 
 
-    if (description && (description.length < 10 || description.length > 300)) {
+    if (model && !/^[A-ZÁÉÍÓÚÑ]/.test(model.trim())) {
+        errors.push('El modelo debe comenzar con una letra mayúscula.'); //The model must begin with capital letters
+    } 
+
+    if (description && (description.trim().length < 10 || description.trim().length > 300)) {
         errors.push('La descripción debe tener un mínimo de 10 caracteres y un máximo de 300.'); //The description must be between 10-300 chars
     }
 
@@ -179,7 +183,7 @@ router.post('/vehicle/new', upload.array('image'), async (req, res) => {
         }
     }
 
-    if (errors > 0){
+    if (errors.length > 0){
         return res.render('new-vehicle', {errors, brand, model, year, lowestPrice, fuelType, bodyType, description}); //If there is an error, then repeat the form
     }
 
@@ -191,8 +195,8 @@ router.post('/vehicle/new', upload.array('image'), async (req, res) => {
         fuelType,
         bodyType,
         description: description.trim(),
-        image: imagePath
-    };
+        image: images
+    };  
 
     const result = await addVehicle(newVehicle);
 
