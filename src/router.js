@@ -2,7 +2,7 @@ import express from 'express';
 import multer from 'multer';
 import { findDuplicateVehicles, addVehicle, getVehicle, getVehicles, countVehicles, deleteVehicle, addOfferToVehicle, updateOfferInVehicle, deleteOfferFromVehicle, UPLOADS_FOLDER, PAGE_SIZE } from './board.js';
 
-const upload = multer({ dest: 'public/assets/img/'});
+const upload = multer({ dest: UPLOADS_FOLDER });
 const offerUpload = multer({ dest: UPLOADS_FOLDER });
 
 const router = express.Router();
@@ -140,13 +140,8 @@ router.get('/vehicle/new', (req, res) => {
     res.render('new-vehicle');
 });
 
-router.post('/vehicle/new', upload.array('image'), async (req, res) => {
+router.post('/vehicle/new', upload.single('image'), async (req, res) => {
     const {brand, model, year, lowestPrice, fuelType, bodyType, description} = req.body; //Save the form data to a database
-
-    let images = ['/assets/img/golf.jpg']; // Default image if no images are uploaded
-    if ((req.files) && (req.files.length > 0)) {
-        images = req.files.map(file => '/assets/img/' + file.filename);
-    } //See if there are images uploaded and then save them to the database along with the other form data
 
     const errors = [];
     if (!brand || !model || !year || !lowestPrice || !fuelType || !bodyType || !description) {
@@ -187,6 +182,13 @@ router.post('/vehicle/new', upload.array('image'), async (req, res) => {
         return res.render('new-vehicle', {errors, brand, model, year, lowestPrice, fuelType, bodyType, description}); //If there is an error, then repeat the form
     }
 
+    let imageFilename;
+    if (req.file) {
+        imageFilename = req.file.filename;
+    } else {
+        imageFilename = null;
+    }
+
     const newVehicle = {
         brand: brand.trim(),
         model: model.trim(),
@@ -195,7 +197,7 @@ router.post('/vehicle/new', upload.array('image'), async (req, res) => {
         fuelType,
         bodyType,
         description: description.trim(),
-        image: images
+        imageFilename: imageFilename
     };  
 
     const result = await addVehicle(newVehicle);

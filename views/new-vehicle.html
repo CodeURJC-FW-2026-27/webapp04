@@ -38,27 +38,30 @@
                     <div class="row gx-5 justify-content-center">
                         <div class="col-lg-8">
                             <div class="bg-light rounded-3 p-4 p-md-5">
+                                {{#errors}}
+                                    <div class="alert alert-danger" role="alert">{{.}}</div>
+                                {{/errors}}
                                 <form id="vehicleForm" method="post" enctype="multipart/form-data" action = "/vehicle/new">
                                     <div class="row g-3">
                                         <!-- Brand-->
                                         <div class="col-md-6">
                                             <label class="form-label" for="brand">Marca</label>
-                                            <input class="form-control" id="brand" name="brand" type="text" placeholder="Ej. Audi" required pattern="[A-ZÁÉÍÓÚÑ].*" title="Debe comenzar por letra mayúscula"/>
+                                            <input class="form-control" id="brand" name="brand" type="text" placeholder="Ej. Audi" required pattern="[A-ZÁÉÍÓÚÑ].*" title="Debe comenzar por letra mayúscula" value="{{brand}}"/>
                                         </div>
                                         <!-- Model-->
                                         <div class="col-md-6">
                                             <label class="form-label" for="model">Modelo</label>
-                                            <input class="form-control" id="model" name="model" type="text" placeholder="Ej. A3" required pattern="[A-ZÁÉÍÓÚÑ].*" title="Debe comenzar por letra mayúscula"/>
+                                            <input class="form-control" id="model" name="model" type="text" placeholder="Ej. A3" required pattern="[A-ZÁÉÍÓÚÑ].*" title="Debe comenzar por letra mayúscula" value="{{model}}"/>
                                         </div>
                                         <!-- Model year-->
                                         <div class="col-md-6">
                                             <label class="form-label" for="year">Año</label>
-                                            <input class="form-control" id="year" name="year" type="number" placeholder="Ej. 2020" required min="1900" max="2026" />
+                                            <input class="form-control" id="year" name="year" type="number" placeholder="Ej. 2020" required min="1900" max="2026" value="{{year}}"/>
                                         </div>
                                         <!-- Lowest price among its offers-->
                                         <div class="col-md-6">
                                             <label class="form-label" for="lowestPrice">Precio más bajo (€)</label>
-                                            <input class="form-control" id="lowestPrice" name="lowestPrice" type="number" placeholder="Ej. 20000" required  min="1"/>
+                                            <input class="form-control" id="lowestPrice" name="lowestPrice" type="number" placeholder="Ej. 20000" required  min="1" value="{{lowestPrice}}"/>
                                         </div>
                                         <!-- Fuel type (same values as the catalog filters)-->
                                         <div class="col-md-6">
@@ -85,12 +88,12 @@
                                         <!-- Description-->
                                         <div class="col-md-6">
                                             <label class="form-label" for="description">Descripción</label>
-                                            <input class="form-control" id="description" name="description" type="text" placeholder="Ej. Vehículo deportivo" required minlength="10" maxlength="300"/>
+                                            <input class="form-control" id="description" name="description" type="text" placeholder="Ej. Vehículo deportivo" required minlength="10" maxlength="300" value="{{description}}" />
                                         </div>
                                         <!-- Image or images of the vehicle-->
                                         <div class="col-12">
                                             <label class="form-label" for="image">Imágenes del vehículo</label>
-                                            <input class="form-control" id="image" name="image" type="file" accept="image/*" multiple />
+                                            <input class="form-control" id="image" name="image" type="file" accept="image/*" />
                                         </div>
                                         <!-- Form buttons: save and cancel-->
                                         <div class="col-12 d-flex justify-content-end gap-2 mt-4">
