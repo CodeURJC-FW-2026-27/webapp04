@@ -25,14 +25,16 @@ function toVehicleView(vehicle) {
     };
 }
 
-// Builds a main page URL that keeps the given search and category (e.g. "/?search=golf&bodyType=compact")
-function catalogUrl(search, bodyType) {
+// Builds a main page URL that keeps the given search, category and filters (e.g. "/?search=golf&bodyType=compact")
+function catalogUrl(criteria) {
     const params = new URLSearchParams();
-    if (search) {
-        params.set('search', search);
-    }
-    if (bodyType) {
-        params.set('bodyType', bodyType);
+    for (const [name, value] of Object.entries(criteria)) {
+        // Lists (like several fuel types) are added once per value, and empty values are left out
+        for (const item of [].concat(value)) {
+            if (item !== '' && item !== null && item !== undefined) {
+                params.append(name, item);
+            }
+        }
     }
     return params.size > 0 ? '/?' + params.toString() : '/';
 }
@@ -53,15 +55,18 @@ router.get('/', async (req, res) => {
 
     const vehicles = await getVehicles(criteria, page);
 
-    // Start of the pagination links, so that changing page keeps the search and category (e.g. "search=golf&")
-    const currentUrl = catalogUrl(search, bodyType);
+    // Start of the pagination links, so that changing page keeps the search, category and filters (e.g. "search=golf&")
+    const currentUrl = catalogUrl(criteria);
     const filterQuery = currentUrl === '/' ? '' : currentUrl.slice(2) + '&';
 
-    // Category buttons: "Todos" plus one per body type. They keep the search and mark the active category
-    const categories = [{ label: 'Todos', url: catalogUrl(search, ''), active: bodyType === '' }];
+    // Category buttons: "Todos" plus one per body type. They keep the search and filters and mark the active category
+    const categories = [{ label: 'Todos', url: catalogUrl({ ...criteria, bodyType: '' }), active: bodyType === '' }];
     for (const [value, label] of Object.entries(BODY_LABELS)) {
-        categories.push({ label, url: catalogUrl(search, value), active: value === bodyType });
+        categories.push({ label, url: catalogUrl({ ...criteria, bodyType: value }), active: value === bodyType });
     }
+
+    // "Limpiar filtros" removes the sidebar filters but keeps the search and the category
+    const clearFiltersUrl = catalogUrl({ search, bodyType });
 
     // One link per page, marking the current one so the view can highlight it
     const pages = [];
@@ -74,6 +79,7 @@ router.get('/', async (req, res) => {
         search,
         bodyType,
         categories,
+        clearFiltersUrl,
         filterQuery,
         pages,
         hasPrevious: page > 1,

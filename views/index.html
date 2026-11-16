@@ -35,20 +35,23 @@
                         <h1 class="fw-bolder">Catálogo de vehículos</h1>
                         <p class="lead fw-normal text-muted mb-0">Vehículos de segunda mano recopilados de distintas páginas de compraventa. Compara sus ofertas y encuentra el mejor precio.</p>
                     </div>
+                    <!-- Catalog form: the search box, the chosen category and the sidebar filters are sent together,
+                         so searching or applying filters never loses the other choices-->
+                    <form action="/" method="get">
                     <!-- Search by brand or model (sends the text to this same page in the "search" parameter)-->
-                    <form class="row justify-content-center mb-4" action="/" method="get" role="search">
+                    <div class="row justify-content-center mb-4" role="search">
                         <div class="col-lg-8 col-xl-6">
                             <div class="input-group input-group-lg">
                                 <span class="input-group-text"><i class="bi bi-search" aria-hidden="true"></i></span>
                                 <input class="form-control" type="search" name="search" value="{{search}}" placeholder="Busca por marca o modelo, p. ej. Volkswagen Golf" aria-label="Buscar por marca o modelo" />
-                                <!-- Keeps the chosen category when searching-->
+                                <!-- Keeps the chosen category when searching or applying filters-->
                                 {{#bodyType}}
                                 <input type="hidden" name="bodyType" value="{{bodyType}}" />
                                 {{/bodyType}}
                                 <button class="btn btn-primary" type="submit">Buscar</button>
                             </div>
                         </div>
-                    </form>
+                    </div>
                     <!-- Body type categories (each one opens this same page with the "bodyType" parameter, the active one is highlighted)-->
                     <nav class="mb-5" aria-label="Categorías por tipo de carrocería">
                         <ul class="nav nav-pills justify-content-center gap-2">
@@ -66,27 +69,11 @@
                     <div class="row gx-5">
                         <!-- Filters sidebar (placed above the listing on small screens)-->
                         <aside class="col-lg-3 mb-5 mb-lg-0">
-                            <form class="card shadow border-0" action="/" method="get">
+                            <div class="card shadow border-0">
                                 <div class="card-body p-4">
                                     <h2 class="h5 fw-bolder mb-4"><i class="bi bi-funnel me-2" aria-hidden="true"></i>Filtros</h2>
-                                    <!-- Filters on vehicle attributes-->
+                                    <!-- Filters on vehicle attributes (the brand is searched with the search box)-->
                                     <h3 class="small fw-bolder text-uppercase text-muted mb-3">Vehículo</h3>
-                                    <!-- Brand filter-->
-                                    <div class="mb-3">
-                                        <label class="form-label" for="brand">Marca</label>
-                                        <select class="form-select" id="brand" name="brand">
-                                            <option value="" selected>Todas las marcas</option>
-                                            <option value="audi">Audi</option>
-                                            <option value="bmw">BMW</option>
-                                            <option value="ford">Ford</option>
-                                            <option value="hyundai">Hyundai</option>
-                                            <option value="peugeot">Peugeot</option>
-                                            <option value="seat">Seat</option>
-                                            <option value="tesla">Tesla</option>
-                                            <option value="toyota">Toyota</option>
-                                            <option value="volkswagen">Volkswagen</option>
-                                        </select>
-                                    </div>
                                     <!-- Year range filter-->
                                     <fieldset class="mb-3">
                                         <legend class="form-label fs-6">Año</legend>
@@ -161,10 +148,10 @@
                                     <!-- Filter buttons: apply the filters or reset them-->
                                     <div class="d-grid gap-2">
                                         <button class="btn btn-primary" type="submit">Aplicar filtros</button>
-                                        <a class="btn btn-outline-secondary" href="/">Limpiar filtros</a>
+                                        <a class="btn btn-outline-secondary" href="{{clearFiltersUrl}}">Limpiar filtros</a>
                                     </div>
                                 </div>
-                            </form>
+                            </div>
                         </aside>
                         <!-- Listing column: create button and vehicle grid-->
                         <div class="col-lg-9">
@@ -236,6 +223,7 @@
                             </nav>
                         </div>
                     </div>
+                    </form>
                 </div>
             </section>
         </main>
