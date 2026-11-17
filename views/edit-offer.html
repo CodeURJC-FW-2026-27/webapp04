@@ -45,10 +45,9 @@
                                         <div class="col-md-6">
                                             <label class="form-label" for="site">Página de origen</label>
                                             <select class="form-select" id="site" name="site" required>
-                                                <option value="cochesnet" {{#isCochesnet}}selected{{/isCochesnet}}>Coches.net</option>
-                                                <option value="wallapop" {{#isWallapop}}selected{{/isWallapop}}>Wallapop</option>
-                                                <option value="milanuncios" {{#isMilanuncios}}selected{{/isMilanuncios}}>Milanuncios</option>
-                                                <option value="autoscout24" {{#isAutoscout24}}selected{{/isAutoscout24}}>AutoScout24</option>
+                                                {{#siteOptions}}
+                                                <option value="{{value}}" {{#selected}}selected{{/selected}}>{{label}}</option>
+                                                {{/siteOptions}}
                                             </select>
                                         </div>
 

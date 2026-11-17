@@ -285,16 +285,16 @@ router.get('/vehicle/:id/edit', async (req, res) => {
 // Edit vehicle: processed by the same code as creating a vehicle
 router.post('/vehicle/:id/edit', upload.single('image'), saveVehicleForm);
 
-// Vehicle detail page
+// Finds an offer of a vehicle by its id (undefined if the vehicle does not have it)
+function findOffer(vehicle, offerId) {
+    return (vehicle?.offers || []).find(offer => offer._id.toString() === offerId);
+}
+
 // Vehicle detail page
 router.get('/vehicle/:id', async (req, res) => {
     const vehicle = await getVehicle(req.params.id);
     if (!vehicle) {
-        return res.status(404).render('error', {
-            errorMessage: 'El vehículo solicitado no existe o ha sido eliminado.',
-            redirectUrl: '/',
-            buttonText: 'Volver al catálogo'
-        });
+        return renderError(res, 404, 'El vehículo solicitado no existe o ha sido eliminado.', '/', 'Volver al catálogo');
     }
 
     const formattedOffers = (vehicle.offers || []).map(offer => ({
@@ -317,11 +317,7 @@ router.get('/vehicle/:id', async (req, res) => {
 router.post('/vehicle/:id/delete', async (req, res) => {
     const vehicle = await getVehicle(req.params.id);
     if (!vehicle) {
-        return res.status(404).render('error', {
-            errorMessage: 'No se pudo encontrar el vehículo que intentas borrar.',
-            redirectUrl: '/',
-            buttonText: 'Volver al catálogo'
-        });
+        return renderError(res, 404, 'No se pudo encontrar el vehículo que intentas borrar.', '/', 'Volver al catálogo');
     }
 
     await deleteVehicle(req.params.id);
@@ -338,13 +334,12 @@ router.post('/vehicle/:id/delete', async (req, res) => {
 function validateOfferData(body, existingOffers = [], currentOfferId = null) {
     const { site, price, kilometers, seller, url, date } = body;
     const errors = [];
-    const allowedSites = ['cochesnet', 'wallapop', 'milanuncios', 'autoscout24'];
 
     if (!site || !price || !kilometers || !seller || !url || !date) {
         errors.push('Todos los campos obligatorios deben estar rellenos.');
     }
 
-    if (site && !allowedSites.includes(site)) {
+    if (site && !Object.hasOwn(SITE_LABELS, site)) {
         errors.push('La página de origen seleccionada no es válida.');
     }
 
@@ -391,36 +386,33 @@ function validateOfferData(body, existingOffers = [], currentOfferId = null) {
     return errors;
 }
 
-// Create secondary entity (Offer)
-router.post('/vehicle/:id/offers', upload.single('image'), async (req, res) => {
-    const vehicle = await getVehicle(req.params.id);
-    if (!vehicle) {
-        return res.status(404).render('error', {
-            errorMessage: 'El vehículo al que intentas añadir la oferta no existe.',
-            redirectUrl: '/',
-            buttonText: 'Volver al catálogo'
-        });
-    }
-
-    const errors = validateOfferData(req.body, vehicle.offers || []);
-    if (errors.length > 0) {
-        return res.status(400).render('error', {
-            errorMessage: errors.join(' '),
-            redirectUrl: `/vehicle/${req.params.id}`,
-            buttonText: 'Volver al vehículo'
-        });
-    }
-
-    const { site, price, kilometers, seller, url, date } = req.body;
-    const offerData = {
+// Builds the offer fields to store from the data sent in the offer form (used to create and to edit an offer)
+function buildOfferData(body, imageFilename) {
+    const { site, price, kilometers, seller, url, date } = body;
+    return {
         site,
         price: Number(price),
         kilometers: Number(kilometers),
         seller: seller.trim(),
         url: url.trim(),
         date,
-        imageFilename: req.file ? req.file.filename : null
+        imageFilename
     };
+}
+
+// Create secondary entity (Offer)
+router.post('/vehicle/:id/offers', upload.single('image'), async (req, res) => {
+    const vehicle = await getVehicle(req.params.id);
+    if (!vehicle) {
+        return renderError(res, 404, 'El vehículo al que intentas añadir la oferta no existe.', '/', 'Volver al catálogo');
+    }
+
+    const errors = validateOfferData(req.body, vehicle.offers || []);
+    if (errors.length > 0) {
+        return renderError(res, 400, errors.join(' '), `/vehicle/${req.params.id}`, 'Volver al vehículo');
+    }
+
+    const offerData = buildOfferData(req.body, req.file ? req.file.filename : null);
 
     await addOfferToVehicle(req.params.id, offerData);
 
@@ -436,11 +428,7 @@ router.post('/vehicle/:id/offers', upload.single('image'), async (req, res) => {
 router.post('/vehicle/:id/offers/:offerId/delete', async (req, res) => {
     const vehicle = await getVehicle(req.params.id);
     if (!vehicle) {
-        return res.status(404).render('error', {
-            errorMessage: 'El vehículo solicitado no existe.',
-            redirectUrl: '/',
-            buttonText: 'Volver al catálogo'
-        });
+        return renderError(res, 404, 'El vehículo solicitado no existe.', '/', 'Volver al catálogo');
     }
 
     await deleteOfferFromVehicle(req.params.id, req.params.offerId);
@@ -457,30 +445,19 @@ router.post('/vehicle/:id/offers/:offerId/delete', async (req, res) => {
 router.get('/vehicle/:id/offers/:offerId/edit', async (req, res) => {
     const vehicle = await getVehicle(req.params.id);
     if (!vehicle) {
-        return res.status(404).render('error', {
-            errorMessage: 'El vehículo solicitado no existe.',
-            redirectUrl: '/',
-            buttonText: 'Volver al catálogo'
-        });
+        return renderError(res, 404, 'El vehículo solicitado no existe.', '/', 'Volver al catálogo');
     }
 
-    const offer = (vehicle.offers || []).find(o => o._id.toString() === req.params.offerId);
+    const offer = findOffer(vehicle, req.params.offerId);
     if (!offer) {
-        return res.status(404).render('error', {
-            errorMessage: 'La oferta que intentas editar no existe.',
-            redirectUrl: `/vehicle/${req.params.id}`,
-            buttonText: 'Volver al vehículo'
-        });
+        return renderError(res, 404, 'La oferta que intentas editar no existe.', `/vehicle/${req.params.id}`, 'Volver al vehículo');
     }
 
     res.render('edit-offer', {
         vehicleId: vehicle._id,
         vehicleName: `${vehicle.brand} ${vehicle.model}`,
         offer,
-        isCochesnet: offer.site === 'cochesnet',
-        isWallapop: offer.site === 'wallapop',
-        isMilanuncios: offer.site === 'milanuncios',
-        isAutoscout24: offer.site === 'autoscout24'
+        siteOptions: formOptions(SITE_LABELS, offer.site)
     });
 });
 
@@ -488,42 +465,21 @@ router.get('/vehicle/:id/offers/:offerId/edit', async (req, res) => {
 router.post('/vehicle/:id/offers/:offerId/edit', upload.single('image'), async (req, res) => {
     const vehicle = await getVehicle(req.params.id);
     if (!vehicle) {
-        return res.status(404).render('error', {
-            errorMessage: 'El vehículo solicitado no existe.',
-            redirectUrl: '/',
-            buttonText: 'Volver al catálogo'
-        });
+        return renderError(res, 404, 'El vehículo solicitado no existe.', '/', 'Volver al catálogo');
     }
 
-    const existingOffer = (vehicle.offers || []).find(o => o._id.toString() === req.params.offerId);
+    const existingOffer = findOffer(vehicle, req.params.offerId);
     if (!existingOffer) {
-        return res.status(404).render('error', {
-            errorMessage: 'La oferta que intentas modificar no existe.',
-            redirectUrl: `/vehicle/${req.params.id}`,
-            buttonText: 'Volver al vehículo'
-        });
+        return renderError(res, 404, 'La oferta que intentas modificar no existe.', `/vehicle/${req.params.id}`, 'Volver al vehículo');
     }
 
     const errors = validateOfferData(req.body, vehicle.offers || [], req.params.offerId);
     if (errors.length > 0) {
-        return res.status(400).render('error', {
-            errorMessage: errors.join(' '),
-            redirectUrl: `/vehicle/${req.params.id}/offers/${req.params.offerId}/edit`,
-            buttonText: 'Volver al formulario de edición'
-        });
+        return renderError(res, 400, errors.join(' '), `/vehicle/${req.params.id}/offers/${req.params.offerId}/edit`, 'Volver al formulario de edición');
     }
 
-    const { site, price, kilometers, seller, url, date } = req.body;
-    const updatedFields = {
-        site,
-        price: Number(price),
-        kilometers: Number(kilometers),
-        seller: seller.trim(),
-        url: url.trim(),
-        date,
-        // Keep previous image if no new file is uploaded
-        imageFilename: req.file ? req.file.filename : (existingOffer.imageFilename || null)
-    };
+    // Keep previous image if no new file is uploaded
+    const updatedFields = buildOfferData(req.body, req.file ? req.file.filename : (existingOffer.imageFilename || null));
 
     await updateOfferInVehicle(req.params.id, req.params.offerId, updatedFields);
 
@@ -561,7 +517,7 @@ router.get('/vehicle/:id/image', async (req, res) => {
 // Offer image, sent from the uploads folder like the vehicle image
 router.get('/vehicle/:id/offers/:offerId/image', async (req, res) => {
     const vehicle = await getVehicle(req.params.id);
-    const offer = (vehicle?.offers || []).find(o => o._id.toString() === req.params.offerId);
+    const offer = findOffer(vehicle, req.params.offerId);
 
     sendUploadedImage(res, offer?.imageFilename);
 });
