@@ -172,8 +172,8 @@ router.post('/vehicle/new', upload.single('image'), async (req, res) => {
     }
 
     if (brand && model) {  
-        const duplicado = await findDuplicateVehicles(brand.trim(), model.trim());  //Check if the vehicles are not duplicate
-        if (duplicado){
+        const duplicateVehicle = await findDuplicateVehicles(brand.trim(), model.trim());  //Check if the vehicles are not duplicate
+        if (duplicateVehicle){
             errors.push('Ya existe este vehículo');  
         }
     }
