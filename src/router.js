@@ -134,10 +134,20 @@ router.get('/', async (req, res) => {
     });
 });
 
-// New vehicle form
+// Options of a select in the vehicle form, marking the value the vehicle already has (when editing)
+function formOptions(labels, selectedValue = '') {
+    return Object.entries(labels).map(([value, label]) => ({ value, label, selected: value === selectedValue }));
+}
+
+// New vehicle form (the same view is used to edit a vehicle)
 // It must be declared before '/vehicle/:id' so that "new" is not taken as an id
 router.get('/vehicle/new', (req, res) => {
-    res.render('new-vehicle');
+    res.render('new-vehicle', {
+        formAction: '/vehicle/new',
+        cancelUrl: '/',
+        fuelOptions: formOptions(FUEL_LABELS),
+        bodyOptions: formOptions(BODY_LABELS)
+    });
 });
 
 // Checks the data sent in the vehicle form and returns the list of errors (empty if everything is right).
