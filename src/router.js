@@ -140,8 +140,11 @@ router.get('/vehicle/new', (req, res) => {
     res.render('new-vehicle');
 });
 
-router.post('/vehicle/new', upload.single('image'), async (req, res) => {
-    const {brand, model, year, lowestPrice, fuelType, bodyType, description} = req.body; //Save the form data to a database
+// Checks the data sent in the vehicle form and returns the list of errors (empty if everything is right).
+// It is shared by the routes that create and edit a vehicle: when editing, editedVehicleId stops the
+// vehicle from being reported as a duplicate of itself
+async function validateVehicleData(body, editedVehicleId = null) {
+    const {brand, model, year, lowestPrice, fuelType, bodyType, description} = body;
 
     const errors = [];
     if (!brand || !model || !year || !lowestPrice || !fuelType || !bodyType || !description) {
@@ -181,10 +184,16 @@ router.post('/vehicle/new', upload.single('image'), async (req, res) => {
 
     if (brand && model) {  
         const duplicateVehicle = await findDuplicateVehicles(brand.trim(), model.trim());  //Check if the vehicles are not duplicate
-        if (duplicateVehicle){
+        if (duplicateVehicle && duplicateVehicle._id.toString() !== editedVehicleId){
             errors.push('Ya existe este vehículo.');
         }
     }
+
+    return errors;
+}
+
+router.post('/vehicle/new', upload.single('image'), async (req, res) => {
+    const errors = await validateVehicleData(req.body);
 
     if (errors.length > 0){
         // Same error page as the offer forms, with a button to go back to the form
@@ -194,6 +203,8 @@ router.post('/vehicle/new', upload.single('image'), async (req, res) => {
             buttonText: 'Volver al formulario'
         });
     }
+
+    const {brand, model, year, lowestPrice, fuelType, bodyType, description} = req.body; //Save the form data to a database
 
     let imageFilename;
     if (req.file) {
@@ -205,8 +216,8 @@ router.post('/vehicle/new', upload.single('image'), async (req, res) => {
     const newVehicle = {
         brand: brand.trim(),
         model: model.trim(),
-        year: numYear,
-        lowestPrice: numPrice,
+        year: Number(year),
+        lowestPrice: Number(lowestPrice),
         fuelType,
         bodyType,
         description: description.trim(),
