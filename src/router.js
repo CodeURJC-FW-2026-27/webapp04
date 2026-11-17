@@ -359,7 +359,11 @@ function validateOfferData(body, existingOffers = [], currentOfferId = null) {
 
     if (url) {
         try {
-            new URL(url);
+            // Only web links are allowed: a "javascript:" link would run code when "Ver anuncio" is clicked
+            const protocol = new URL(url).protocol;
+            if (protocol !== 'http:' && protocol !== 'https:') {
+                errors.push('El enlace al anuncio original debe empezar por http:// o https://.');
+            }
         } catch {
             errors.push('El enlace al anuncio original no tiene un formato de URL válido.');
         }
@@ -429,6 +433,11 @@ router.post('/vehicle/:id/offers/:offerId/delete', async (req, res) => {
     const vehicle = await getVehicle(req.params.id);
     if (!vehicle) {
         return renderError(res, 404, 'El vehículo solicitado no existe.', '/', 'Volver al catálogo');
+    }
+
+    // The offer must exist, so a wrong id shows the error page instead of failing or confirming a delete that did not happen
+    if (!findOffer(vehicle, req.params.offerId)) {
+        return renderError(res, 404, 'La oferta que intentas borrar no existe.', `/vehicle/${req.params.id}`, 'Volver al vehículo');
     }
 
     await deleteOfferFromVehicle(req.params.id, req.params.offerId);

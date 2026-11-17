@@ -68,7 +68,7 @@
 
                                         <div class="col-md-6">
                                             <label class="form-label" for="url">Enlace al anuncio original</label>
-                                            <input class="form-control" id="url" name="url" type="url" value="{{offer.url}}" required />
+                                            <input class="form-control" id="url" name="url" type="url" pattern="https?://.+" title="Debe empezar por http:// o https://" value="{{offer.url}}" required />
                                         </div>
 
                                         <div class="col-md-6">
