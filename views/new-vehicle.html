@@ -95,7 +95,7 @@
                                         <!-- Image of the vehicle (when editing, the current one is kept if no new image is chosen)-->
                                         <div class="col-12">
                                             <label class="form-label" for="image">Imagen del vehículo{{#editing}} (opcional, si no eliges ninguna se mantiene la actual){{/editing}}</label>
-                                            <input class="form-control" id="image" name="image" type="file" accept="image/*" />
+                                            <input class="form-control" id="image" name="image" type="file" accept="image/jpeg,image/png,image/webp,image/gif" />
                                             {{#editing}}
                                             {{#imageFilename}}
                                             <div class="mt-2">

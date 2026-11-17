@@ -2,8 +2,20 @@ import express from 'express';
 import multer from 'multer';
 import { findDuplicateVehicles, addVehicle, updateVehicle, getVehicle, getVehicles, countVehicles, deleteVehicle, addOfferToVehicle, updateOfferInVehicle, deleteOfferFromVehicle, UPLOADS_FOLDER, PAGE_SIZE } from './vehicles.js';
 
-// Saves the images sent in the vehicle and offer forms into the uploads folder
-const upload = multer({ dest: UPLOADS_FOLDER });
+// Image formats that browsers can show (photos in other formats, like HEIC from phones, would appear broken)
+const IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+const IMAGE_FORMAT_ERROR = 'La imagen debe estar en formato JPG, PNG, WEBP o GIF.';
+
+// Saves the images sent in the vehicle and offer forms into the uploads folder.
+// Files in other formats are not saved, and req.imageRejected lets the routes show the error
+const upload = multer({
+    dest: UPLOADS_FOLDER,
+    fileFilter: (req, file, callback) => {
+        const isValidImage = IMAGE_TYPES.includes(file.mimetype);
+        req.imageRejected = !isValidImage;
+        callback(null, isValidImage);
+    }
+});
 
 const router = express.Router();
 export default router;
@@ -219,6 +231,9 @@ async function saveVehicleForm(req, res) {
     }
 
     const errors = await validateVehicleData(req.body, vehicleId);
+    if (req.imageRejected) {
+        errors.push(IMAGE_FORMAT_ERROR);
+    }
 
     if (errors.length > 0){
         // Same error page as the offer forms, with a button to go back to the form
@@ -412,6 +427,9 @@ router.post('/vehicle/:id/offers', upload.single('image'), async (req, res) => {
     }
 
     const errors = validateOfferData(req.body, vehicle.offers || []);
+    if (req.imageRejected) {
+        errors.push(IMAGE_FORMAT_ERROR);
+    }
     if (errors.length > 0) {
         return renderError(res, 400, errors.join(' '), `/vehicle/${req.params.id}`, 'Volver al vehículo');
     }
@@ -483,6 +501,9 @@ router.post('/vehicle/:id/offers/:offerId/edit', upload.single('image'), async (
     }
 
     const errors = validateOfferData(req.body, vehicle.offers || [], req.params.offerId);
+    if (req.imageRejected) {
+        errors.push(IMAGE_FORMAT_ERROR);
+    }
     if (errors.length > 0) {
         return renderError(res, 400, errors.join(' '), `/vehicle/${req.params.id}/offers/${req.params.offerId}/edit`, 'Volver al formulario de edición');
     }
