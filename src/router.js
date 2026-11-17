@@ -154,7 +154,15 @@ router.post('/vehicle/new', upload.single('image'), async (req, res) => {
 
     if (model && !/^[A-ZÁÉÍÓÚÑ]/.test(model.trim())) {
         errors.push('El modelo debe comenzar con una letra mayúscula.'); //The model must begin with capital letters
-    } 
+    }
+
+    if (fuelType && !Object.hasOwn(FUEL_LABELS, fuelType)) {
+        errors.push('El combustible seleccionado no es válido.'); // The fuel type must be one of the list (the form can be edited in the browser)
+    }
+
+    if (bodyType && !Object.hasOwn(BODY_LABELS, bodyType)) {
+        errors.push('La carrocería seleccionada no es válida.'); // The body type must be one of the list (the form can be edited in the browser)
+    }
 
     if (description && (description.trim().length < 10 || description.trim().length > 300)) {
         errors.push('La descripción debe tener un mínimo de 10 caracteres y un máximo de 300.'); //The description must be between 10-300 chars
@@ -163,8 +171,8 @@ router.post('/vehicle/new', upload.single('image'), async (req, res) => {
     const numYear = Number(year);
     const numPrice = Number(lowestPrice);
 
-    if (isNaN(numYear) || numYear < 1900 || numYear > 2026) {
-        errors.push('El año debe ser un número válido entre 1900 y 2026.'); //The year has to be between 1900-2026 and has to be a number
+    if (!Number.isInteger(numYear) || numYear < 1900 || numYear > 2026) {
+        errors.push('El año debe ser un número válido entre 1900 y 2026.'); //The year has to be a whole number between 1900-2026
     }
 
     if (isNaN(numPrice) || numPrice <= 0) {
