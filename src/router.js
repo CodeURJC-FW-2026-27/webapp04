@@ -536,6 +536,16 @@ router.post('/vehicle/:id/offers/:offerId/edit', upload.single('image'), async (
 });
 
 
+// Sends an image from the uploads folder (used for vehicle and offer images)
+function sendUploadedImage(res, imageFilename) {
+    // The file name cannot contain folder separators, so only files inside uploads can be sent
+    if (!imageFilename || /[\\/]/.test(imageFilename)) {
+        return res.status(404).send('Image not found');
+    }
+
+    res.download(UPLOADS_FOLDER + '/' + imageFilename);
+}
+
 // Vehicle image, sent from the uploads folder
 router.get('/vehicle/:id/image', async (req, res) => {
     const vehicle = await getVehicle(req.params.id);
@@ -545,10 +555,13 @@ router.get('/vehicle/:id/image', async (req, res) => {
         return res.redirect('/assets/no-image.svg');
     }
 
-    // The file name cannot contain folder separators, so only files inside uploads can be sent
-    if (!vehicle || !vehicle.imageFilename || /[\\/]/.test(vehicle.imageFilename)) {
-        return res.status(404).send('Image not found');
-    }
+    sendUploadedImage(res, vehicle?.imageFilename);
+});
 
-    res.download(UPLOADS_FOLDER + '/' + vehicle.imageFilename);
+// Offer image, sent from the uploads folder like the vehicle image
+router.get('/vehicle/:id/offers/:offerId/image', async (req, res) => {
+    const vehicle = await getVehicle(req.params.id);
+    const offer = (vehicle?.offers || []).find(o => o._id.toString() === req.params.offerId);
+
+    sendUploadedImage(res, offer?.imageFilename);
 });
