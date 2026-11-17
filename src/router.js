@@ -1,6 +1,6 @@
 import express from 'express';
 import multer from 'multer';
-import { findDuplicateVehicles, addVehicle, getVehicle, getVehicles, countVehicles, deleteVehicle, addOfferToVehicle, updateOfferInVehicle, deleteOfferFromVehicle, UPLOADS_FOLDER, PAGE_SIZE } from './vehicles.js';
+import { findDuplicateVehicles, addVehicle, updateVehicle, getVehicle, getVehicles, countVehicles, deleteVehicle, addOfferToVehicle, updateOfferInVehicle, deleteOfferFromVehicle, UPLOADS_FOLDER, PAGE_SIZE } from './vehicles.js';
 
 // Saves the images sent in the vehicle and offer forms into the uploads folder
 const upload = multer({ dest: UPLOADS_FOLDER });
@@ -202,16 +202,27 @@ async function validateVehicleData(body, editedVehicleId = null) {
     return errors;
 }
 
-router.post('/vehicle/new', upload.single('image'), async (req, res) => {
-    const errors = await validateVehicleData(req.body);
+// Shows the shared error page with a message and a button to the page where the user can continue
+function renderError(res, status, errorMessage, redirectUrl, buttonText) {
+    return res.status(status).render('error', { errorMessage, redirectUrl, buttonText });
+}
+
+// Processes the vehicle form, both to create a vehicle (/vehicle/new) and to edit one (/vehicle/:id/edit),
+// so the same code validates and saves the data in both cases
+async function saveVehicleForm(req, res) {
+    const vehicleId = req.params.id; // Only exists when editing
+    const formUrl = vehicleId ? `/vehicle/${vehicleId}/edit` : '/vehicle/new';
+
+    const editedVehicle = vehicleId ? await getVehicle(vehicleId) : null;
+    if (vehicleId && !editedVehicle) {
+        return renderError(res, 404, 'El vehículo que intentas editar no existe.', '/', 'Volver al catálogo');
+    }
+
+    const errors = await validateVehicleData(req.body, vehicleId);
 
     if (errors.length > 0){
         // Same error page as the offer forms, with a button to go back to the form
-        return res.status(400).render('error', {
-            errorMessage: errors.join(' '),
-            redirectUrl: '/vehicle/new',
-            buttonText: 'Volver al formulario'
-        });
+        return renderError(res, 400, errors.join(' '), formUrl, 'Volver al formulario');
     }
 
     const {brand, model, year, lowestPrice, fuelType, bodyType, description} = req.body; //Save the form data to a database
@@ -219,11 +230,13 @@ router.post('/vehicle/new', upload.single('image'), async (req, res) => {
     let imageFilename;
     if (req.file) {
         imageFilename = req.file.filename;
+    } else if (editedVehicle) {
+        imageFilename = editedVehicle.imageFilename || null; // When editing without a new image, the previous one is kept
     } else {
         imageFilename = null;
     }
 
-    const newVehicle = {
+    const vehicleData = {
         brand: brand.trim(),
         model: model.trim(),
         year: Number(year),
@@ -232,12 +245,45 @@ router.post('/vehicle/new', upload.single('image'), async (req, res) => {
         bodyType,
         description: description.trim(),
         imageFilename: imageFilename
-    };  
+    };
 
-    const result = await addVehicle(newVehicle);
+    if (editedVehicle) {
+        await updateVehicle(vehicleId, vehicleData);
+        return res.render('confirmation', {
+            title: '¡Vehículo actualizado!',
+            message: `Los cambios en el vehículo ${vehicleData.brand} ${vehicleData.model} se han guardado correctamente.`,
+            redirectUrl: `/vehicle/${vehicleId}`,
+            buttonText: 'Volver al detalle del vehículo'
+        });
+    }
+
+    const result = await addVehicle(vehicleData);
 
     res.render('confirmation', {id: result.insertedId.toString()});
+}
+
+router.post('/vehicle/new', upload.single('image'), saveVehicleForm);
+
+// Edit vehicle form: the same view as the new vehicle form, filled with the current data
+router.get('/vehicle/:id/edit', async (req, res) => {
+    const vehicle = await getVehicle(req.params.id);
+    if (!vehicle) {
+        return renderError(res, 404, 'El vehículo que intentas editar no existe.', '/', 'Volver al catálogo');
+    }
+
+    res.render('new-vehicle', {
+        ...vehicle,
+        editing: true,
+        vehicleId: vehicle._id.toString(),
+        formAction: `/vehicle/${vehicle._id}/edit`,
+        cancelUrl: `/vehicle/${vehicle._id}`,
+        fuelOptions: formOptions(FUEL_LABELS, vehicle.fuelType),
+        bodyOptions: formOptions(BODY_LABELS, vehicle.bodyType)
+    });
 });
+
+// Edit vehicle: processed by the same code as creating a vehicle
+router.post('/vehicle/:id/edit', upload.single('image'), saveVehicleForm);
 
 // Vehicle detail page
 // Vehicle detail page

@@ -17,6 +17,11 @@ export async function addVehicle(vehicle) {
     return await vehicles.insertOne(vehicle); //Async function to add new vehicle
 }
 
+export async function updateVehicle(id, vehicleData) {
+    // Async function to change the fields sent in the vehicle form ($set keeps the rest, like the offers)
+    return await vehicles.updateOne({ _id: new ObjectId(id) }, { $set: vehicleData });
+}
+
 // Builds the MongoDB filter for the main page search, category and sidebar filters:
 // every word typed by the user must appear in the brand or in the model (case insensitive),
 // if a category is chosen, only the vehicles with that body type are included,
