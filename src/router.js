@@ -176,18 +176,23 @@ router.post('/vehicle/new', upload.single('image'), async (req, res) => {
     }
 
     if (isNaN(numPrice) || numPrice <= 0) {
-        errors.push('El precio debe ser mayor que 0'); //The price has to be a number and greater than 0
+        errors.push('El precio debe ser mayor que 0.'); //The price has to be a number and greater than 0
     }
 
     if (brand && model) {  
         const duplicateVehicle = await findDuplicateVehicles(brand.trim(), model.trim());  //Check if the vehicles are not duplicate
         if (duplicateVehicle){
-            errors.push('Ya existe este vehículo');  
+            errors.push('Ya existe este vehículo.');
         }
     }
 
     if (errors.length > 0){
-        return res.render('new-vehicle', {errors, brand, model, year, lowestPrice, fuelType, bodyType, description}); //If there is an error, then repeat the form
+        // Same error page as the offer forms, with a button to go back to the form
+        return res.status(400).render('error', {
+            errorMessage: errors.join(' '),
+            redirectUrl: '/vehicle/new',
+            buttonText: 'Volver al formulario'
+        });
     }
 
     let imageFilename;
