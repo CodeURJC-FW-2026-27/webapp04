@@ -2,8 +2,8 @@ import express from 'express';
 import multer from 'multer';
 import { findDuplicateVehicles, addVehicle, getVehicle, getVehicles, countVehicles, deleteVehicle, addOfferToVehicle, updateOfferInVehicle, deleteOfferFromVehicle, UPLOADS_FOLDER, PAGE_SIZE } from './vehicles.js';
 
+// Saves the images sent in the vehicle and offer forms into the uploads folder
 const upload = multer({ dest: UPLOADS_FOLDER });
-const offerUpload = multer({ dest: UPLOADS_FOLDER });
 
 const router = express.Router();
 export default router;
@@ -312,7 +312,7 @@ function validateOfferData(body, existingOffers = [], currentOfferId = null) {
 }
 
 // Create secondary entity (Offer)
-router.post('/vehicle/:id/offers', offerUpload.single('image'), async (req, res) => {
+router.post('/vehicle/:id/offers', upload.single('image'), async (req, res) => {
     const vehicle = await getVehicle(req.params.id);
     if (!vehicle) {
         return res.status(404).render('error', {
@@ -405,7 +405,7 @@ router.get('/vehicle/:id/offers/:offerId/edit', async (req, res) => {
 });
 
 // Process edit form for a specific offer
-router.post('/vehicle/:id/offers/:offerId/edit', offerUpload.single('image'), async (req, res) => {
+router.post('/vehicle/:id/offers/:offerId/edit', upload.single('image'), async (req, res) => {
     const vehicle = await getVehicle(req.params.id);
     if (!vehicle) {
         return res.status(404).render('error', {
