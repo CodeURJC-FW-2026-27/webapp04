@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises';
 import { ObjectId } from 'mongodb';
-import { addVehicle, countVehicles, UPLOADS_FOLDER } from './board.js';
+import { addVehicle, countVehicles, UPLOADS_FOLDER } from './vehicles.js';
 
 const DATA_FOLDER = './data';
 

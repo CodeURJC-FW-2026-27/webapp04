@@ -1,6 +1,6 @@
 import express from 'express';
 import multer from 'multer';
-import { findDuplicateVehicles, addVehicle, getVehicle, getVehicles, countVehicles, deleteVehicle, addOfferToVehicle, updateOfferInVehicle, deleteOfferFromVehicle, UPLOADS_FOLDER, PAGE_SIZE } from './board.js';
+import { findDuplicateVehicles, addVehicle, getVehicle, getVehicles, countVehicles, deleteVehicle, addOfferToVehicle, updateOfferInVehicle, deleteOfferFromVehicle, UPLOADS_FOLDER, PAGE_SIZE } from './vehicles.js';
 
 const upload = multer({ dest: UPLOADS_FOLDER });
 const offerUpload = multer({ dest: UPLOADS_FOLDER });
