@@ -540,6 +540,11 @@ router.post('/vehicle/:id/offers/:offerId/edit', upload.single('image'), async (
 router.get('/vehicle/:id/image', async (req, res) => {
     const vehicle = await getVehicle(req.params.id);
 
+    // Vehicles created without an image show a generic "no image" picture instead of a broken image
+    if (vehicle && !vehicle.imageFilename) {
+        return res.redirect('/assets/no-image.svg');
+    }
+
     // The file name cannot contain folder separators, so only files inside uploads can be sent
     if (!vehicle || !vehicle.imageFilename || /[\\/]/.test(vehicle.imageFilename)) {
         return res.status(404).send('Image not found');
