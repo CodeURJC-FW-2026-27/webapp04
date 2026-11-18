@@ -13,7 +13,7 @@
 | Iñigo Álvaro Sabaté | i.alvaro.2024@alumnos.urjc.es | IniAlv22 |
 | Izan Calle Feijoo | i.calle.2024@alumnos.urjc.es | IzanCalle |
 
-*\*Commits de Alejandro registrados también como `aleskyy7'.*
+*\*Commits de Alejandro Sánchez Aparisi registrados también como 'Alejandro'.*
 
 # Funcionalidad
 
