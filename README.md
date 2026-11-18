@@ -306,7 +306,7 @@ Durante el desarrollo se puede usar `npm run watch`, que reinicia el servidor ca
 
 ## Vídeo demostrativo
 
-> **Pendiente:** añadir aquí el enlace al vídeo de YouTube (mínimo 1 minuto) que muestra la funcionalidad de la web.
+Vídeo en YouTube que muestra la funcionalidad de la web: [https://youtu.be/7r8xrBbgSL0](https://youtu.be/7r8xrBbgSL0)
 
 ## Participación de los miembros
 
