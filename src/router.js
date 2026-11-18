@@ -124,6 +124,8 @@ router.get('/', async (req, res) => {
     }
 
     res.render('index', {
+        pageTitle: 'Catálogo',
+        navHome: true, // Marks "Inicio" as the current page in the navbar
         vehicles: vehicles.map(toVehicleView),
         search,
         bodyType,
@@ -155,6 +157,8 @@ function formOptions(labels, selectedValue = '') {
 // It must be declared before '/vehicle/:id' so that "new" is not taken as an id
 router.get('/vehicle/new', (req, res) => {
     res.render('new-vehicle', {
+        pageTitle: 'Añadir vehículo',
+        navNewVehicle: true, // Marks "Añadir vehículo" as the current page in the navbar (only when creating)
         formAction: '/vehicle/new',
         cancelUrl: '/',
         fuelOptions: formOptions(FUEL_LABELS),
@@ -216,7 +220,7 @@ async function validateVehicleData(body, editedVehicleId = null) {
 
 // Shows the shared error page with a message and a button to the page where the user can continue
 function renderError(res, status, errorMessage, redirectUrl, buttonText) {
-    return res.status(status).render('error', { errorMessage, redirectUrl, buttonText });
+    return res.status(status).render('error', { pageTitle: 'Error', errorMessage, redirectUrl, buttonText });
 }
 
 // Processes the vehicle form, both to create a vehicle (/vehicle/new) and to edit one (/vehicle/:id/edit),
@@ -265,6 +269,7 @@ async function saveVehicleForm(req, res) {
     if (editedVehicle) {
         await updateVehicle(vehicleId, vehicleData);
         return res.render('confirmation', {
+            pageTitle: 'Confirmación',
             title: '¡Vehículo actualizado!',
             message: `Los cambios en el vehículo ${vehicleData.brand} ${vehicleData.model} se han guardado correctamente.`,
             redirectUrl: `/vehicle/${vehicleId}`,
@@ -274,7 +279,7 @@ async function saveVehicleForm(req, res) {
 
     const result = await addVehicle(vehicleData);
 
-    res.render('confirmation', {id: result.insertedId.toString()});
+    res.render('confirmation', {pageTitle: 'Confirmación', id: result.insertedId.toString()});
 }
 
 router.post('/vehicle/new', upload.single('image'), saveVehicleForm);
@@ -288,6 +293,7 @@ router.get('/vehicle/:id/edit', async (req, res) => {
 
     res.render('new-vehicle', {
         ...vehicle,
+        pageTitle: 'Editar vehículo',
         editing: true,
         vehicleId: vehicle._id.toString(),
         formAction: `/vehicle/${vehicle._id}/edit`,
@@ -323,6 +329,7 @@ router.get('/vehicle/:id', async (req, res) => {
     }));
 
     res.render('vehicle', {
+        pageTitle: `${vehicle.brand} ${vehicle.model}`,
         ...toVehicleView(vehicle),
         offers: formattedOffers
     });
@@ -338,6 +345,7 @@ router.post('/vehicle/:id/delete', async (req, res) => {
     await deleteVehicle(req.params.id);
 
     res.render('confirmation', {
+        pageTitle: 'Confirmación',
         title: '¡Vehículo eliminado!',
         message: `El vehículo ${vehicle.brand} ${vehicle.model} ha sido eliminado correctamente.`,
         redirectUrl: '/',
@@ -439,6 +447,7 @@ router.post('/vehicle/:id/offers', upload.single('image'), async (req, res) => {
     await addOfferToVehicle(req.params.id, offerData);
 
     res.render('confirmation', {
+        pageTitle: 'Confirmación',
         title: '¡Oferta añadida!',
         message: 'La nueva oferta se ha vinculado correctamente al vehículo.',
         redirectUrl: `/vehicle/${req.params.id}`,
@@ -461,6 +470,7 @@ router.post('/vehicle/:id/offers/:offerId/delete', async (req, res) => {
     await deleteOfferFromVehicle(req.params.id, req.params.offerId);
 
     res.render('confirmation', {
+        pageTitle: 'Confirmación',
         title: '¡Oferta eliminada!',
         message: 'La oferta ha sido eliminada de este vehículo.',
         redirectUrl: `/vehicle/${req.params.id}`,
@@ -481,6 +491,7 @@ router.get('/vehicle/:id/offers/:offerId/edit', async (req, res) => {
     }
 
     res.render('edit-offer', {
+        pageTitle: 'Editar oferta',
         vehicleId: vehicle._id,
         vehicleName: `${vehicle.brand} ${vehicle.model}`,
         offer,
@@ -514,6 +525,7 @@ router.post('/vehicle/:id/offers/:offerId/edit', upload.single('image'), async (
     await updateOfferInVehicle(req.params.id, req.params.offerId, updatedFields);
 
     res.render('confirmation', {
+        pageTitle: 'Confirmación',
         title: '¡Oferta actualizada!',
         message: 'Los cambios en la oferta se han guardado correctamente.',
         redirectUrl: `/vehicle/${req.params.id}`,

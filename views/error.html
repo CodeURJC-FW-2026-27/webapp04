@@ -1,24 +1,4 @@
-<!DOCTYPE html>
-<html lang="es">
-    <head>
-        <!-- Basic metadata and responsive viewport configuration -->
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <title>Error - IJAM Motors</title>
-        <!-- Favicon, bootstrap icons and stylesheets -->
-        <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
-        <link href="/css/styles.css" rel="stylesheet" />
-        <link href="/css/custom.css" rel="stylesheet" />
-    </head>
-    <!-- flexbox so the footer is pinned at the bottom -->
-    <body class="d-flex flex-column min-vh-100">
-        <!-- Navigation bar -->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <div class="container px-4 px-lg-5">
-                <a class="navbar-brand fw-bold" href="/">IJAM Motors</a>
-            </div>
-        </nav>
+{{> header}}
 
         <!-- centered error card rendered when server-side validation fails or an ID is invalid -->
         <main class="container my-auto py-5">
@@ -41,11 +21,4 @@
                 </div>
             </div>
         </main>
-
-        <footer class="py-4 bg-dark mt-auto">
-            <div class="container">
-                <p class="m-0 text-center text-white">Copyright © IJAM Motors 2026</p>
-            </div>
-        </footer>
-    </body>
-</html>
+{{> footer}}
