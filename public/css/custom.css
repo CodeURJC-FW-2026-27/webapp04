@@ -102,3 +102,8 @@
 .price {
     color: var(--ijam-accent);
 }
+
+/* Big icon of the confirmation and error message page */
+.message-icon {
+    font-size: 3.5rem;
+}

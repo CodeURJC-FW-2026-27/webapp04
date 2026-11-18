@@ -218,9 +218,26 @@ async function validateVehicleData(body, editedVehicleId = null) {
     return errors;
 }
 
-// Shows the shared error page with a message and a button to the page where the user can continue
-function renderError(res, status, errorMessage, redirectUrl, buttonText) {
-    return res.status(status).render('error', { pageTitle: 'Error', errorMessage, redirectUrl, buttonText });
+// Button of the message page. Every field is always set, so that Mustache does not take a missing one
+// from the outer context. The primary button is dark, the others are outlined
+function messageButton(url, text, icon = 'bi-arrow-left', primary = true) {
+    return { url, text, icon, primary };
+}
+
+// Shows the shared message page as a confirmation (green icon) with the buttons to continue
+function renderConfirmation(res, title, message, buttons) {
+    return res.render('message', { pageTitle: 'Confirmación', title, message, buttons });
+}
+
+// Shows the shared message page as an error (red icon) with a button to the page where the user can continue
+function renderError(res, status, message, redirectUrl, buttonText) {
+    return res.status(status).render('message', {
+        pageTitle: 'Error',
+        isError: true,
+        title: 'Ha ocurrido un error',
+        message,
+        buttons: [messageButton(redirectUrl, buttonText)]
+    });
 }
 
 // Processes the vehicle form, both to create a vehicle (/vehicle/new) and to edit one (/vehicle/:id/edit),
@@ -268,18 +285,19 @@ async function saveVehicleForm(req, res) {
 
     if (editedVehicle) {
         await updateVehicle(vehicleId, vehicleData);
-        return res.render('confirmation', {
-            pageTitle: 'Confirmación',
-            title: '¡Vehículo actualizado!',
-            message: `Los cambios en el vehículo ${vehicleData.brand} ${vehicleData.model} se han guardado correctamente.`,
-            redirectUrl: `/vehicle/${vehicleId}`,
-            buttonText: 'Volver al detalle del vehículo'
-        });
+        return renderConfirmation(res, '¡Vehículo actualizado!',
+            `Los cambios en el vehículo ${vehicleData.brand} ${vehicleData.model} se han guardado correctamente.`,
+            [messageButton(`/vehicle/${vehicleId}`, 'Volver al detalle del vehículo')]);
     }
 
     const result = await addVehicle(vehicleData);
 
-    res.render('confirmation', {pageTitle: 'Confirmación', id: result.insertedId.toString()});
+    renderConfirmation(res, '¡Vehículo añadido al catálogo!',
+        `El vehículo ${vehicleData.brand} ${vehicleData.model} se ha guardado correctamente en el catálogo de IJAM Motors.`,
+        [
+            messageButton(`/vehicle/${result.insertedId}`, 'Ver detalle del vehículo', 'bi-eye'),
+            messageButton('/', 'Volver al inicio', 'bi-arrow-left', false)
+        ]);
 }
 
 router.post('/vehicle/new', upload.single('image'), saveVehicleForm);
@@ -344,13 +362,9 @@ router.post('/vehicle/:id/delete', async (req, res) => {
 
     await deleteVehicle(req.params.id);
 
-    res.render('confirmation', {
-        pageTitle: 'Confirmación',
-        title: '¡Vehículo eliminado!',
-        message: `El vehículo ${vehicle.brand} ${vehicle.model} ha sido eliminado correctamente.`,
-        redirectUrl: '/',
-        buttonText: 'Volver a la página principal'
-    });
+    renderConfirmation(res, '¡Vehículo eliminado!',
+        `El vehículo ${vehicle.brand} ${vehicle.model} ha sido eliminado correctamente.`,
+        [messageButton('/', 'Volver a la página principal')]);
 });
 
 // Server-side validation helper for secondary entity (offers)
@@ -446,13 +460,9 @@ router.post('/vehicle/:id/offers', upload.single('image'), async (req, res) => {
 
     await addOfferToVehicle(req.params.id, offerData);
 
-    res.render('confirmation', {
-        pageTitle: 'Confirmación',
-        title: '¡Oferta añadida!',
-        message: 'La nueva oferta se ha vinculado correctamente al vehículo.',
-        redirectUrl: `/vehicle/${req.params.id}`,
-        buttonText: 'Volver al detalle del vehículo'
-    });
+    renderConfirmation(res, '¡Oferta añadida!',
+        'La nueva oferta se ha vinculado correctamente al vehículo.',
+        [messageButton(`/vehicle/${req.params.id}`, 'Volver al detalle del vehículo')]);
 });
 
 // Delete secondary entity (Offer)
@@ -469,13 +479,9 @@ router.post('/vehicle/:id/offers/:offerId/delete', async (req, res) => {
 
     await deleteOfferFromVehicle(req.params.id, req.params.offerId);
 
-    res.render('confirmation', {
-        pageTitle: 'Confirmación',
-        title: '¡Oferta eliminada!',
-        message: 'La oferta ha sido eliminada de este vehículo.',
-        redirectUrl: `/vehicle/${req.params.id}`,
-        buttonText: 'Volver al detalle del vehículo'
-    });
+    renderConfirmation(res, '¡Oferta eliminada!',
+        'La oferta ha sido eliminada de este vehículo.',
+        [messageButton(`/vehicle/${req.params.id}`, 'Volver al detalle del vehículo')]);
 });
 
 // Show edit form for a specific offer
@@ -524,13 +530,9 @@ router.post('/vehicle/:id/offers/:offerId/edit', upload.single('image'), async (
 
     await updateOfferInVehicle(req.params.id, req.params.offerId, updatedFields);
 
-    res.render('confirmation', {
-        pageTitle: 'Confirmación',
-        title: '¡Oferta actualizada!',
-        message: 'Los cambios en la oferta se han guardado correctamente.',
-        redirectUrl: `/vehicle/${req.params.id}`,
-        buttonText: 'Volver al detalle del vehículo'
-    });
+    renderConfirmation(res, '¡Oferta actualizada!',
+        'Los cambios en la oferta se han guardado correctamente.',
+        [messageButton(`/vehicle/${req.params.id}`, 'Volver al detalle del vehículo')]);
 });
 
 

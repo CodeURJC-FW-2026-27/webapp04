@@ -1,0 +1,32 @@
+{{> header}}
+        <!-- Centered message card shared by confirmations and errors (the router sets isError, title, message and buttons)-->
+        <main class="container my-auto py-5">
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-6">
+                    <div class="card shadow-sm border-0 text-center p-4 p-md-5">
+                        <!-- Red warning icon for errors, green check icon for confirmations-->
+                        {{#isError}}
+                        <div class="mb-3 text-danger">
+                            <i class="bi bi-exclamation-triangle-fill message-icon" aria-hidden="true"></i>
+                        </div>
+                        {{/isError}}
+                        {{^isError}}
+                        <div class="mb-3 text-success">
+                            <i class="bi bi-check-circle-fill message-icon" aria-hidden="true"></i>
+                        </div>
+                        {{/isError}}
+                        <h2 class="fw-bold mb-3">{{title}}</h2>
+                        <p class="text-muted mb-4">{{message}}</p>
+                        <!-- Buttons to continue (the primary one is dark, the others are outlined)-->
+                        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                            {{#buttons}}
+                            <a href="{{url}}" class="btn {{#primary}}btn-dark{{/primary}}{{^primary}}btn-outline-secondary{{/primary}} px-4">
+                                <i class="bi {{icon}} me-1" aria-hidden="true"></i> {{text}}
+                            </a>
+                            {{/buttons}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+{{> footer}}
