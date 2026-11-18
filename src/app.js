@@ -7,6 +7,8 @@ import { fileURLToPath } from 'url';
 import router from './router.js';
 import './load_data.js';
 
+const PORT = process.env.PORT || 3000; // Port of the web server, can be changed with the PORT environment variable
+
 // Get the path of the current directory (src/)
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -27,4 +29,4 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/', router);
 
-app.listen(3000, () => console.log('Web ready in http://localhost:3000/'));
+app.listen(PORT, () => console.log(`Web ready in http://localhost:${PORT}/`));

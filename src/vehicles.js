@@ -3,7 +3,9 @@ import { MongoClient, ObjectId } from 'mongodb'; // Import the MongoClient and O
 export const UPLOADS_FOLDER = './uploads'; // Folder where the vehicle images are stored
 export const PAGE_SIZE = 6; // Number of vehicles shown on each page of the main page
 
-const client = new MongoClient('mongodb://localhost:27017'); // Create a new MongoClient instance with the connection string to the local MongoDB server
+const MONGODB_URL = process.env.MONGODB_URL || 'mongodb://localhost:27017'; // MongoDB server, can be changed with the MONGODB_URL environment variable
+
+const client = new MongoClient(MONGODB_URL); // Create a new MongoClient instance with the connection string of the MongoDB server
 await client.connect();  // Connect to the MongoDB server
 
 const db = client.db('ijam_motors'); // Get a reference to the 'ijam_motors' database or if it doesn't exist, create it (names cannot contain spaces)
