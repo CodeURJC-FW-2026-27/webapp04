@@ -13,7 +13,7 @@
 | Iñigo Álvaro Sabaté | i.alvaro.2024@alumnos.urjc.es | IniAlv22 |
 | Izan Calle Feijoo | i.calle.2024@alumnos.urjc.es | IzanCalle |
 
-*\*Commits de Alejandro registrados también como `Alejandro` (`tu-correo@example.com`).*
+*\*Commits de Alejandro Sánchez Aparisi registrados también como 'Alejandro'.*
 
 # Funcionalidad
 
@@ -191,3 +191,206 @@ Se ha encargado de la página de detalle. Sustituyó la página de la plantilla 
 
 1. [`vehicle.html`](vehicle.html)
 2. [`index.html`](index.html)
+
+# Práctica 2: Aplicación web del lado del servidor con Node.js
+
+En esta práctica la web de **IJAM Motors** pasa a ser una aplicación completa con un servidor en **Node.js** y **Express**, que guarda los datos en **MongoDB** y genera las páginas con plantillas **Mustache**. Ahora se pueden listar, crear, editar y borrar vehículos y sus ofertas. Las imágenes subidas desde el navegador se guardan en la carpeta `uploads`.
+
+Los vehículos se guardan en la colección `Vehicles` de la base de datos `ijam_motors`. Las ofertas de cada vehículo van dentro del propio documento del vehículo, en el array `offers`, y cada una tiene su propio `_id` para poder editarla o borrarla. Cada vez que se crea, edita o borra una oferta, se recalcula el precio más bajo del vehículo.
+
+| Página | Ruta | Contenido |
+|---|---|---|
+| Página principal | `GET /` | Catálogo paginado (6 vehículos por página) con buscador, categorías por carrocería y filtros |
+| Página de detalle | `GET /vehicle/:id` | Ficha del vehículo, sus ofertas y el formulario para crear una oferta |
+| Nuevo vehículo | `GET /vehicle/new` | Formulario para crear un vehículo |
+| Editar vehículo | `GET /vehicle/:id/edit` | El mismo formulario, relleno con los datos actuales del vehículo |
+| Editar oferta | `GET /vehicle/:id/offers/:offerId/edit` | Formulario con los datos actuales de la oferta |
+| Confirmación / error | — | Página intermedia que se muestra tras crear, editar o borrar, o cuando algún dato no es válido |
+
+## Instrucciones de ejecución
+
+### Requisitos
+
+| Software | Versión | Notas |
+|---|---|---|
+| [Node.js](https://nodejs.org/) | 20.19.0 o superior | Es la versión mínima que exige el driver `mongodb` 7.9 (indicada en `engines` del `package.json`). Probado con Node.js 26.12.1. |
+| [MongoDB Community Server](https://www.mongodb.com/try/download/community) | 4.4 o superior | Es la versión mínima que admite el driver `mongodb` 7.9. Probado con MongoDB 9.0.8. |
+| [Git](https://git-scm.com/) | Cualquiera | Para descargar el repositorio. |
+
+### Pasos
+
+1. **Arrancar MongoDB** en `localhost:27017`. Si se instaló como servicio, ya estará en marcha. También se puede arrancar con Docker:
+
+   ```bash
+   docker run -d --name ijam-mongo -p 27017:27017 mongo
+   ```
+
+2. **Descargar el código y las dependencias:**
+
+   ```bash
+   git clone https://github.com/CodeURJC-FW-2026-27/webapp04.git
+   cd webapp04
+   npm install
+   ```
+
+3. **Ejecutar la aplicación:**
+
+   ```bash
+   npm start
+   ```
+
+4. **Abrir** [http://localhost:3000](http://localhost:3000) en el navegador.
+
+La primera vez que se arranca con la base de datos vacía, se cargan 9 vehículos de ejemplo con sus ofertas desde [`data/data.json`](data/data.json) y se copian sus fotos de [`data/images/`](data/images) a `uploads/`. Si la base de datos ya tiene vehículos, se conservan los que haya. Para volver a los datos de ejemplo, basta con borrar la base de datos y arrancar de nuevo:
+
+```bash
+mongosh ijam_motors --eval "db.dropDatabase()"
+```
+
+### Configuración opcional
+
+El puerto del servidor y la dirección de MongoDB se pueden cambiar con variables de entorno:
+
+| Variable | Valor por defecto | Uso |
+|---|---|---|
+| `PORT` | `3000` | Puerto en el que escucha el servidor web |
+| `MONGODB_URL` | `mongodb://localhost:27017` | Dirección del servidor de MongoDB |
+
+```bash
+# Linux / macOS
+PORT=8080 MONGODB_URL=mongodb://localhost:27018 npm start
+```
+
+```powershell
+# Windows (PowerShell)
+$env:PORT = "8080"; $env:MONGODB_URL = "mongodb://localhost:27018"; npm start
+```
+
+Durante el desarrollo se puede usar `npm run watch`, que reinicia el servidor cada vez que cambia un fichero `.js`, `.html` o `.css` (usa `nodemon` a través de `npx`).
+
+## Descripción de ficheros
+
+### Servidor (`src/`)
+
+| Fichero | Responsabilidad |
+|---|---|
+| [`src/app.js`](src/app.js) | Punto de entrada. Crea la aplicación Express, configura Mustache como motor de plantillas, sirve los ficheros estáticos de `public/`, lee los formularios con `body-parser`, monta el router y arranca el servidor en el puerto `PORT`. |
+| [`src/router.js`](src/router.js) | Define todas las rutas de la web. Lee la búsqueda, la categoría, los filtros y la página del catálogo; valida en el servidor los formularios de vehículos y ofertas; recibe las imágenes con `multer` (solo JPG, PNG, WEBP o GIF) y sirve las imágenes guardadas. La creación y la edición de un vehículo comparten la misma función de validación y de guardado. Las páginas de confirmación y error se muestran con los helpers `renderConfirmation` y `renderError`. |
+| [`src/vehicles.js`](src/vehicles.js) | Acceso a MongoDB. Se conecta a `MONGODB_URL` y reúne todas las consultas: listado paginado con el filtro de búsqueda, categoría y filtros construido en la propia consulta, conteo, detalle, alta, edición y borrado de vehículos, y alta, edición y borrado de ofertas (recalculando el precio más bajo del vehículo). |
+| [`src/load_data.js`](src/load_data.js) | Carga los datos de ejemplo al arrancar si la base de datos está vacía: vacía `uploads/`, copia las fotos de ejemplo e inserta los vehículos con sus ofertas. |
+
+### Vistas Mustache (`views/`)
+
+| Fichero | Responsabilidad |
+|---|---|
+| [`views/header.html`](views/header.html) | *Partial* con la cabecera común: `<head>` con el título de cada página (`pageTitle`) y los estilos, y la barra de navegación, que marca la página actual. |
+| [`views/footer.html`](views/footer.html) | *Partial* con el pie de página común y el JavaScript de Bootstrap. |
+| [`views/index.html`](views/index.html) | Página principal: buscador, categorías, panel de filtros, grid de vehículos y paginación con página anterior, siguiente y la actual resaltada. Los filtros elegidos se mantienen al cambiar de página. |
+| [`views/vehicle.html`](views/vehicle.html) | Página de detalle: datos e imagen del vehículo, botones de editar y borrar, ofertas con sus botones de editar y borrar, y formulario para crear una oferta. |
+| [`views/new-vehicle.html`](views/new-vehicle.html) | Formulario de vehículo, reutilizado para crearlo y para editarlo (al editar aparece relleno y conserva la imagen si no se elige otra). Incluye las validaciones posibles en HTML. |
+| [`views/edit-offer.html`](views/edit-offer.html) | Formulario para editar una oferta con sus datos actuales (conserva la imagen si no se elige otra). |
+| [`views/message.html`](views/message.html) | Página única para confirmaciones y errores: icono, título, mensaje y botones para continuar, que indica el router. |
+
+### Datos, estilos y configuración
+
+| Fichero | Responsabilidad |
+|---|---|
+| [`data/data.json`](data/data.json) | Datos de ejemplo: 9 vehículos con sus ofertas. |
+| [`data/images/`](data/images) | Fotos de los vehículos de ejemplo, que se copian a `uploads/` al cargar los datos. |
+| [`public/css/custom.css`](public/css/custom.css) | Estilos propios de IJAM Motors (de la Práctica 1, con el tamaño del icono de la página de mensajes). |
+| [`public/css/styles.css`](public/css/styles.css) | Estilos de la plantilla *Modern Business*, que incluyen Bootstrap. |
+| [`public/assets/no-image.svg`](public/assets/no-image.svg) | Imagen genérica para los vehículos que no tienen foto. |
+| [`package.json`](package.json) | Nombre del proyecto, scripts `start` y `watch`, versión mínima de Node.js y dependencias (`express`, `mustache-express`, `body-parser`, `multer` y `mongodb`). |
+| [`.gitignore`](.gitignore) | Excluye del repositorio `node_modules/` y `uploads/`. |
+| `uploads/` | Carpeta (no incluida en el repositorio) donde se guardan las imágenes de vehículos y ofertas. Se crea al cargar los datos de ejemplo. |
+
+## Vídeo demostrativo
+
+Vídeo en YouTube que muestra la funcionalidad de la web: [https://youtu.be/7r8xrBbgSL0](https://youtu.be/7r8xrBbgSL0)
+
+## Participación de los miembros
+
+### Julián García Panadero ([julianjgp23](https://github.com/julianjgp23))
+
+**Tareas realizadas**
+
+Reorganizó el proyecto con la estructura de una aplicación Express (`src/`, `views/` y `public/`), creó el `.gitignore` y el primer router, y adaptó los enlaces y las rutas de las páginas al servidor. Preparó los datos de ejemplo con sus fotos y su carga en la base de datos cuando está vacía, y la ruta que sirve las imágenes guardadas. En la página principal pasó el catálogo a la base de datos, con paginación de 6 vehículos por página, buscador por marca o modelo, categorías por carrocería y filtros por año, combustible, precio, kilometraje y página de origen, todo resuelto en la consulta a MongoDB. Implementó la edición de vehículos reutilizando el formulario y el código de creación, completó las validaciones del servidor (combustible, carrocería, año, formato de las imágenes y enlaces web en las ofertas) y eliminó código duplicado en las rutas de ofertas y de detalle.
+
+**Commits más significativos**
+
+1. [Carga de los datos de ejemplo cuando la base de datos está vacía](https://github.com/CodeURJC-FW-2026-27/webapp04/commit/0bfdb52c53cdd5fbe4a3d526b181416992424e7d)
+2. [Paginación del catálogo en la base de datos, 6 vehículos por página](https://github.com/CodeURJC-FW-2026-27/webapp04/commit/edcb941af89c2c0cf5884161fb108a1c6fcd9bd7)
+3. [Buscador por marca o modelo](https://github.com/CodeURJC-FW-2026-27/webapp04/commit/464760ca42b4c07a5cbc23a4716f93870464ff7a)
+4. [Edición de vehículos reutilizando el formulario y el código de creación](https://github.com/CodeURJC-FW-2026-27/webapp04/commit/5a9f7b4c7039e2618cd157aa374c9c81d09031fb)
+5. [Eliminación de código duplicado en las rutas de ofertas y de detalle](https://github.com/CodeURJC-FW-2026-27/webapp04/commit/7712e4f249ac8ff83e42423ae42ae920b07d9311)
+
+**Ficheros con mayor participación**
+
+1. [`src/router.js`](src/router.js)
+2. [`views/index.html`](views/index.html)
+3. [`data/data.json`](data/data.json)
+4. [`src/vehicles.js`](src/vehicles.js)
+5. [`src/load_data.js`](src/load_data.js)
+
+### Alejandro Sánchez Aparisi ([aleskyy7](https://github.com/aleskyy7))
+
+**Tareas realizadas**
+
+Creó el servidor Express inicial (`app.js` y `package.json`) y se encargó de la creación de vehículos. Añadió la subida de imágenes con `multer`, el campo de descripción del formulario y el envío del formulario al servidor. Implementó las validaciones del servidor para el vehículo (campos obligatorios, marca y modelo empezando por mayúscula, descripción entre 10 y 300 caracteres, año y precio válidos) y la comprobación de vehículos duplicados. Conectó la aplicación a MongoDB con las primeras funciones de acceso a los vehículos y creó la primera página de confirmación tras crear un vehículo. También reorganizó el código de subida de imágenes y la forma de mostrar los errores del formulario.
+
+**Commits más significativos**
+
+1. [Servidor Express inicial (`app.js` y `package.json`)](https://github.com/CodeURJC-FW-2026-27/webapp04/commit/24b6970305faf06edb2b7197debdeb4b51d810c6)
+2. [Subida de imágenes con `multer` al crear un vehículo](https://github.com/CodeURJC-FW-2026-27/webapp04/commit/b07ee1a674fe7f6845645eeb6d6b47c9805232be)
+3. [Cliente de MongoDB y funciones de gestión de vehículos](https://github.com/CodeURJC-FW-2026-27/webapp04/commit/d1d8f84905cc5c0f1ce4b5f1ae6089f371895d6c)
+4. [Comprobación de vehículos duplicados y página de confirmación](https://github.com/CodeURJC-FW-2026-27/webapp04/commit/f610b3ee9b2563139dd315fec832c2bef83ce4af)
+5. [Validación de la descripción y de los campos numéricos](https://github.com/CodeURJC-FW-2026-27/webapp04/commit/3d2d097e408f1516c019f4078dc220b47ee4a70e)
+
+**Ficheros con mayor participación**
+
+1. [`src/router.js`](src/router.js)
+2. [`src/app.js`](src/app.js)
+3. [`views/new-vehicle.html`](views/new-vehicle.html)
+4. [`package.json`](package.json)
+5. [`src/vehicles.js`](src/vehicles.js)
+
+### Iñigo Álvaro Sabaté ([IniAlv22](https://github.com/IniAlv22))
+
+**Tareas realizadas**
+
+Creó los *partials* de Mustache [`header.html`](views/header.html) y [`footer.html`](views/footer.html), que quitan de las vistas la cabecera, la barra de navegación y el pie que estaban repetidos en todas. Cada ruta envía el título de su página y la barra de navegación marca la página actual. Unificó las páginas de confirmación y de error, que eran casi iguales, en una sola vista [`message.html`](views/message.html), y en el router sustituyó las llamadas repetidas por los helpers `renderConfirmation` y `renderError`. Al hacerlo, la confirmación de un vehículo nuevo pasó a mostrar su marca y modelo, con botones para ver su detalle o volver al inicio. Además, el puerto del servidor y la dirección de MongoDB pasaron a leerse de las variables de entorno `PORT` y `MONGODB_URL`, y se indicó en el `package.json` la versión mínima de Node.js. Redactó también esta documentación de la Práctica 2.
+
+**Commits más significativos**
+
+1. [*Partials* de cabecera y pie compartidos por todas las vistas](https://github.com/CodeURJC-FW-2026-27/webapp04/commit/38798716b6ba9c9f5a466f1e486afef6c6436f79)
+2. [Página única de confirmación y error](https://github.com/CodeURJC-FW-2026-27/webapp04/commit/518ba66901ec3b406768925bad0780891eaa13d1)
+3. [Puerto y dirección de MongoDB leídos de variables de entorno](https://github.com/CodeURJC-FW-2026-27/webapp04/commit/53e7204cfa2d9195277c35f62410f93367ffb47b)
+
+**Ficheros con mayor participación**
+
+1. [`views/header.html`](views/header.html)
+2. [`views/footer.html`](views/footer.html)
+3. [`views/message.html`](views/message.html)
+4. [`src/router.js`](src/router.js)
+5. [`README.md`](README.md)
+
+### Izan Calle Feijoo ([IzanCalle](https://github.com/IzanCalle))
+
+**Tareas realizadas**
+
+Se ha encargado de la página de detalle y de las ofertas. Convirtió la ficha del vehículo en una plantilla Mustache con los datos de la base de datos e implementó el borrado del vehículo. Programó las consultas de MongoDB para crear, editar y borrar ofertas dentro del vehículo, recalculando su precio más bajo, y las rutas para crearlas y borrarlas con validación en el servidor. Creó la página para editar una oferta, que conserva la imagen anterior si no se elige otra, y las primeras páginas de confirmación y de error.
+
+**Commits más significativos**
+
+1. [Consultas de MongoDB para borrar vehículos y gestionar ofertas](https://github.com/CodeURJC-FW-2026-27/webapp04/commit/0e9c580f635a39a69f47734a1841b0588db805ab)
+2. [Página de detalle dinámica, borrado del vehículo y páginas de confirmación y error](https://github.com/CodeURJC-FW-2026-27/webapp04/commit/6a449212749b62bffeee65409c86eb6b8ad21705)
+3. [Ficha del vehículo con Mustache y página de error](https://github.com/CodeURJC-FW-2026-27/webapp04/commit/ce07e874191eb1136b7564036e1722a6894a2e95)
+4. [Creación y borrado de ofertas con validación en el servidor](https://github.com/CodeURJC-FW-2026-27/webapp04/commit/2122fb3e36b31f7911a712b15b2cac83541b5a58)
+5. [Edición de ofertas conservando la imagen anterior](https://github.com/CodeURJC-FW-2026-27/webapp04/commit/f383a0fab99ed0ec829664136c70f9667f9de806)
+
+**Ficheros con mayor participación**
+
+1. [`src/router.js`](src/router.js)
+2. [`views/vehicle.html`](views/vehicle.html)
+3. [`views/edit-offer.html`](views/edit-offer.html)
+4. [`src/vehicles.js`](src/vehicles.js)

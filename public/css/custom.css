@@ -57,6 +57,16 @@
     --bs-nav-pills-link-active-bg: var(--ijam-accent);
 }
 
+/* Pagination: the current page uses the accent color, like the active category */
+.pagination {
+    --bs-pagination-color: var(--ijam-dark);
+    --bs-pagination-hover-color: var(--ijam-accent);
+    --bs-pagination-focus-color: var(--ijam-accent);
+    --bs-pagination-focus-box-shadow: 0 0 0 0.25rem rgba(27, 29, 33, 0.15);
+    --bs-pagination-active-bg: var(--ijam-accent);
+    --bs-pagination-active-border-color: var(--ijam-accent);
+}
+
 /* Form controls */
 .form-control:focus,
 .form-select:focus,
@@ -91,4 +101,9 @@
 /* Prices */
 .price {
     color: var(--ijam-accent);
+}
+
+/* Big icon of the confirmation and error message page */
+.message-icon {
+    font-size: 3.5rem;
 }

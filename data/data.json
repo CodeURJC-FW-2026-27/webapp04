@@ -1,0 +1,138 @@
+[
+    {
+        "brand": "Volkswagen",
+        "model": "Golf",
+        "year": 2019,
+        "lowestPrice": 14800,
+        "fuelType": "gasoline",
+        "bodyType": "compact",
+        "description": "Compacto alemán de referencia, práctico y eficiente. Ideal para ciudad y carretera, con buen equipamiento y bajo consumo.",
+        "imageFilename": "golf.jpg",
+        "offers": [
+            { "site": "cochesnet", "price": 14800, "kilometers": 112000, "seller": "Madrid Motor Ocasión", "url": "https://www.coches.net/", "date": "2026-09-28" },
+            { "site": "wallapop", "price": 16900, "kilometers": 68000, "seller": "Particular", "url": "https://es.wallapop.com/", "date": "2026-10-03" },
+            { "site": "milanuncios", "price": 19200, "kilometers": 49500, "seller": "Automóviles Gómez", "url": "https://www.milanuncios.com/", "date": "2026-10-07" }
+        ]
+    },
+    {
+        "brand": "Toyota",
+        "model": "C-HR",
+        "year": 2020,
+        "lowestPrice": 19990,
+        "fuelType": "hybrid",
+        "bodyType": "suv",
+        "description": "SUV híbrido de diseño llamativo, muy eficiente en ciudad gracias a su sistema híbrido autorrecargable y con etiqueta ECO.",
+        "imageFilename": "toyotac-hr.jpg",
+        "offers": [
+            { "site": "autoscout24", "price": 19990, "kilometers": 54000, "seller": "Toyota Ocasión Getafe", "url": "https://www.autoscout24.es/", "date": "2026-10-01" },
+            { "site": "wallapop", "price": 21500, "kilometers": 38000, "seller": "Particular", "url": "https://es.wallapop.com/", "date": "2026-10-09" }
+        ]
+    },
+    {
+        "brand": "BMW",
+        "model": "Serie 3",
+        "year": 2018,
+        "lowestPrice": 18750,
+        "fuelType": "diesel",
+        "bodyType": "sedan",
+        "description": "Berlina deportiva de tracción trasera, con un motor diésel eficiente y un comportamiento dinámico excelente para viajes largos.",
+        "imageFilename": "serie3.jpg",
+        "offers": [
+            { "site": "cochesnet", "price": 18750, "kilometers": 135000, "seller": "Premium Cars Valencia", "url": "https://www.coches.net/", "date": "2026-09-20" },
+            { "site": "milanuncios", "price": 19900, "kilometers": 118000, "seller": "Particular", "url": "https://www.milanuncios.com/", "date": "2026-09-25" },
+            { "site": "autoscout24", "price": 21200, "kilometers": 97000, "seller": "BMW Selección Madrid", "url": "https://www.autoscout24.es/", "date": "2026-10-04" },
+            { "site": "wallapop", "price": 22400, "kilometers": 84000, "seller": "Particular", "url": "https://es.wallapop.com/", "date": "2026-10-10" }
+        ]
+    },
+    {
+        "brand": "Audi",
+        "model": "A3",
+        "year": 2018,
+        "lowestPrice": 19500,
+        "fuelType": "gasoline",
+        "bodyType": "compact",
+        "description": "Compacto premium con un interior de gran calidad, motor de gasolina suave y tecnología de conectividad completa.",
+        "imageFilename": "audia3.jpg",
+        "offers": [
+            { "site": "autoscout24", "price": 19500, "kilometers": 89000, "seller": "Audi Approved Sevilla", "url": "https://www.autoscout24.es/", "date": "2026-09-30" },
+            { "site": "cochesnet", "price": 20900, "kilometers": 72000, "seller": "Automóviles Gómez", "url": "https://www.coches.net/", "date": "2026-10-06" }
+        ]
+    },
+    {
+        "brand": "Peugeot",
+        "model": "3008",
+        "year": 2021,
+        "lowestPrice": 21300,
+        "fuelType": "diesel",
+        "bodyType": "suv",
+        "description": "SUV familiar con un habitáculo amplio y moderno, maletero generoso y un motor diésel de bajo consumo.",
+        "imageFilename": "peugeot3008.jpg",
+        "offers": [
+            { "site": "milanuncios", "price": 21300, "kilometers": 76000, "seller": "Particular", "url": "https://www.milanuncios.com/", "date": "2026-09-27" },
+            { "site": "cochesnet", "price": 22800, "kilometers": 61000, "seller": "Peugeot Ocasión Bilbao", "url": "https://www.coches.net/", "date": "2026-10-02" },
+            { "site": "autoscout24", "price": 23900, "kilometers": 45000, "seller": "Madrid Motor Ocasión", "url": "https://www.autoscout24.es/", "date": "2026-10-08" }
+        ]
+    },
+    {
+        "brand": "Tesla",
+        "model": "Model 3",
+        "year": 2021,
+        "lowestPrice": 27500,
+        "fuelType": "electric",
+        "bodyType": "sedan",
+        "description": "Berlina 100 % eléctrica con gran autonomía, aceleración muy rápida y actualizaciones de software remotas. Etiqueta CERO.",
+        "imageFilename": "teslamodel3.jpg",
+        "offers": [
+            { "site": "wallapop", "price": 27500, "kilometers": 82000, "seller": "Particular", "url": "https://es.wallapop.com/", "date": "2026-09-18" },
+            { "site": "cochesnet", "price": 28900, "kilometers": 70000, "seller": "EV Market Barcelona", "url": "https://www.coches.net/", "date": "2026-09-24" },
+            { "site": "autoscout24", "price": 29500, "kilometers": 64000, "seller": "Electric Cars Madrid", "url": "https://www.autoscout24.es/", "date": "2026-09-29" },
+            { "site": "milanuncios", "price": 30200, "kilometers": 51000, "seller": "Particular", "url": "https://www.milanuncios.com/", "date": "2026-10-05" },
+            { "site": "cochesnet", "price": 31800, "kilometers": 39000, "seller": "Premium Cars Valencia", "url": "https://www.coches.net/", "date": "2026-10-11" }
+        ]
+    },
+    {
+        "brand": "Seat",
+        "model": "Ibiza",
+        "year": 2019,
+        "lowestPrice": 12900,
+        "fuelType": "gasoline",
+        "bodyType": "compact",
+        "description": "Utilitario ágil y económico, perfecto para la ciudad. Bajo consumo, fácil de aparcar y con un mantenimiento barato.",
+        "imageFilename": "seatibiza.jpg",
+        "offers": [
+            { "site": "milanuncios", "price": 12900, "kilometers": 98000, "seller": "Particular", "url": "https://www.milanuncios.com/", "date": "2026-09-21" },
+            { "site": "wallapop", "price": 13500, "kilometers": 87000, "seller": "Particular", "url": "https://es.wallapop.com/", "date": "2026-09-26" },
+            { "site": "cochesnet", "price": 14200, "kilometers": 71000, "seller": "Seat Ocasión Zaragoza", "url": "https://www.coches.net/", "date": "2026-10-03" },
+            { "site": "autoscout24", "price": 14900, "kilometers": 58000, "seller": "Automóviles Gómez", "url": "https://www.autoscout24.es/", "date": "2026-10-09" }
+        ]
+    },
+    {
+        "brand": "Ford",
+        "model": "Mustang",
+        "year": 2018,
+        "lowestPrice": 31900,
+        "fuelType": "gasoline",
+        "bodyType": "coupe",
+        "description": "Coupé deportivo americano con motor V8 de gasolina, sonido inconfundible y un diseño clásico que no pasa desapercibido.",
+        "imageFilename": "mustang.jpg",
+        "offers": [
+            { "site": "autoscout24", "price": 31900, "kilometers": 64000, "seller": "Classic & Sport Málaga", "url": "https://www.autoscout24.es/", "date": "2026-09-23" },
+            { "site": "cochesnet", "price": 34500, "kilometers": 42000, "seller": "Premium Cars Valencia", "url": "https://www.coches.net/", "date": "2026-10-07" }
+        ]
+    },
+    {
+        "brand": "Hyundai",
+        "model": "Tucson",
+        "year": 2022,
+        "lowestPrice": 26400,
+        "fuelType": "hybrid",
+        "bodyType": "suv",
+        "description": "SUV híbrido con un diseño moderno, mucho equipamiento de serie y etiqueta ECO. Cómodo y espacioso para toda la familia.",
+        "imageFilename": "tucson.jpg",
+        "offers": [
+            { "site": "cochesnet", "price": 26400, "kilometers": 41000, "seller": "Hyundai Ocasión Valladolid", "url": "https://www.coches.net/", "date": "2026-09-30" },
+            { "site": "wallapop", "price": 27200, "kilometers": 35000, "seller": "Particular", "url": "https://es.wallapop.com/", "date": "2026-10-04" },
+            { "site": "milanuncios", "price": 28100, "kilometers": 22000, "seller": "Madrid Motor Ocasión", "url": "https://www.milanuncios.com/", "date": "2026-10-10" }
+        ]
+    }
+]

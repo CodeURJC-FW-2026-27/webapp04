@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450">
+    <!-- Generic picture shown for the vehicles that have no image (same 16:9 ratio as the vehicle photos) -->
+    <rect width="800" height="450" fill="#f1f3f5"/>
+    <!-- Car outline: cabin and body -->
+    <g fill="none" stroke="#adb5bd" stroke-width="12" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M265 255 L292 192 Q302 170 327 170 L473 170 Q498 170 508 192 L535 255"/>
+        <rect x="220" y="255" width="360" height="70" rx="22"/>
+    </g>
+    <!-- Wheels -->
+    <circle cx="305" cy="328" r="30" fill="#adb5bd"/>
+    <circle cx="495" cy="328" r="30" fill="#adb5bd"/>
+    <text x="400" y="410" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="32" fill="#6c757d">Sin imagen</text>
+</svg>

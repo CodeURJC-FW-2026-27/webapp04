@@ -1,0 +1,181 @@
+{{> header}}
+        <main>
+            <!-- Page Content-->
+            <section class="py-5">
+                <div class="container px-5 my-5">
+                    <!-- Page header: title and description of the catalog-->
+                    <div class="text-center mb-5">
+                        <h1 class="fw-bolder">Catálogo de vehículos</h1>
+                        <p class="lead fw-normal text-muted mb-0">Vehículos de segunda mano recopilados de distintas páginas de compraventa. Compara sus ofertas y encuentra el mejor precio.</p>
+                    </div>
+                    <!-- Catalog form: the search box, the chosen category and the sidebar filters are sent together,
+                         so searching or applying filters never loses the other choices-->
+                    <form action="/" method="get">
+                    <!-- Search by brand or model (sends the text to this same page in the "search" parameter)-->
+                    <div class="row justify-content-center mb-4" role="search">
+                        <div class="col-lg-8 col-xl-6">
+                            <div class="input-group input-group-lg">
+                                <span class="input-group-text"><i class="bi bi-search" aria-hidden="true"></i></span>
+                                <input class="form-control" type="search" name="search" value="{{search}}" placeholder="Busca por marca o modelo, p. ej. Volkswagen Golf" aria-label="Buscar por marca o modelo" />
+                                <!-- Keeps the chosen category when searching or applying filters-->
+                                {{#bodyType}}
+                                <input type="hidden" name="bodyType" value="{{bodyType}}" />
+                                {{/bodyType}}
+                                <button class="btn btn-primary" type="submit">Buscar</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Body type categories (each one opens this same page with the "bodyType" parameter, the active one is highlighted)-->
+                    <nav class="mb-5" aria-label="Categorías por tipo de carrocería">
+                        <ul class="nav nav-pills justify-content-center gap-2">
+                            {{#categories}}
+                            {{#active}}
+                            <li class="nav-item"><a class="nav-link active" aria-current="page" href="{{url}}">{{label}}</a></li>
+                            {{/active}}
+                            {{^active}}
+                            <li class="nav-item"><a class="nav-link" href="{{url}}">{{label}}</a></li>
+                            {{/active}}
+                            {{/categories}}
+                        </ul>
+                    </nav>
+                    <!-- Main layout: filters sidebar on the left, vehicle grid on the right-->
+                    <div class="row gx-5">
+                        <!-- Filters sidebar (placed above the listing on small screens)-->
+                        <aside class="col-lg-3 mb-5 mb-lg-0">
+                            <div class="card shadow border-0">
+                                <div class="card-body p-4">
+                                    <h2 class="h5 fw-bolder mb-4"><i class="bi bi-funnel me-2" aria-hidden="true"></i>Filtros</h2>
+                                    <!-- Filters on vehicle attributes (the brand is searched with the search box)-->
+                                    <h3 class="small fw-bolder text-uppercase text-muted mb-3">Vehículo</h3>
+                                    <!-- Year range filter-->
+                                    <fieldset class="mb-3">
+                                        <legend class="form-label fs-6">Año</legend>
+                                        <div class="row g-2">
+                                            <div class="col"><input class="form-control" type="number" name="yearFrom" value="{{yearFrom}}" min="1900" max="2026" placeholder="Desde" aria-label="Año desde" /></div>
+                                            <div class="col"><input class="form-control" type="number" name="yearTo" value="{{yearTo}}" min="1900" max="2026" placeholder="Hasta" aria-label="Año hasta" /></div>
+                                        </div>
+                                    </fieldset>
+                                    <!-- Fuel type filter (several options can be checked, the checked ones stay checked after filtering)-->
+                                    <fieldset class="mb-4">
+                                        <legend class="form-label fs-6">Combustible</legend>
+                                        {{#fuelOptions}}
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="fuel-{{value}}" name="fuelType" value="{{value}}" {{#checked}}checked{{/checked}} />
+                                            <label class="form-check-label" for="fuel-{{value}}">{{label}}</label>
+                                        </div>
+                                        {{/fuelOptions}}
+                                    </fieldset>
+                                    <hr class="mt-0 mb-4" />
+                                    <!-- Filters on offer attributes (shows the vehicles with at least one offer matching the filter)-->
+                                    <h3 class="small fw-bolder text-uppercase text-muted mb-3">Ofertas</h3>
+                                    <!-- Price range filter-->
+                                    <fieldset class="mb-3">
+                                        <legend class="form-label fs-6">Precio (€)</legend>
+                                        <div class="row g-2">
+                                            <div class="col"><input class="form-control" type="number" name="priceMin" value="{{priceMin}}" min="0" placeholder="Mín." aria-label="Precio mínimo" /></div>
+                                            <div class="col"><input class="form-control" type="number" name="priceMax" value="{{priceMax}}" min="0" placeholder="Máx." aria-label="Precio máximo" /></div>
+                                        </div>
+                                    </fieldset>
+                                    <!-- Maximum mileage filter (the chosen limit stays selected after filtering)-->
+                                    <div class="mb-3">
+                                        <label class="form-label" for="maxKilometers">Kilometraje</label>
+                                        <select class="form-select" id="maxKilometers" name="maxKilometers">
+                                            <option value="">Sin límite</option>
+                                            {{#kilometerOptions}}
+                                            <option value="{{value}}" {{#selected}}selected{{/selected}}>{{label}}</option>
+                                            {{/kilometerOptions}}
+                                        </select>
+                                    </div>
+                                    <!-- Source website filter (several options can be checked, the checked ones stay checked after filtering)-->
+                                    <fieldset class="mb-4">
+                                        <legend class="form-label fs-6">Página de origen</legend>
+                                        {{#siteOptions}}
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="site-{{value}}" name="site" value="{{value}}" {{#checked}}checked{{/checked}} />
+                                            <label class="form-check-label" for="site-{{value}}">{{label}}</label>
+                                        </div>
+                                        {{/siteOptions}}
+                                    </fieldset>
+                                    <!-- Filter buttons: apply the filters or reset them-->
+                                    <div class="d-grid gap-2">
+                                        <button class="btn btn-primary" type="submit">Aplicar filtros</button>
+                                        <a class="btn btn-outline-secondary" href="{{clearFiltersUrl}}">Limpiar filtros</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </aside>
+                        <!-- Listing column: create button and vehicle grid-->
+                        <div class="col-lg-9">
+                            <!-- Button to create a new vehicle, right-aligned above the grid-->
+                            <div class="d-flex justify-content-end mb-4">
+                                <a class="btn btn-primary" href="/vehicle/new"><i class="bi bi-plus-lg me-2" aria-hidden="true"></i>Crear nuevo vehículo</a>
+                            </div>
+                            <!-- Vehicle grid (1 column on mobile, 2 on tablets, 3 on large screens)-->
+                            <div class="row g-4 row-cols-1 row-cols-md-2 row-cols-xl-3">
+                                <!-- Each vehicle card shows: photo, body type, brand and model, year and fuel, lowest price and number of offers.
+                                     stretched-link makes the whole card link to the detail page-->
+                                {{#vehicles}}
+                                <div class="col">
+                                    <div class="card vehicle-card h-100 shadow border-0">
+                                        <img class="card-img-top" src="/vehicle/{{_id}}/image" alt="{{brand}} {{model}}" />
+                                        <div class="card-body p-4">
+                                            <div class="badge bg-primary bg-gradient rounded-pill mb-2">{{bodyLabel}}</div>
+                                            <a class="text-decoration-none link-dark stretched-link" href="/vehicle/{{_id}}"><h2 class="h5 card-title fw-bolder mb-1">{{brand}} {{model}}</h2></a>
+                                            <p class="card-text text-muted mb-0">{{year}} · {{fuelLabel}}</p>
+                                        </div>
+                                        <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
+                                            <div class="d-flex justify-content-between align-items-end">
+                                                <div>
+                                                    <div class="small text-muted">Desde</div>
+                                                    <div class="h5 fw-bolder price mb-0">{{priceText}} €</div>
+                                                </div>
+                                                <div class="small text-muted">{{offersText}}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{/vehicles}}
+                                <!-- Message shown when there are no vehicles to list-->
+                                {{^vehicles}}
+                                <div class="w-100">
+                                    {{#isFiltered}}
+                                    <p class="text-muted text-center my-5">No hay vehículos que coincidan con la búsqueda o los filtros elegidos. <a href="/">Ver todos los vehículos</a></p>
+                                    {{/isFiltered}}
+                                    {{^isFiltered}}
+                                    <p class="text-muted text-center my-5">No hay vehículos que mostrar.</p>
+                                    {{/isFiltered}}
+                                </div>
+                                {{/vehicles}}
+                            </div>
+                            <!-- Pagination: previous page, one link per page (current one highlighted) and next page-->
+                            <nav class="mt-5" aria-label="Páginas del catálogo">
+                                <ul class="pagination justify-content-center">
+                                    {{#hasPrevious}}
+                                    <li class="page-item"><a class="page-link" href="/?{{filterQuery}}page={{previousPage}}">Anterior</a></li>
+                                    {{/hasPrevious}}
+                                    {{^hasPrevious}}
+                                    <li class="page-item disabled"><span class="page-link">Anterior</span></li>
+                                    {{/hasPrevious}}
+                                    {{#pages}}
+                                    {{#current}}
+                                    <li class="page-item active" aria-current="page"><span class="page-link">{{number}}</span></li>
+                                    {{/current}}
+                                    {{^current}}
+                                    <li class="page-item"><a class="page-link" href="/?{{filterQuery}}page={{number}}">{{number}}</a></li>
+                                    {{/current}}
+                                    {{/pages}}
+                                    {{#hasNext}}
+                                    <li class="page-item"><a class="page-link" href="/?{{filterQuery}}page={{nextPage}}">Siguiente</a></li>
+                                    {{/hasNext}}
+                                    {{^hasNext}}
+                                    <li class="page-item disabled"><span class="page-link">Siguiente</span></li>
+                                    {{/hasNext}}
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+            </section>
+        </main>
+{{> footer}}

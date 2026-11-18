@@ -1,0 +1,74 @@
+{{> header}}
+        <main>
+
+            <!-- Edit Offer Section -->
+            <section class="py-5">
+                <div class="container px-5 my-5">
+                    <div class="text-center mb-5">
+                        <h1 class="fw-bolder">Editar oferta</h1>
+                        <p class="lead fw-normal text-muted mb-0">Modificando oferta para <strong>{{vehicleName}}</strong></p>
+                    </div>
+
+                    <div class="row gx-5 justify-content-center">
+                        <div class="col-lg-8">
+                            <div class="bg-light rounded-3 p-4 p-md-5">
+                                <form action="/vehicle/{{vehicleId}}/offers/{{offer._id}}/edit" method="post" enctype="multipart/form-data">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="site">Página de origen</label>
+                                            <select class="form-select" id="site" name="site" required>
+                                                {{#siteOptions}}
+                                                <option value="{{value}}" {{#selected}}selected{{/selected}}>{{label}}</option>
+                                                {{/siteOptions}}
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="price">Precio (€)</label>
+                                            <input class="form-control" id="price" name="price" type="number" min="1" max="1000000" step="1" value="{{offer.price}}" required />
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="kilometers">Kilometraje (km)</label>
+                                            <input class="form-control" id="kilometers" name="kilometers" type="number" min="0" max="2000000" step="1" value="{{offer.kilometers}}" required />
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="seller">Vendedor</label>
+                                            <input class="form-control" id="seller" name="seller" type="text" minlength="2" maxlength="80" value="{{offer.seller}}" required />
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="url">Enlace al anuncio original</label>
+                                            <input class="form-control" id="url" name="url" type="url" pattern="https?://.+" title="Debe empezar por http:// o https://" value="{{offer.url}}" required />
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="date">Fecha de publicación</label>
+                                            <input class="form-control" id="date" name="date" type="date" value="{{offer.date}}" required />
+                                        </div>
+
+                                        <div class="col-12">
+                                            <label class="form-label" for="image">Nueva imagen (opcional, deja vacío para mantener la actual)</label>
+                                            <input class="form-control" id="image" name="image" type="file" accept="image/jpeg,image/png,image/webp,image/gif" />
+                                            {{#offer.imageFilename}}
+                                            <div class="mt-2">
+                                                <small class="text-muted d-block mb-1">Imagen actual:</small>
+                                                <img src="/vehicle/{{vehicleId}}/offers/{{offer._id}}/image" alt="Imagen actual" class="rounded" style="height: 90px;" />
+                                            </div>
+                                            {{/offer.imageFilename}}
+                                        </div>
+
+                                        <div class="col-12 d-flex justify-content-end gap-2 mt-4">
+                                            <a class="btn btn-outline-secondary px-4" href="/vehicle/{{vehicleId}}">Cancelar</a>
+                                            <button class="btn btn-primary px-4" type="submit">Guardar</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+{{> footer}}

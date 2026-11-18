@@ -1,0 +1,95 @@
+{{> header}}
+        <main>
+            <!-- Page content-->
+            <section class="py-5">
+                <div class="container px-5 my-5">
+                    <!-- Page header: title and description of the form-->
+                    <div class="text-center mb-5">
+                        {{#editing}}
+                        <h1 class="fw-bolder">Editar vehículo</h1>
+                        <p class="lead fw-normal text-muted mb-0">Modifique los datos del vehículo y pulse Guardar.</p>
+                        {{/editing}}
+                        {{^editing}}
+                        <h1 class="fw-bolder">Añadir nuevo vehículo</h1>
+                        <p class="lead fw-normal text-muted mb-0">Complete el formulario para añadir un nuevo vehículo al catálogo.</p>
+                        {{/editing}}
+                    </div>
+                    <!-- Vehicle form (same layout as the offer form of the detail page)-->
+                    <div class="row gx-5 justify-content-center">
+                        <div class="col-lg-8">
+                            <div class="bg-light rounded-3 p-4 p-md-5">
+                                <!-- The router sets where the form is sent: /vehicle/new to create or /vehicle/:id/edit to edit-->
+                                <form id="vehicleForm" method="post" enctype="multipart/form-data" action="{{formAction}}">
+                                    <div class="row g-3">
+                                        <!-- Brand-->
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="brand">Marca</label>
+                                            <input class="form-control" id="brand" name="brand" type="text" placeholder="Ej. Audi" required pattern="[A-ZÁÉÍÓÚÑ].*" title="Debe comenzar por letra mayúscula" value="{{brand}}"/>
+                                        </div>
+                                        <!-- Model-->
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="model">Modelo</label>
+                                            <input class="form-control" id="model" name="model" type="text" placeholder="Ej. A3" required pattern="[A-ZÁÉÍÓÚÑ].*" title="Debe comenzar por letra mayúscula" value="{{model}}"/>
+                                        </div>
+                                        <!-- Model year-->
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="year">Año</label>
+                                            <input class="form-control" id="year" name="year" type="number" placeholder="Ej. 2020" required min="1900" max="2026" value="{{year}}"/>
+                                        </div>
+                                        <!-- Lowest price among its offers-->
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="lowestPrice">Precio más bajo (€)</label>
+                                            <input class="form-control" id="lowestPrice" name="lowestPrice" type="number" placeholder="Ej. 20000" required  min="1" value="{{lowestPrice}}"/>
+                                        </div>
+                                        <!-- Fuel type (same values as the catalog filters, the vehicle value is selected when editing)-->
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="fuelType">Combustible</label>
+                                            <select class="form-select" id="fuelType" name="fuelType" required>
+                                                <option value="" disabled {{^editing}}selected{{/editing}}>Selecciona una opción</option>
+                                                {{#fuelOptions}}
+                                                <option value="{{value}}" {{#selected}}selected{{/selected}}>{{label}}</option>
+                                                {{/fuelOptions}}
+                                            </select>
+                                        </div>
+                                        <!-- Body type (same values as the catalog categories, the vehicle value is selected when editing)-->
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="bodyType">Carrocería</label>
+                                            <select class="form-select" id="bodyType" name="bodyType" required>
+                                                <option value="" disabled {{^editing}}selected{{/editing}}>Selecciona una opción</option>
+                                                {{#bodyOptions}}
+                                                <option value="{{value}}" {{#selected}}selected{{/selected}}>{{label}}</option>
+                                                {{/bodyOptions}}
+                                            </select>
+                                        </div>
+                                        <!-- Description-->
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="description">Descripción</label>
+                                            <input class="form-control" id="description" name="description" type="text" placeholder="Ej. Vehículo deportivo" required minlength="10" maxlength="300" value="{{description}}" />
+                                        </div>
+                                        <!-- Image of the vehicle (when editing, the current one is kept if no new image is chosen)-->
+                                        <div class="col-12">
+                                            <label class="form-label" for="image">Imagen del vehículo{{#editing}} (opcional, si no eliges ninguna se mantiene la actual){{/editing}}</label>
+                                            <input class="form-control" id="image" name="image" type="file" accept="image/jpeg,image/png,image/webp,image/gif" />
+                                            {{#editing}}
+                                            {{#imageFilename}}
+                                            <div class="mt-2">
+                                                <small class="text-muted d-block mb-1">Imagen actual:</small>
+                                                <img src="/vehicle/{{vehicleId}}/image" alt="Imagen actual de {{brand}} {{model}}" class="rounded" style="height: 90px;" />
+                                            </div>
+                                            {{/imageFilename}}
+                                            {{/editing}}
+                                        </div>
+                                        <!-- Form buttons: save and cancel (cancel goes back to the main page or to the vehicle detail)-->
+                                        <div class="col-12 d-flex justify-content-end gap-2 mt-4">
+                                            <a class="btn btn-outline-secondary px-4" href="{{cancelUrl}}">Cancelar</a>
+                                            <button class="btn btn-primary px-4" type="submit">Guardar</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+{{> footer}}

@@ -1,0 +1,185 @@
+{{> header}}
+        <main>
+
+            <!-- Vehicle Detail Section (Main Entity) -->
+            <section class="py-5">
+                <div class="container px-5 my-4">
+                    <!-- Action Bar -->
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <a class="btn btn-outline-secondary" href="/">
+                            <i class="bi bi-arrow-left me-1"></i> Volver a página principal
+                        </a>
+                        <div class="d-flex gap-2">
+                            <a href="/vehicle/{{_id}}/edit" class="btn btn-outline-secondary">
+                                <i class="bi bi-pencil me-1"></i> Editar
+                            </a>
+                            <form action="/vehicle/{{_id}}/delete" method="post" class="m-0">
+                                <button type="submit" class="btn btn-outline-danger">
+                                    <i class="bi bi-trash me-1"></i> Borrar
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Main Vehicle Presentation -->
+                    <div class="row gx-5">
+                        <div class="col-lg-6 mb-4 mb-lg-0">
+                            <img class="img-fluid rounded-3 shadow-sm w-100" src="/vehicle/{{_id}}/image" alt="{{brand}} {{model}}" />
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="badge bg-primary bg-gradient rounded-pill mb-2">{{bodyLabel}}</div>
+                            <h1 class="fw-bolder">{{brand}} {{model}}</h1>
+                            <p class="lead fw-normal text-muted mb-4">{{description}}</p>
+
+                            <!-- Specifications -->
+                            <div class="card bg-light border-0 mb-4">
+                                <div class="card-body">
+                                    <div class="row g-3">
+                                        <div class="col-sm-6">
+                                            <span class="text-muted d-block small">Marca</span>
+                                            <strong>{{brand}}</strong>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <span class="text-muted d-block small">Modelo</span>
+                                            <strong>{{model}}</strong>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <span class="text-muted d-block small">Año</span>
+                                            <strong>{{year}}</strong>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <span class="text-muted d-block small">Combustible</span>
+                                            <strong>{{fuelLabel}}</strong>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <span class="text-muted d-block small">Carrocería</span>
+                                            <strong>{{bodyLabel}}</strong>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <span class="text-muted d-block small">Precio más bajo</span>
+                                            <strong>{{priceText}} €</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="my-5" />
+
+                    <!-- Secondary Entity Section: Offers Comparison -->
+                    <div class="row gx-5 mb-5">
+                        <div class="col-12">
+                            <h2 class="fw-bolder mb-3">Ofertas comparadas en la red</h2>
+                            <p class="text-muted mb-4">
+                                Listado de ofertas activas recopiladas para este vehículo en diferentes portales de compraventa.
+                            </p>
+                        </div>
+
+                        {{#offers}}
+                        <div class="col-lg-4 col-md-6 mb-4">
+                            <div class="card offer-card h-100 shadow-sm border-0">
+                                {{#imageFilename}}
+                                <img src="/vehicle/{{vehicleId}}/offers/{{_id}}/image" class="card-img-top" alt="Oferta en {{siteLabel}}" style="height: 180px; object-fit: cover;" />
+                                {{/imageFilename}}
+                                <div class="card-header bg-white border-0 pt-3">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="badge bg-secondary">{{siteLabel}}</span>
+                                        <span class="h5 price mb-0 fw-bold">{{priceText}} €</span>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-unstyled mb-3">
+                                        <li class="mb-2"><i class="bi bi-speedometer2 text-muted me-2"></i><strong>{{kmText}} km</strong></li>
+                                        <li class="mb-2"><i class="bi bi-building text-muted me-2"></i>{{seller}}</li>
+                                        <li class="mb-0"><i class="bi bi-calendar-event text-muted me-2"></i>Publicado el {{date}}</li>
+                                    </ul>
+                                </div>
+                                <div class="card-footer bg-white border-0 pb-3 d-flex justify-content-between align-items-center">
+                                    <a href="{{url}}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-primary">Ver anuncio</a>
+                                    <div class="d-flex gap-1">
+                                        <a href="/vehicle/{{vehicleId}}/offers/{{_id}}/edit" class="btn btn-sm btn-outline-secondary" title="Editar oferta">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <form action="/vehicle/{{vehicleId}}/offers/{{_id}}/delete" method="post" class="m-0">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Borrar oferta">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {{/offers}}
+
+                        {{^offers}}
+                        <div class="col-12">
+                            <div class="alert alert-light border text-center py-4">
+                                Todavía no hay ofertas registradas para este vehículo. ¡Añade la primera abajo!
+                            </div>
+                        </div>
+                        {{/offers}}
+                    </div>
+
+                    <!-- Create Secondary Entity Form -->
+                    <div class="row gx-5 justify-content-center">
+                        <div class="col-lg-8">
+                            <div class="bg-light rounded-3 p-4 p-md-5">
+                                <h3 class="fw-bolder mb-3 text-center">Añadir nueva oferta para este vehículo</h3>
+                                <p class="text-muted text-center mb-4">Registra una nueva oferta detectada en otro portal web para comparar su precio.</p>
+
+                                <form id="offerForm" action="/vehicle/{{_id}}/offers" method="post" enctype="multipart/form-data">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="site">Página de origen</label>
+                                            <select class="form-select" id="site" name="site" required>
+                                                <option value="" selected disabled>Selecciona una opción</option>
+                                                <option value="cochesnet">Coches.net</option>
+                                                <option value="wallapop">Wallapop</option>
+                                                <option value="milanuncios">Milanuncios</option>
+                                                <option value="autoscout24">AutoScout24</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="price">Precio (€)</label>
+                                            <input class="form-control" id="price" name="price" type="number" min="1" max="1000000" step="1" placeholder="Ej. 24000" required />
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="kilometers">Kilometraje (km)</label>
+                                            <input class="form-control" id="kilometers" name="kilometers" type="number" min="0" max="2000000" step="1" placeholder="Ej. 65000" required />
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="seller">Vendedor</label>
+                                            <input class="form-control" id="seller" name="seller" type="text" minlength="2" maxlength="80" placeholder="Ej. Automóviles Gómez" required />
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="url">Enlace al anuncio original</label>
+                                            <input class="form-control" id="url" name="url" type="url" pattern="https?://.+" title="Debe empezar por http:// o https://" placeholder="https://..." required />
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="date">Fecha de publicación</label>
+                                            <input class="form-control" id="date" name="date" type="date" required />
+                                        </div>
+
+                                        <div class="col-12">
+                                            <label class="form-label" for="image">Imagen de la unidad (opcional)</label>
+                                            <input class="form-control" id="image" name="image" type="file" accept="image/jpeg,image/png,image/webp,image/gif" />
+                                        </div>
+
+                                        <div class="col-12 d-flex justify-content-end gap-2 mt-4">
+                                            <button class="btn btn-primary px-4" type="submit">Crear</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+{{> footer}}
